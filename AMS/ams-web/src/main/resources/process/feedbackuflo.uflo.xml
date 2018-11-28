@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<uflo-process name="feedbackFlow">
+   <start g="296,-5,106,68" name="开始">
+      <sequence-flow to="信审组长一次反馈" g="15,-12" name="质检管理人员反馈"/>
+   </start>
+   <task g="271,85,153,46" allow-specify-assignee="false" task-type="Normal" assignment-handler-bean="qualityFeedBackHandle" assignment-type="Handler" name="信审组长一次反馈">
+      <sequence-flow to="结束" g="662,112;671,571:-58,-241" name="确认"/>
+      <sequence-flow to="质检主管核对" g="-24,-19" name="争议"/>
+   </task>
+   <task g="115,150,158,45" allow-specify-assignee="false" task-type="Countersign" countersign-multiplicity="1" assignment-handler-bean="approveFirstFeedBackHandle" assignment-type="Handler" name="质检主管核对">
+      <sequence-flow to="确认审批判断" g="5,-18" name="确认"/>
+      <sequence-flow to="争议审批判断" g="5,-12" name="争议"/>
+   </task>
+   <task g="447,209,164,47" allow-specify-assignee="false" task-type="Normal" assignment-handler-bean="qualityFeedBackHandle" assignment-type="Handler" name="信审组长二次反馈">
+      <sequence-flow to="信审主管一次反馈" g="-24,-16" name="争议"/>
+      <sequence-flow to="结束" g="664,233;673,572:-38,-185" name="确认"/>
+   </task>
+   <task g="456,311,151,48" allow-specify-assignee="false" task-type="Normal" assignment-handler-bean="qualityFeedBackHandle" assignment-type="Handler" name="信审主管一次反馈">
+      <sequence-flow to="结束" g="668,334;672,574:-39,-137" name="确认"/>
+      <sequence-flow to="质检经理定版" g="13,-17" name="争议"/>
+   </task>
+   <task g="114,368,166,47" allow-specify-assignee="false" task-type="Normal" assignment-handler-bean="qualityFeedBackHandle" assignment-type="Handler" name="质检经理定版">
+      <sequence-flow to="信审主管二次反馈" g="-11,-20" name="争议"/>
+      <sequence-flow to="结束" g="-27,-20" name="定版"/>
+   </task>
+   <end g="157,553,78,57" terminate="true" name="结束"/>
+   <task g="465,368,156,47" allow-specify-assignee="false" task-type="Normal" assignment-handler-bean="qualityFeedBackHandle" assignment-type="Handler" name="信审主管二次反馈">
+      <sequence-flow to="信审经理申请仲裁" g="-30,-12" name="争议"/>
+      <sequence-flow to="结束" g="670,387;675,574:-43,-117" name="确认"/>
+   </task>
+   <task g="463,487,158,46" allow-specify-assignee="false" task-type="Normal" assignment-handler-bean="qualityFeedBackHandle" assignment-type="Handler" name="信审经理申请仲裁">
+      <sequence-flow to="质检经理申请仲裁定版" g="0,-11" name="仲裁"/>
+      <sequence-flow to="结束" g="33,-25" name="确认"/>
+   </task>
+   <task g="217,449,169,47" allow-specify-assignee="false" task-type="Normal" assignment-handler-bean="qualityFeedBackHandle" assignment-type="Handler" name="质检经理申请仲裁定版">
+      <sequence-flow to="结束" g="-11,-23" name="定版"/>
+   </task>
+   <decision g="153,268,88,62" handler-bean="qualityHandler" name="确认审批判断" decision-type="Handler">
+      <sequence-flow to="质检经理定版" g="-95,-12" name="to 质检经理定版"/>
+      <sequence-flow to="质检主管核对" g="135,244:-90,-8" name="to 质检主管核对"/>
+   </decision>
+   <decision g="272,240,86,62" handler-bean="qualityHandler" name="争议审批判断" decision-type="Handler">
+      <sequence-flow to="信审组长二次反馈" g="-46,10" name="to 信审组长二次反馈"/>
+      <sequence-flow to="质检主管核对" g="324,201:-19,-20" name="to 质检主管核对"/>
+   </decision>
+</uflo-process>

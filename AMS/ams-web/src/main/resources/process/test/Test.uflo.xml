@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<uflo-process name="Test">
+   <start g="60,157,137,91" name="开始">
+      <sequence-flow g="-28,-27" name="to 初审" to="初审"/>
+   </start>
+   <end g="1162,148,138,112" name="结束" terminate="true"/>
+   <task assignment-handler-bean="testProcess" g="276,157,139,91" assignment-type="Handler" task-type="Normal" name="初审" allow-specify-assignee="false">
+      <sequence-flow g="593,203:-111,-23" name="to 终审" to="终审"/>
+   </task>
+   <task assignment-handler-bean="finalProcess" g="612,150,147,100" assignment-type="Handler" task-type="Countersign" name="终审" allow-specify-assignee="false">
+      <sequence-flow g="840,202:-50,-28" name="to 申请金额判断" to="申请金额判断"/>
+   </task>
+   <task assignment-handler-bean="finalProcess" g="889,319,165,109" assignment-type="Handler" task-type="Countersign" name="协审" allow-specify-assignee="false">
+      <sequence-flow g="1228,372:-45,-22" name="to 结束" to="结束"/>
+   </task>
+   <decision expression="${money&lt;80000?&quot;to 结束&quot;:&quot;to 协审&quot;}" g="908,150,125,108" name="申请金额判断" decision-type="Expression">
+      <sequence-flow g="-24,-28" name="to 结束" to="结束"/>
+      <sequence-flow g="13,-13" name="to 协审" to="协审"/>
+   </decision>
+</uflo-process>

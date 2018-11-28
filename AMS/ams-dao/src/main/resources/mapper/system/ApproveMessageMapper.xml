@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.yuminsoft.ams.system.dao.system.ApproveMessageMapper">
+
+    <resultMap id="BaseResultMap" type="com.yuminsoft.ams.system.domain.system.ApproveMessage">
+        <id column="ID" property="id" jdbcType="DECIMAL"/>
+        <result column="loan_no" property="loanNo" jdbcType="VARCHAR"/>
+        <result column="subject" property="subject" jdbcType="VARCHAR"/>
+        <result column="to" property="to" jdbcType="VARCHAR"/>
+        <result column="cc" property="cc" jdbcType="VARCHAR"/>
+        <result column="from" property="from" jdbcType="VARCHAR"/>
+        <result column="content" property="content" jdbcType="VARCHAR"/>
+        <result column="rtf_state" property="rtfState" jdbcType="VARCHAR"/>
+        <result column="rtf_node_state" property="rtfNodeState" jdbcType="VARCHAR"/>
+        <result column="created_by" property="createdBy" jdbcType="VARCHAR"/>
+        <result column="created_date" property="createdDate" jdbcType="TIMESTAMP"/>
+        <result column="last_modified_by" property="lastModifiedBy" jdbcType="VARCHAR"/>
+        <result column="last_modified_date" property="lastModifiedDate" jdbcType="TIMESTAMP"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+		id,
+		created_by,
+		created_date,
+		last_modified_by,
+		last_modified_date,
+		loan_no,
+		subject,
+		`to`,
+		cc,
+		`from`,
+		content,
+		rtf_state,
+		rtf_node_state
+  	</sql>
+
+    <insert id="save" parameterType="com.yuminsoft.ams.system.domain.system.ApproveMessage" useGeneratedKeys="true" keyProperty="id">
+    insert into AMS_APPROVE_MESSAGE (
+    	loan_no,
+    	subject,
+    	`to`,
+    	cc,
+    	`from`,
+    	content,
+    	rtf_state,
+    	rtf_node_state,
+    	created_by,
+    	created_date,
+    	last_modified_by,
+    	last_modified_date
+      )
+    values (
+    	#{loanNo,jdbcType=VARCHAR},
+    	#{subject, jdbcType=VARCHAR},
+    	#{to,jdbcType=VARCHAR},
+     	#{cc,jdbcType=VARCHAR},
+     	#{from,jdbcType=VARCHAR},
+     	#{content,jdbcType=VARCHAR},
+      	#{rtfState,jdbcType=VARCHAR},
+      	#{rtfNodeState,jdbcType=VARCHAR},
+      	#{createdBy,jdbcType=VARCHAR},
+      	#{createdDate,jdbcType=TIMESTAMP},
+      	#{lastModifiedBy,jdbcType=VARCHAR},
+      	#{lastModifiedDate,jdbcType=TIMESTAMP}
+      )
+  </insert>
+
+    <select id="findOne" resultMap="BaseResultMap" parameterType="java.util.Map">
+        select
+        <include refid="Base_Column_List"/>
+        from AMS_APPROVE_MESSAGE
+        where 1=1
+        <include refid="amsConditions"/>
+    </select>
+
+    <select id="findAll" resultMap="BaseResultMap" parameterType="java.util.Map">
+        select
+        <include refid="Base_Column_List"/>
+        from AMS_APPROVE_MESSAGE
+        where 1=1
+        <include refid="amsConditions"/>
+    </select>
+
+    <select id="findById" resultMap="BaseResultMap" parameterType="java.lang.Long">
+        select
+        <include refid="Base_Column_List"/>
+        from AMS_APPROVE_MESSAGE
+        where ID = #{id,jdbcType=DECIMAL}
+    </select>
+
+    <delete id="delete" parameterType="java.lang.Long">
+		delete from AMS_APPROVE_MESSAGE
+		where ID = #{id,jdbcType=DECIMAL}
+	</delete>
+
+    <sql id="amsConditions">
+        <if test="id != null">
+            AND ID= #{id}
+        </if>
+        <if test="loanNo != null">
+            AND LOAN_NO = #{loanNo,jdbcType=VARCHAR}
+        </if>
+        <if test="subject != null">
+            AND subject = #{subject, jdbcType=VARCHAR}
+        </if>
+        <if test="to != null">
+            AND `to`= #{to,jdbcType=VARCHAR}
+        </if>
+        <if test="cc != null">
+            AND cc= #{cc,jdbcType=VARCHAR}
+        </if>
+        <if test="from != null">
+            AND `from`= #{from,jdbcType=VARCHAR}
+        </if>
+        <if test="content != null">
+            AND content= #{content,jdbcType=VARCHAR}
+        </if>
+        <if test="rtfState != null">
+            AND rtf_state= #{rtfState,jdbcType=VARCHAR}
+        </if>
+        <if test="rtfNodeState != null">
+            AND rtf_node_state= #{rtfNodeState,jdbcType=VARCHAR}
+        </if>
+        <if test="createdBy != null">
+            AND created_by = #{createdBy,jdbcType=VARCHAR}
+        </if>
+        <if test="createdDate != null">
+            AND created_date = #{createdDate,jdbcType=TIMESTAMP}
+        </if>
+        <if test="lastModifiedBy != null">
+            AND last_modified_by = #{lastModifiedBy,jdbcType=VARCHAR}
+        </if>
+        <if test="lastModifiedDate != null">
+            AND last_modified_date = #{lastModifiedDate,jdbcType=TIMESTAMP}
+        </if>
+    </sql>
+</mapper>
+
+

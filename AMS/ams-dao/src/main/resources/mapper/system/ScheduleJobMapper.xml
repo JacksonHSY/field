@@ -1,0 +1,178 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.yuminsoft.ams.system.dao.system.ScheduleJobMapper">
+	<!-- 定时任务 -->
+
+	<resultMap id="BaseResultMap"
+		type="com.yuminsoft.ams.system.domain.system.ScheduleJob">
+		<id column="ID" property="id" jdbcType="DECIMAL" />
+		<result column="job_name" property="jobName" jdbcType="VARCHAR" />
+		<result column="job_group" property="jobGroup" jdbcType="VARCHAR" />
+		<result column="job_status" property="jobStatus" jdbcType="VARCHAR" />
+		<result column="cron_expression" property="cronExpression"
+			jdbcType="VARCHAR" />
+		<result column="job_desc" property="jobDesc" jdbcType="VARCHAR" />
+		<result column="REMARK" property="remark" jdbcType="VARCHAR" />
+		<result column="created_by" property="createdBy" jdbcType="VARCHAR" />
+		<result column="created_date" property="createdDate" jdbcType="TIMESTAMP" />
+		<result column="last_modified_by" property="lastModifiedBy"
+			jdbcType="VARCHAR" />
+		<result column="last_modified_date" property="lastModifiedDate"
+			jdbcType="TIMESTAMP" />
+	</resultMap>
+
+	<sql id="Base_Column_List">
+		ID,
+		job_name,
+		job_group,
+		job_status,
+		cron_expression,
+		job_desc,
+		REMARK,
+		CREATED_DATE,
+		LAST_MODIFIED_DATE,
+		CREATED_BY,
+		LAST_MODIFIED_BY
+	</sql>
+
+	<insert id="save" parameterType="com.yuminsoft.ams.system.domain.system.ScheduleJob"
+		useGeneratedKeys="true" keyProperty="id">
+		insert into AMS_SCHEDULE_JOB (
+		job_name,
+		job_group,
+		job_status,
+		cron_expression,
+		job_desc,
+		REMARK,
+		CREATED_DATE,
+		LAST_MODIFIED_DATE,
+		CREATED_BY,
+		LAST_MODIFIED_BY
+		)
+		values (
+		#{jobName,jdbcType=VARCHAR},
+		#{jobGroup,jdbcType=VARCHAR},
+		#{jobStatus,jdbcType=VARCHAR},
+		#{cronExpression,jdbcType=VARCHAR},
+		#{jobDesc,jdbcType=VARCHAR},
+		#{remark,jdbcType=VARCHAR},
+		#{createdDate,jdbcType=TIMESTAMP},
+		#{lastModifiedDate,jdbcType=TIMESTAMP},
+		#{createdBy,jdbcType=VARCHAR},
+		#{lastModifiedBy,jdbcType=VARCHAR}
+		)
+	</insert>
+	<select id="findOne" resultMap="BaseResultMap" parameterType="java.util.Map">
+		select
+		<include refid="Base_Column_List" />
+		from AMS_SCHEDULE_JOB
+		where 1=1
+		<include refid="amsConditions" />
+	</select>
+
+	<select id="findAll" resultMap="BaseResultMap" parameterType="java.util.Map">
+		select
+		<include refid="Base_Column_List" />
+		from AMS_SCHEDULE_JOB
+		where 1=1
+		<include refid="amsConditions" />
+	</select>
+
+	<select id="findById" resultMap="BaseResultMap" parameterType="java.lang.Long">
+		select
+		<include refid="Base_Column_List" />
+		from AMS_SCHEDULE_JOB
+		where ID = #{id,jdbcType=DECIMAL}
+	</select>
+
+	<delete id="delete" parameterType="java.lang.Long">
+		delete from AMS_SCHEDULE_JOB
+		where ID = #{id,jdbcType=DECIMAL}
+	</delete>
+	
+	<delete id="deletes" parameterType="java.lang.String">
+		delete from AMS_SCHEDULE_JOB
+		where id in
+		<foreach item="item" index="index" collection="array" open="("
+			separator="," close=")">
+			#{item}
+		</foreach>
+	</delete>
+
+	<update id="update" parameterType="com.yuminsoft.ams.system.domain.system.ScheduleJob">
+		update AMS_SCHEDULE_JOB
+		<set>
+			<if test="jobName != null">
+				job_name = #{jobName,jdbcType=VARCHAR},
+			</if>
+			<if test="jobGroup != null">
+				job_group = #{jobGroup,jdbcType=VARCHAR},
+			</if>
+			<if test="jobStatus != null">
+				job_status = #{jobStatus,jdbcType=VARCHAR},
+			</if>
+			<if test="cronExpression != null">
+				cron_expression = #{cronExpression,jdbcType=VARCHAR},
+			</if>
+			<if test="jobDesc != null">
+				job_desc = #{jobDesc,jdbcType=VARCHAR},
+			</if>
+			<if test="remark != null">
+				REMARK = #{remark,jdbcType=VARCHAR},
+			</if>
+			<if test="createdBy != null">
+				created_by = #{createdBy,jdbcType=VARCHAR},
+			</if>
+			<if test="createdDate != null">
+				created_date = #{createdDate,jdbcType=TIMESTAMP},
+			</if>
+			<if test="lastModifiedBy != null">
+				last_modified_by = #{lastModifiedBy,jdbcType=VARCHAR},
+			</if>
+			<if test="lastModifiedDate != null">
+				last_modified_date = #{lastModifiedDate,jdbcType=TIMESTAMP},
+			</if>
+		</set>
+		where ID = #{id,jdbcType=DECIMAL}
+	</update>
+
+	<sql id="amsConditions">
+		<if test="id != null">
+			AND ID= #{id}
+		</if>
+		<if test="jobName != null">
+			AND job_name = #{jobName,jdbcType=VARCHAR}
+		</if>
+		<if test="jobGroup != null">
+			AND job_group = #{jobGroup,jdbcType=VARCHAR}
+		</if>
+		<if test="jobStatus != null">
+			AND job_status = #{jobStatus,jdbcType=VARCHAR}
+		</if>
+		<if test="cronExpression != null">
+			AND cron_expression = #{cronExpression,jdbcType=VARCHAR}
+		</if>
+		<if test="jobDesc != null">
+			AND job_desc = #{jobDesc,jdbcType=VARCHAR}
+		</if>
+		<if test="remark != null">
+			AND REMARK = #{remark,jdbcType=VARCHAR}
+		</if>
+		<if test="createdBy != null">
+			AND created_by = #{createdBy,jdbcType=VARCHAR}
+		</if>
+		<if test="createdDate != null">
+			AND created_date = #{createdDate,jdbcType=TIMESTAMP}
+		</if>
+		<if test="lastModifiedBy != null">
+			AND last_modified_by = #{lastModifiedBy,jdbcType=VARCHAR}
+		</if>
+		<if test="lastModifiedDate != null">
+			AND last_modified_date =
+			#{lastModifiedDate,jdbcType=TIMESTAMP}
+		</if>
+	</sql>
+
+</mapper>
+
+

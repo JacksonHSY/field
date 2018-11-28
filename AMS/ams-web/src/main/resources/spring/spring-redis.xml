@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8"?>  
+<beans xmlns="http://www.springframework.org/schema/beans"  
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:context="http://www.springframework.org/schema/context"  
+    xmlns:p="http://www.springframework.org/schema/p"  
+    xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd  
+        http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd">
+
+	<!-- jedis 配置 -->  
+   <bean id="poolConfig" class="redis.clients.jedis.JedisPoolConfig" >
+   		 <property name="maxTotal" value="${redis.maxTotal}" />  
+         <property name="maxIdle" value="${redis.maxIdle}" />  
+         <property name="maxWaitMillis" value="${redis.maxWait}" />
+         <!-- 向调用者输出“链接”资源时，是否检测是有效，如果无效则从连接池中移除，并尝试获取继续获取。设为true，一个挂都不能用 -->  
+         <property name="testOnBorrow" value="${redis.testOnBorrow}" />
+         <!-- 向连接池“归还”链接时，是否检测“链接”对象的有效性。 -->
+         <property name="testOnReturn" value="${redis.testOnReturn}" />  
+   </bean >
+   
+   <!-- redis哨兵配置 -->
+   <bean id="redisSentinelConfiguration" class="org.springframework.data.redis.connection.RedisSentinelConfiguration">  
+          <property name="master">  
+              <bean class="org.springframework.data.redis.connection.RedisNode">  
+                  <property name="name" value="${redis.sentinel.masterName}"/>  
+              </bean>  
+          </property>  
+          <property name="sentinels">
+              <set>  
+                  <bean class="org.springframework.data.redis.connection.RedisNode">  
+                      <constructor-arg name="host" value="${redis.sentinel1.host}" />
+                      <constructor-arg name="port" value="${redis.sentinel1.port}" />  
+                  </bean>
+                  <bean class="org.springframework.data.redis.connection.RedisNode">  
+                      <constructor-arg name="host" value="${redis.sentinel2.host}" /> 
+                      <constructor-arg name="port" value="${redis.sentinel2.port}" />
+                  </bean>  
+              </set>  
+          </property>  
+    </bean> 
+   
+  <!-- redis factory config -->  
+   <bean id="connectionFactory"  class="org.springframework.data.redis.connection.jedis.JedisConnectionFactory">  
+         <constructor-arg name="sentinelConfig" ref="redisSentinelConfiguration" />
+         <constructor-arg name="poolConfig" ref="poolConfig" />
+         <property name="database" value="${redis.database}" />
+<!--          <property name="poolConfig" ref="poolConfig" />   -->
+<!--          <property name="port" value="${redis.port}" /> -->
+<!--          <property name="hostName" value="${redis.host}" />   -->
+<!--          <property name="password" value="${redis.password}" />  -->
+<!--          <property name="timeout" value="${redis.timeout}" /> -->
+   </bean>
+   
+   <!-- redis操作类 -->
+   <bean id="redisTemplate" class="org.springframework.data.redis.core.RedisTemplate" >  
+        <property name="connectionFactory" ref="connectionFactory" />
+        <property name="keySerializer" >  
+            <bean class="org.springframework.data.redis.serializer.StringRedisSerializer" />  
+        </property>
+        <property name="hashKeySerializer">  
+            <bean class="org.springframework.data.redis.serializer.StringRedisSerializer" />  
+        </property>  
+        <property name="valueSerializer">  
+            <bean class="org.springframework.data.redis.serializer.JdkSerializationRedisSerializer" />  
+        </property>  
+        <property name="hashValueSerializer">  
+            <bean class="org.springframework.data.redis.serializer.JdkSerializationRedisSerializer" />  
+        </property>  
+   </bean>  
+   
+    <!-- cache配置 --> 
+   <!-- <bean id="redisCacheManager" class="org.springframework.data.redis.cache.RedisCacheManager" >  
+         <property name="template" ref="redisTemplate" />
+   </bean>  -->
+   
+   <!-- <bean id="methodCacheInterceptor" class="com.mucfc.msm.common.MethodCacheInterceptor" >  
+         <property name="redisUtil" ref="redisUtil" />  
+   </bean> -->  
+   
+   <!-- session共享 -->
+   <!-- <bean id="redisHttpSessionConfiguration" class="org.springframework.session.data.redis.config.annotation.web.http.RedisHttpSessionConfiguration" > 
+   		30分钟失效
+         <property name="maxInactiveIntervalInSeconds" value="1800" />  
+   </bean>  -->
+   <!-- <bean id="redisUtil" class="com.mucfc.msm.common.RedisUtil" >  
+         <property name="redisTemplate" ref="redisTemplate" />  
+   </bean>  -->
+ </beans>    

@@ -1,0 +1,863 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.yuminsoft.ams.system.dao.quality.QualityControlDeskMapper">
+    <resultMap id="BaseResultMap" type="com.yuminsoft.ams.system.vo.quality.QualityControlDeskVo">
+
+        <!-- ams_quality_check_info -->
+        <id column="id" property="id" jdbcType="BIGINT" />
+        <result column="loan_no" property="loanNo" jdbcType="VARCHAR" />
+        <result column="approval_status" property="approvalStatus" jdbcType="INTEGER" />
+        <result column="assign_date" property="assignDate" jdbcType="TIMESTAMP" />
+        <result column="check_status" property="checkStatus" jdbcType="VARCHAR" />
+        <result column="check_user" property="checkUser" jdbcType="VARCHAR" />
+        <result column="end_date" property="endDate" jdbcType="TIMESTAMP" />
+        <result column="source" property="source" jdbcType="VARCHAR" />
+        <result column="is_closed" property="isClosed" jdbcType="VARCHAR" />
+        <result column="is_regular" property="isRegular" jdbcType="VARCHAR" />
+        <result column="customer_name" property="customerName" jdbcType="VARCHAR" javaType="encrypt" />
+        <result column="id_no" property="idNo" jdbcType="VARCHAR" javaType="encrypt" />
+        <result column="customer_type" property="customerType" jdbcType="VARCHAR" />
+        <result column="owning_brance_id" property="owningBranceId" jdbcType="VARCHAR" />
+        <result column="owning_brance" property="owningBrance" jdbcType="VARCHAR" />
+        <result column="apply_date" property="applyDate" jdbcType="DATE" />
+        <result column="product_type_name" property="productTypeName" jdbcType="VARCHAR" />
+        <result column="approve_state" property="approveState" jdbcType="VARCHAR" />
+        <result column="check_person" property="checkPerson" jdbcType="VARCHAR" />
+        <result column="final_person" property="finalPerson" jdbcType="VARCHAR" />
+        <result column="approve_date" property="approveDate" jdbcType="DATE" />
+        <result column="assign_type" property="assignType" jdbcType="VARCHAR" />
+        <result column="refuse_level_one" property="refuseLevelOne" jdbcType="VARCHAR" />
+        <result column="refuse_level_one_name" property="refuseLevelOneName" jdbcType="VARCHAR" />
+        <result column="refuse_level_two" property="refuseLevelTwo" jdbcType="VARCHAR" />
+        <result column="refuse_level_two_name" property="refuseLevelTwoName" jdbcType="VARCHAR" />
+        <result column="quality_source" property="sourceText" jdbcType="VARCHAR" />
+
+        <!-- ams_quality_check_result -->
+        <result column="check_error" property="checkError" jdbcType="VARCHAR" />
+        <result column="check_result" property="checkResult" jdbcType="VARCHAR" />
+        <result column="check_view" property="checkView" jdbcType="VARCHAR" />
+        <result column="error_code" property="errorCode" jdbcType="VARCHAR" />
+        <result column="approval_leader" property="approvalLeader" jdbcType="VARCHAR" />
+        <result column="quality_check_id" property="qualityCheckId" jdbcType="BIGINT" />
+        <result column="feedback_code" property="feedbackCode" jdbcType="BIGINT" />
+        <result column="approve_person" property="approvePerson" jdbcType="VARCHAR" />
+        <result column="status" property="status" jdbcType="VARCHAR" />
+        <result column="recheck_person" property="recheckPerson" jdbcType="VARCHAR" />
+
+        <result column="created_by" property="createdBy" jdbcType="VARCHAR" />
+        <result column="created_date" property="createdDate" jdbcType="TIMESTAMP" />
+        <result column="last_modified_by" property="lastModifiedBy" jdbcType="VARCHAR" />
+        <result column="last_modified_date" property="lastModifiedDate" jdbcType="TIMESTAMP" />
+        <result column="version" property="version" jdbcType="INTEGER" />
+    </resultMap>
+
+    <!-- 质检工作台_待处理列表 -->
+    <select id="findToDo" resultMap="BaseResultMap"
+            parameterType="com.yuminsoft.ams.system.vo.quality.QualityControlDeskVo">
+        SELECT
+        a.id,
+        a.*,
+        a.id quality_check_id,
+        b.feedback_code
+        FROM ams_quality_check_info a
+        LEFT JOIN ams_quality_check_result b ON a.id=b.quality_check_id
+        where 1=1
+        <if test="customerName != null and customerName !='' ">
+            AND a.customer_name = #{customerName,jdbcType=VARCHAR}
+        </if>
+        <if test="idNo != null and idNo !='' ">
+            AND a.id_no = #{idNo,jdbcType=VARCHAR}
+        </if>
+        <if test="owningBranceId != null and owningBranceId !='' ">
+            AND a.owning_brance_id = #{owningBranceId,jdbcType=VARCHAR}
+        </if>
+        <if test="loanNo != null and loanNo !='' ">
+            AND a.loan_no = #{loanNo,jdbcType=VARCHAR}
+        </if>
+        <if test="assignDateStart != null and assignDateStart !='' ">
+            AND a.assign_date <![CDATA[  >= ]]> #{assignDateStart,jdbcType=TIMESTAMP}
+        </if>
+        <if test="assignDateEnd != null and assignDateEnd !='' ">
+            AND a.assign_date <![CDATA[  < ]]> #{assignDateEnd,jdbcType=TIMESTAMP}
+        </if>
+        <if test="productTypeName != null and productTypeName !='' ">
+            AND a.product_name = #{productTypeName,jdbcType=VARCHAR}
+        </if>
+        <if test="qualityCheckId != null and qualityCheckId !='' ">
+            AND a.id = #{qualityCheckId,jdbcType=VARCHAR}
+        </if>
+        <if test="checkUser != null and checkUser !='' ">
+            AND a.check_user = #{checkUser,jdbcType=VARCHAR}
+        </if>
+    </select>
+
+    <!-- 质检工作台-->
+    <select id="findToDoByUser" resultMap="BaseResultMap" parameterType="java.util.Map">
+        SELECT a.end_date,
+        	   a.customer_name,
+		       a.id_no,
+		       a.approval_status,
+		       a.customer_type,
+		       a.owning_brance,
+		       c.quality_source source,
+		       a.loan_no,
+		       a.product_type_name,
+		       a.approve_state,
+		       a.check_person,
+		       a.final_person,
+		       a.approve_date,
+		       a.check_user,
+		       a.id quality_check_id,
+		       b.check_result,
+		       a.refuse_level_one_name,
+			   a.refuse_level_two_name,
+			   b.error_code
+      		   FROM 	ams_quality_check_info a 
+  			   LEFT JOIN ams_quality_check_result b on b.quality_check_id = a.id
+  			   LEFT JOIN ams_quality_source_info c ON c.id = a.source
+			   		WHERE 1=1
+			   		and b.id in (
+	 					SELECT max(d.id) as id FROM ams_quality_check_result d 
+						 group by d.quality_check_id
+				)
+        <if test="checkStatus != null and checkStatus !=''">
+            <if test="flag == 'todo'">
+                AND (a.check_status != #{checkStatus,jdbcType=VARCHAR} OR a.check_status is null)
+            </if>
+            <if test="flag == 'dono'">
+                AND a.check_status = #{checkStatus,jdbcType=VARCHAR}
+            </if>
+        </if>
+        <if test="codeList != null">
+            AND a.check_user in
+            <foreach collection="codeList" item="item" index="index" open="(" close=")" separator=",">
+                #{item}
+            </foreach>
+        </if>
+        <if test="isClosed !=null">
+        	AND a.is_closed = #{isClosed,jdbcType=VARCHAR}
+        </if>
+        <if test="user != null and user !='' ">
+                AND a.check_user = #{user,jdbcType=VARCHAR}
+        </if>
+        <if test="qualityControlDeskVo != null">
+            <if test="qualityControlDeskVo.customerName != null and qualityControlDeskVo.customerName !='' ">
+                AND a.customer_name = #{qualityControlDeskVo.customerName,jdbcType=VARCHAR}
+            </if>
+
+            <if test="qualityControlDeskVo.idNo != null and qualityControlDeskVo.idNo !='' ">
+                AND a.id_no = #{qualityControlDeskVo.idNo,jdbcType=VARCHAR}
+            </if>
+            <if test="qualityControlDeskVo.owningBranceId != null and qualityControlDeskVo.owningBranceId !='' ">
+                AND a.owning_brance_id in
+                <foreach collection="owningBranceId" item="item" index="index" open="(" close=")" separator=",">
+                #{item}
+            </foreach>
+            </if>
+            <if test="qualityControlDeskVo.loanNo != null and qualityControlDeskVo.loanNo !='' ">
+                AND a.loan_no = #{qualityControlDeskVo.loanNo,jdbcType=VARCHAR}
+            </if>
+            <if test="qualityControlDeskVo.endDateEnd !=null">
+        		AND end_date<![CDATA[  < ]]>#{qualityControlDeskVo.endDateEnd,jdbcType=TIMESTAMP}
+        	</if>
+        	<if test="qualityControlDeskVo.endDateStart !=null">
+        		AND end_date<![CDATA[  >= ]]>#{qualityControlDeskVo.endDateStart,jdbcType=TIMESTAMP}
+        	</if>
+            <if test="qualityControlDeskVo.productTypeName != null and qualityControlDeskVo.productTypeName !='' ">
+                AND a.product_type_name = #{qualityControlDeskVo.productTypeName,jdbcType=VARCHAR}
+            </if>
+            <if test="qualityControlDeskVo.qualityCheckId != null and qualityControlDeskVo.qualityCheckId !='' ">
+                AND a.id = #{qualityControlDeskVo.qualityCheckId,jdbcType=VARCHAR}
+            </if>
+            <if test="qualityControlDeskVo.assignType != null and qualityControlDeskVo.assignType !='' ">
+                AND a.assign_type = #{qualityControlDeskVo.assignType,jdbcType=VARCHAR}
+            </if>
+             <if test="qualityControlDeskVo.approveState != null and qualityControlDeskVo.approveState !='' ">
+                AND a.approve_state = #{qualityControlDeskVo.approveState,jdbcType=VARCHAR}
+            </if>
+             <if test=" qualityControlDeskVo.approvalStatus==0 or qualityControlDeskVo.approvalStatus != null and qualityControlDeskVo.approvalStatus !='' ">
+                AND a.approval_status = #{qualityControlDeskVo.approvalStatus,jdbcType=INTEGER}
+            </if>
+            <if test="qualityControlDeskVo.customerType != null and qualityControlDeskVo.customerType !='' ">
+                AND a.customer_type = #{qualityControlDeskVo.customerType,jdbcType=VARCHAR}
+            </if>
+            <if test="qualityControlDeskVo.source != null and qualityControlDeskVo.source !='' or  qualityControlDeskVo.source==0">
+                AND c.quality_source = #{qualityControlDeskVo.source,jdbcType=VARCHAR}
+            </if>
+            <if test="qualityControlDeskVo.checkResult != null and qualityControlDeskVo.checkResult !='' ">
+                AND b.check_result in
+                <foreach collection="checkResult" item="item" index="index" open="(" close=")" separator=",">
+                #{item}
+            </foreach>
+            </if>
+        </if>
+
+    </select>
+
+    <!-- 质检工作台_已完成列表 -->
+    <select id="findDone" resultMap="BaseResultMap"
+            parameterType="com.yuminsoft.ams.system.vo.quality.QualityControlDeskVo">
+        SELECT DISTINCT
+        a.*,
+        b.quality_check_id,
+        b.check_error,
+        b.error_code,
+        b.feedback_code
+        FROM ams_quality_check_info a
+        LEFT JOIN ams_quality_check_result b ON a.id = b.quality_check_id
+        where b.feedback_code=0 OR b.feedback_code=1
+        <if test="customerName != null and customerName !='' ">
+            AND a.customer_name = #{customerName,jdbcType=VARCHAR}
+        </if>
+        <if test="idNo != null and idNo !='' ">
+            AND a.id_no = #{idNo,jdbcType=VARCHAR}
+        </if>
+        <if test="owningBranceId != null and owningBranceId !='' ">
+            AND a.owning_brance_id = #{owningBranceId,jdbcType=VARCHAR}
+        </if>
+        <if test="loanNo != null and loanNo !='' ">
+            AND a.loan_no = #{loanNo,jdbcType=VARCHAR}
+        </if>
+        <if test="endDateStart != null and endDateStart !='' ">
+            AND a.end_date <![CDATA[  >= ]]> #{endDateStart,jdbcType=TIMESTAMP}
+        </if>
+        <if test="endDateEnd != null and endDateEnd !='' ">
+            AND a.end_date <![CDATA[  < ]]> #{endDateEnd,jdbcType=TIMESTAMP}
+        </if>
+        <if test="errorCode != null and errorCode !='' ">
+            AND b.error_code = #{errorCode,jdbcType=VARCHAR}
+        </if>
+    </select>
+
+    <!--手工质检申请派单_手工分派 -->
+    <select id="findManualDisPatch" resultMap="BaseResultMap"
+            parameterType="com.yuminsoft.ams.system.vo.quality.QualityControlDeskVo">
+        SELECT *
+        FROM ams_quality_check_info a
+        where a.check_user is null AND a.is_closed='1'
+        <if test="customerName != null and customerName !='' ">
+            AND a.customer_name = #{customerName,jdbcType=VARCHAR}
+        </if>
+        <if test="idNo != null and idNo !='' ">
+            AND a.id_no = #{idNo,jdbcType=VARCHAR}
+        </if>
+        <if test="checkUser != null and checkUser !='' ">
+            OR a.check_user = #{checkUser,jdbcType=VARCHAR}
+        </if>
+        OR a.check_user=''
+    </select>
+
+    <!--手工质检申请派单列表查询 -->
+    <select id="findForAssign" resultMap="BaseResultMap" parameterType="java.util.Map">
+        SELECT 
+        a.*,concat(a.refuse_level_one_name,",",a.refuse_level_two_name) levelName,b.quality_source,result.status
+        FROM ams_quality_check_info a left join ams_quality_source_info b on a.source = b.id 
+        left join ams_quality_check_result result on  result.quality_check_id = a.id
+        WHERE a.is_closed='1' 
+	        AND (
+	            result.id is null or
+	            result.id in (
+	                select max(id) from ams_quality_check_result
+	                group by quality_check_id
+	            )
+	        )
+        <if test="flag == 'manualDisPatch' ">
+            AND (a.check_user is null OR a.check_user='' OR  a.check_user in
+                <foreach collection="codeList" item="item" index="index" open="(" close=")" separator=",">
+                    #{item}
+                </foreach>)
+        </if>
+        <if test ="checkStatus !=null and checkStatus !=''">
+        	AND a.check_status = #{checkStatus,jdbcType=VARCHAR}
+        </if>
+        <if test ="users !=null and users !=''">
+        	AND a.check_user = #{users,jdbcType=VARCHAR}
+        </if>
+        <if test="checkStatus !=null and checkStatus !=''">
+        	AND a.check_status = #{checkStatus,jdbcType = VARCHAR} 
+        </if>
+        <if test="qualityControlDeskVo.customerName != null and qualityControlDeskVo.customerName !='' ">
+            AND a.customer_name = #{qualityControlDeskVo.customerName,jdbcType=VARCHAR}
+        </if>
+        <if test="qualityControlDeskVo.idNo != null and qualityControlDeskVo.idNo !='' ">
+            AND a.id_no = #{qualityControlDeskVo.idNo,jdbcType=VARCHAR}
+        </if>
+        <if test="qualityControlDeskVo.loanNo != null and qualityControlDeskVo.loanNo !='' ">
+            AND a.loan_no= #{qualityControlDeskVo.loanNo,jdbcType=VARCHAR}
+        </if>
+         <if test="qualityControlDeskVo.assignType != null and qualityControlDeskVo.assignType !='' and qualityControlDeskVo.assignType==0">
+            AND a.assign_type is not null
+        </if>
+        <if test="qualityControlDeskVo.assignType != null and qualityControlDeskVo.assignType !='' and qualityControlDeskVo.assignType==1">
+            AND a.assign_type is null
+        </if>
+        <if test="qualityControlDeskVo.source != null and qualityControlDeskVo.source !=''">
+            AND b.quality_source = #{qualityControlDeskVo.source,jdbcType=VARCHAR}
+        </if>
+        <if test="qualityControlDeskVo.approvalStatus != null and qualityControlDeskVo.approvalStatus !='' or qualityControlDeskVo.approvalStatus==0">
+            AND a.approval_status = #{qualityControlDeskVo.approvalStatus,jdbcType=VARCHAR}
+        </if>
+        <if test="qualityControlDeskVo.assignDateStart != null">
+            AND a.assign_date <![CDATA[  >= ]]>#{qualityControlDeskVo.assignDateStart,jdbcType=TIMESTAMP}
+        </if>
+        <if test="qualityControlDeskVo.assignDateEnd != null">
+            AND a.assign_date <![CDATA[  < ]]>#{qualityControlDeskVo.assignDateEnd,jdbcType=TIMESTAMP}
+        </if>
+        <if test="qualityControlDeskVo.owningBranceId != null and qualityControlDeskVo.owningBranceId !='' ">
+                AND a.owning_brance_id in
+                <foreach collection="owningBranceId" item="item" index="index" open="(" close=")" separator=",">
+                #{item}
+            </foreach>
+       </if>
+    </select>
+
+    <!--手工质检申请派单_手工改派 -->
+    <select id="findManualReform" resultMap="BaseResultMap"
+            parameterType="com.yuminsoft.ams.system.vo.quality.QualityControlDeskVo">
+        SELECT *
+        FROM ams_quality_check_info a
+        where a.check_user is not null and a.is_closed=0
+        <if test="customerName != null and customerName !='' ">
+            AND a.customer_name = #{customerName,jdbcType=VARCHAR}
+        </if>
+        <if test="idNo != null and idNo !='' ">
+            AND a.id_no = #{idNo,jdbcType=VARCHAR}
+        </if>
+        <if test="owningBranceId != null and owningBranceId !='' ">
+            AND a.owning_brance_id = #{owningBranceId,jdbcType=VARCHAR}
+        </if>
+        <if test="assignDateStart != null and assignDateStart !='' ">
+            AND a.assign_date <![CDATA[  >= ]]> #{assignDateStart,jdbcType=TIMESTAMP}
+        </if>
+        <if test="assignDateEnd != null and assignDateEnd !='' ">
+            AND a.assign_date <![CDATA[  < ]]> #{assignDateEnd,jdbcType=TIMESTAMP}
+        </if>
+        <if test="checkUser != null and checkUser !='' ">
+            AND a.check_user = #{checkUser,jdbcType=VARCHAR}
+        </if>
+    </select>
+    <!-- 质检查询列表 -->
+    <select id="findQualityQuery" resultMap="BaseResultMap"
+            parameterType="com.yuminsoft.ams.system.vo.quality.QualityControlDeskVo">
+        SELECT a.assign_date,
+        b.customer_name,
+        b.id_no,
+        a.owning_brance,
+        a.source,
+        a.loan_no,
+        a.product_type_name,
+        a.check_person,
+        a.check_person_name,
+        a.final_person,
+        a.final_person_name,
+        a.approve_date,
+        a.check_user,
+        d.quality_check_id,
+        d.check_error,
+        d.error_code
+        FROM ams_quality_check_info a
+        LEFT JOIN ams_quality_source_info b
+        ON a.loan_no = b.loan_no
+        LEFT JOIN ams_quality_check_result d ON a.id = d.quality_check_id
+        <!--  WHERE  d.check_result IS NOT NULL
+          AND a.check_user = #{loginUser,jdbcType=DECIMAL} -->
+        where 1=1
+        <if test="customerName != null and customerName !='' ">
+            AND b.customer_name = #{customerName,jdbcType=VARCHAR}
+        </if>
+        <if test="idNo != null and idNo !='' ">
+            AND b.id_no = #{idNo,jdbcType=VARCHAR}
+        </if>
+        <if test="owningBranceId != null and owningBranceId !='' ">
+            AND a.owning_brance_id = #{owningBranceId,jdbcType=VARCHAR}
+        </if>
+        <if test="loanNo != null and loanNo !='' ">
+            AND a.loan_no = #{loanNo,jdbcType=VARCHAR}
+        </if>
+        <if test="endDateStart != null and endDateStart !='' ">
+            AND a.end_date <![CDATA[  >= ]]> #{endDateStart,jdbcType=TIMESTAMP}
+        </if>
+        <if test="endDateEnd != null and endDateEnd !='' ">
+            AND a.end_date <![CDATA[  < ]]> #{endDateEnd,jdbcType=TIMESTAMP}
+        </if>
+        <if test="errorCode != null and errorCode !='' ">
+            AND d.error_code = #{errorCode,jdbcType=VARCHAR}
+        </if>
+    </select>
+
+    <!--质检处理情况待处理页面展示-->
+    <select id="findInspectionTodoList" resultMap="BaseResultMap" parameterType="com.yuminsoft.ams.system.vo.quality.QualityControlDeskVo">
+       	SELECT
+			d.*, (
+				CASE
+				WHEN d.recheck_person = #{currentUser} THEN
+					1
+				ELSE
+					0
+				END
+			) AS ifTop
+		FROM(
+        SELECT info.id,
+            info.loan_no,
+            info.approval_status,
+            info.assign_date,
+            info.check_status,
+            info.check_user,
+            info.end_date,
+            info.source,
+            info.is_closed,
+            info.is_regular,
+            info.customer_name,
+            info.id_no,
+            info.customer_type,
+            info.owning_brance_id,
+            info.owning_brance,
+            info.apply_date,
+            info.product_type_name,
+            info.approve_state,
+            info.check_person,
+            info.final_person,
+            info.approve_date,
+            info.assign_type,
+            info.refuse_level_one,
+            info.refuse_level_two,
+            info.refuse_level_one_name,
+            info.refuse_level_two_name,
+            info.version,
+            info.created_by,
+            info.created_date,
+            info.last_modified_by,
+            info.last_modified_date,
+            sour.quality_source,
+            result.quality_check_id,
+            result.check_error,
+            result.check_result,
+            result.error_code,
+            result.feedback_code,
+            result.status,
+            result.recheck_person
+        FROM ams_quality_check_info info
+          left join ams_quality_source_info  sour   on sour.id = info.source
+          left join ams_quality_check_result result on result.quality_check_id = info.id
+        WHERE info.is_closed='1'
+        AND (
+            result.id is null or
+            result.id in (
+                select max(id) from ams_quality_check_result
+                group by quality_check_id
+            )
+        )
+        AND info.check_status = '1'
+        AND (
+          result.status is null or
+          result.status = 'quality_temporary_save' or
+          result.status = 'quality_recheck'
+          <if test="checkUsers != null">
+            AND result.recheck_person in
+            <foreach collection="checkUsers" item="item" index="index" open="(" close=")" separator=",">
+                #{item}
+            </foreach>
+       	  </if>
+        )
+        <!-- 质检员(当前登录用户辖下) -->
+        <if test="checkUsers != null">
+            AND info.check_user in
+            <foreach collection="checkUsers" item="item" index="index" open="(" close=")" separator=",">
+                #{item}
+            </foreach>
+        </if>
+
+        <!-- 客户姓名 -->
+        <if test="deskVo.customerName != null and deskVo.customerName !='' ">
+            AND info.customer_name = #{deskVo.customerName,jdbcType=VARCHAR}
+        </if>
+
+        <!-- 质检员 -->
+        <if test="deskVo.checkUser != null and deskVo.checkUser !='' ">
+            AND info.check_user = #{deskVo.checkUser,jdbcType=VARCHAR}
+        </if>
+
+        <!-- 身份证号 -->
+        <if test="deskVo.idNo != null and deskVo.idNo !='' ">
+            AND info.id_no = #{deskVo.idNo,jdbcType=VARCHAR}
+        </if>
+
+        <!-- 进件营业部 -->
+        <if test="owningBranceIds != null and owningBranceIds !='' ">
+            AND info.owning_brance_id in
+            <foreach collection="owningBranceIds" item="item" index="index" open="(" close=")" separator=",">
+                #{item}
+            </foreach>
+        </if>
+
+        <!-- 申请件编号 -->
+        <if test="deskVo.loanNo != null and loanNo !='' ">
+            AND info.loan_no = #{deskVo.loanNo,jdbcType=VARCHAR}
+        </if>
+
+        <!-- 审批结果 -->
+        <if test="deskVo.approvalStatus != null">
+            AND info.approval_status = #{deskVo.approvalStatus, jdbcType=INTEGER}
+        </if>
+
+        <!-- 工作流节点 -->
+        <if test="deskVo.approveState != null and deskVo.approveState !='' ">
+            AND info.approve_state = #{deskVo.approveState,jdbcType=VARCHAR}
+        </if>
+
+        <!-- 分派日期 -->
+        <if test="deskVo.assignDateStart != null">
+            AND info.assign_date <![CDATA[  >= ]]> #{deskVo.assignDateStart,jdbcType=TIMESTAMP}
+        </if>
+
+        <if test="deskVo.assignDateEnd != null">
+            AND info.assign_date <![CDATA[  < ]]> #{deskVo.assignDateEnd,jdbcType=TIMESTAMP}
+        </if>
+
+        <!-- 完成日期 -->
+        <if test="deskVo.endDateStart != null">
+            AND info.end_date <![CDATA[  >= ]]> #{deskVo.endDateStart,jdbcType=TIMESTAMP}
+        </if>
+
+        <if test="deskVo.endDateEnd != null">
+            AND info.end_date <![CDATA[  < ]]> #{deskVo.endDateEnd,jdbcType=TIMESTAMP}
+        </if>
+
+        <!-- 差错代码 -->
+        <if test="deskVo.errorCode != null and deskVo.errorCode !='' ">
+            AND result.error_code = #{deskVo.errorCode,jdbcType=VARCHAR}
+        </if>
+
+        <!-- 质检结论 -->
+        <if test="checkResults != null">
+            AND result.check_result in
+            <foreach collection="checkResults" item="item" index="index" open="(" close=")" separator=",">
+                #{item}
+            </foreach>
+        </if>
+		) d
+        <!-- 排序字段 -->
+        <if test="sortList != null">
+            ORDER BY 
+            <foreach collection="sortList" item="item" index="index" separator=",">
+                ${item.property} ${item.direction}
+            </foreach>
+        </if>
+    </select>
+
+
+    <!--质检处理情况已完成页面展示-->
+    <select id="findInspectionDoneList" resultMap="BaseResultMap" parameterType="com.yuminsoft.ams.system.vo.quality.QualityControlDeskVo">
+        SELECT info.id,
+            info.loan_no,
+            info.approval_status,
+            info.assign_date,
+            info.check_status,
+            info.check_user,
+            info.end_date,
+            info.source,
+            info.is_closed,
+            info.is_regular,
+            info.customer_name,
+            info.id_no,
+            info.customer_type,
+            info.owning_brance_id,
+            info.owning_brance,
+            info.apply_date,
+            info.product_type_name,
+            info.approve_state,
+            info.check_person,
+            info.final_person,
+            info.approve_date,
+            info.assign_type,
+            info.refuse_level_one,
+            info.refuse_level_two,
+            info.refuse_level_one_name,
+            info.refuse_level_two_name,
+            info.version,
+            info.created_by,
+            info.created_date,
+            info.last_modified_by,
+            info.last_modified_date,
+            sour.quality_source,
+            result.quality_check_id,
+            result.check_error,
+            result.check_result,
+            result.error_code,
+            result.feedback_code,
+            result.status,
+            result.recheck_person
+        FROM ams_quality_check_info info
+          left join ams_quality_source_info  sour   on sour.id = info.source
+          left join ams_quality_check_result result on result.quality_check_id = info.id
+        WHERE info.is_closed='1'
+        AND (
+            result.id is null or
+            result.id in (
+                select max(id) from ams_quality_check_result
+                group by quality_check_id
+            )
+        )
+        AND (
+          info.check_status = '0' and result.status = 'quality_complete' or
+          info.check_status = '1' and (
+          	  result.status = 'quality_recheck'
+	          <if test="checkUsers != null">
+		          AND result.recheck_person NOT in
+		          <foreach collection="checkUsers" item="item" index="index" open="(" close=")" separator=",">
+		              #{item}
+		          </foreach>
+	          </if> 
+	          OR result. STATUS = 'quality_recheck_wait'
+	          <if test="checkUsers != null">
+		          AND (result.created_by NOT IN
+		          <foreach collection="checkUsers" item="item" index="index" open="(" close=")" separator=",">
+		              #{item}
+		          </foreach>
+		          	OR result.created_by=#{currentUser}
+		          )
+	          </if>)
+        )
+        <!-- 质检员(当前登录用户辖下) -->
+        <if test="checkUsers != null">
+            AND info.check_user in
+            <foreach collection="checkUsers" item="item" index="index" open="(" close=")" separator=",">
+                #{item}
+            </foreach>
+        </if>
+
+        <!-- 客户姓名 -->
+        <if test="deskVo.customerName != null and deskVo.customerName !='' ">
+            AND info.customer_name = #{deskVo.customerName,jdbcType=VARCHAR}
+        </if>
+
+        <!-- 质检员 -->
+        <if test="deskVo.checkUser != null and deskVo.checkUser !='' ">
+            AND info.check_user = #{deskVo.checkUser,jdbcType=VARCHAR}
+        </if>
+
+        <!-- 身份证号 -->
+        <if test="deskVo.idNo != null and deskVo.idNo !='' ">
+            AND info.id_no = #{deskVo.idNo,jdbcType=VARCHAR}
+        </if>
+
+        <!-- 进件营业部 -->
+        <if test="owningBranceIds != null and owningBranceIds !='' ">
+            AND info.owning_brance_id in
+            <foreach collection="owningBranceIds" item="item" index="index" open="(" close=")" separator=",">
+                #{item}
+            </foreach>
+        </if>
+
+        <!-- 申请件编号 -->
+        <if test="deskVo.loanNo != null and loanNo !='' ">
+            AND info.loan_no = #{deskVo.loanNo,jdbcType=VARCHAR}
+        </if>
+
+        <!-- 审批结果 -->
+        <if test="deskVo.approvalStatus != null">
+            AND info.approval_status = #{deskVo.approvalStatus, jdbcType=INTEGER}
+        </if>
+
+        <!-- 工作流节点 -->
+        <if test="deskVo.approveState != null and deskVo.approveState !='' ">
+            AND info.approve_state = #{deskVo.approveState,jdbcType=VARCHAR}
+        </if>
+
+        <!-- 分派日期 -->
+        <if test="deskVo.assignDateStart != null">
+            AND info.assign_date <![CDATA[  >= ]]> #{deskVo.assignDateStart,jdbcType=TIMESTAMP}
+        </if>
+
+        <if test="deskVo.assignDateEnd != null">
+            AND info.assign_date <![CDATA[  < ]]> #{deskVo.assignDateEnd,jdbcType=TIMESTAMP}
+        </if>
+
+        <!-- 完成日期 -->
+        <if test="deskVo.endDateStart != null">
+            AND info.end_date <![CDATA[  >= ]]> #{deskVo.endDateStart,jdbcType=TIMESTAMP}
+        </if>
+
+        <if test="deskVo.endDateEnd != null">
+            AND info.end_date <![CDATA[  < ]]> #{deskVo.endDateEnd,jdbcType=TIMESTAMP}
+        </if>
+
+        <!-- 差错代码 -->
+        <if test="deskVo.errorCode != null and deskVo.errorCode !='' ">
+            AND result.error_code = #{deskVo.errorCode,jdbcType=VARCHAR}
+        </if>
+        
+        <!-- 更新时间 -->
+		<if test="deskVo.lastModifiedDateStart != null">
+			AND info.last_modified_date <![CDATA[  >= ]]>#{deskVo.lastModifiedDateStart,jdbcType=TIMESTAMP}
+		</if>
+		
+		 <!-- 更新时间 -->
+		<if test="deskVo.lastModifiedDateEnd != null">
+			AND info.last_modified_date <![CDATA[  <= ]]>#{deskVo.lastModifiedDateEnd,jdbcType=TIMESTAMP}
+		</if>
+		
+        <!-- 质检结论 -->
+        <if test="checkResults != null">
+            AND result.check_result in
+            <foreach collection="checkResults" item="item" index="index" open="(" close=")" separator=",">
+                #{item}
+            </foreach>
+        </if>
+
+        <!-- 排序字段 -->
+        <if test="sortList != null">
+            ORDER BY
+            <foreach collection="sortList" item="item" index="index" separator=",">
+                ${item.property} ${item.direction}
+            </foreach>
+        </if>
+    </select>
+
+    <!-- 质检工作台待质检列表显示-->
+    <select id="findQualityByUser" resultMap="BaseResultMap" parameterType="java.util.Map">
+      select a.*,b.quality_source qualitySource,c.status
+      	from ams_quality_check_info a 
+      	left join ams_quality_source_info b on a.source=b.id
+     	left join ams_quality_check_result c on  a.id  = c.quality_check_id
+     	where
+     	1=1
+     	<if test="checkUser !=null and checkUser!=''">
+     	AND	a.check_user = #{checkUser,jdbcType=VARCHAR}
+     	</if>
+     	<if test="Closed !=null and Closed !=''">
+     	AND a.is_closed = #{Closed,jdbcType = VARCHAR}
+     	</if>
+     	and  (c.id is null
+     	or c.id IN (SELECT max(d.id) AS id FROM
+		ams_quality_check_result d where 1=1
+		<if test="qualityStatus !=null and qualityStatus !=''">
+     	AND d.status is null or d.status = #{qualityStatus,jdbcType = VARCHAR}
+     	</if>
+     	<if test="checkUser !=null and checkUser !=''">
+<!--      	AND d.created_by = #{checkUser,jdbcType=VARCHAR} -->
+     	</if>
+			GROUP BY
+			d.quality_check_id ))
+        <if test="checkStatus!=null and checkStatus!='' or checkStatus==0">
+        AND	a.check_status != #{checkStatus,jdbcType=VARCHAR}
+        </if>
+        <if test="qualityControlDeskVo != null">
+            <if test="qualityControlDeskVo.customerName != null and qualityControlDeskVo.customerName !='' ">
+                AND a.customer_name = #{qualityControlDeskVo.customerName,jdbcType=VARCHAR}
+            </if>
+             <if test="qualityControlDeskVo.idNo != null and qualityControlDeskVo.idNo !='' ">
+                AND a.id_no = #{qualityControlDeskVo.idNo,jdbcType=VARCHAR}
+            </if>
+            <if test="qualityControlDeskVo.owningBranceId != null and qualityControlDeskVo.owningBranceId !='' ">
+                AND a.owning_brance_id in
+                <foreach collection="owningBranceId" item="item" index="index" open="(" close=")" separator=",">
+                #{item}
+            </foreach>
+            </if>
+            <if test="qualityControlDeskVo.loanNo != null and qualityControlDeskVo.loanNo !='' ">
+                AND a.loan_no = #{qualityControlDeskVo.loanNo,jdbcType=VARCHAR}
+            </if>
+            <if test=" qualityControlDeskVo.approvalStatus==0 or qualityControlDeskVo.approvalStatus != null and qualityControlDeskVo.approvalStatus !='' ">
+                AND a.approval_status = #{qualityControlDeskVo.approvalStatus,jdbcType=INTEGER}
+            </if>
+            <if test="qualityControlDeskVo.assignDateStart !=null">
+        		AND a.assign_date<![CDATA[  >= ]]>#{qualityControlDeskVo.assignDateStart,jdbcType=TIMESTAMP}
+        	</if>
+        	<if test="qualityControlDeskVo.assignDateEnd !=null">
+        		AND a.assign_date<![CDATA[  < ]]>#{qualityControlDeskVo.assignDateEnd,jdbcType=TIMESTAMP}
+        	</if>
+        </if>
+        order by a.assign_date
+    </select>
+
+     <!-- 质检工作台已完成列表显示-->
+     <select id="findQualityDoneByUser" resultMap="BaseResultMap" parameterType="java.util.Map">
+      select a.*,b.quality_source qualitySource,c.check_result checkResult
+      	from ams_quality_check_info a 
+      left join 
+     	ams_quality_source_info b on a.source=b.id 
+     left join 
+     	ams_quality_check_result c on c.quality_check_id = a.id
+     	where
+     	1=1
+     and c.id in (
+	 	SELECT max(d.id) as id FROM ams_quality_check_result d 
+	 	group by d.quality_check_id
+		)
+     	<if test="Closed !=null and Closed !=''">
+     	AND a.is_closed = #{Closed,jdbcType = VARCHAR}
+     	</if>
+		<if test="qualityStatus !=null and qualityStatus !=''">
+		AND	c.status != #{qualityStatus,jdbcType=VARCHAR}
+		</if>
+     	<if test="checkUser !=null and checkUser!=''">
+     	AND	a.check_user = #{checkUser,jdbcType=VARCHAR}
+     	</if>
+        <if test ="tenDays !=null and tenDays !=''">
+        AND DATE_FORMAT(a.last_modified_date,'%Y-%m-%d')<![CDATA[  >= ]]>#{tenDays,jdbcType=TIMESTAMP}
+        </if>
+        <if test="qualityControlDeskVo != null">
+            <if test="qualityControlDeskVo.customerName != null and qualityControlDeskVo.customerName !='' ">
+                AND a.customer_name = #{qualityControlDeskVo.customerName,jdbcType=VARCHAR}
+            </if>
+             <if test="qualityControlDeskVo.idNo != null and qualityControlDeskVo.idNo !='' ">
+                AND a.id_no = #{qualityControlDeskVo.idNo,jdbcType=VARCHAR}
+            </if>
+            <if test="qualityControlDeskVo.owningBranceId != null and qualityControlDeskVo.owningBranceId !='' ">
+                AND a.owning_brance_id in
+                <foreach collection="owningBranceId" item="item" index="index" open="(" close=")" separator=",">
+                #{item}
+            </foreach>
+            </if>
+            <if test="qualityControlDeskVo.loanNo != null and qualityControlDeskVo.loanNo !='' ">
+                AND a.loan_no = #{qualityControlDeskVo.loanNo,jdbcType=VARCHAR}
+            </if>
+            <if test=" qualityControlDeskVo.approvalStatus==0 or qualityControlDeskVo.approvalStatus != null and qualityControlDeskVo.approvalStatus !='' ">
+                AND a.approval_status = #{qualityControlDeskVo.approvalStatus,jdbcType=INTEGER}
+            </if>
+            <if test="qualityControlDeskVo.endDateStart !=null">
+        		AND a.end_date<![CDATA[  >= ]]>#{qualityControlDeskVo.endDateStart,jdbcType=TIMESTAMP}
+        	</if>
+        	<if test="qualityControlDeskVo.endDateEnd !=null">
+        		AND a.end_date<![CDATA[  < ]]>#{qualityControlDeskVo.endDateEnd,jdbcType=TIMESTAMP}
+        	</if>
+        </if>
+        order by a.check_status desc, a.end_date desc
+    </select>
+
+    <!-- 查询条件 -->
+  <sql id="amsConditions">
+      		<if test="qualityControlDeskVo.customerName != null and qualityControlDeskVo.customerName !='' ">
+                AND customer_name = #{qualityControlDeskVo.customerName,jdbcType=VARCHAR}
+            </if>
+
+            <if test="qualityControlDeskVo.idNo != null and qualityControlDeskVo.idNo !='' ">
+                AND id_no = #{qualityControlDeskVo.idNo,jdbcType=VARCHAR}
+            </if>
+            <if test="qualityControlDeskVo.owningBranceId != null and qualityControlDeskVo.owningBranceId !='' ">
+                AND owning_brance_id in
+                <foreach collection="owningBranceId" item="item" index="index" open="(" close=")" separator=",">
+                #{item}
+            </foreach>
+            </if>
+            <if test="qualityControlDeskVo.loanNo != null and qualityControlDeskVo.loanNo !='' ">
+                AND loan_no = #{qualityControlDeskVo.loanNo,jdbcType=VARCHAR}
+            </if>
+            <if test="qualityControlDeskVo.assignDateStart != null and qualityControlDeskVo.assignDateStart !='' ">
+                AND assign_date <![CDATA[  >= ]]> #{qualityControlDeskVo.assignDateStart,jdbcType=TIMESTAMP}
+            </if>
+            <if test="qualityControlDeskVo.assignDateEnd != null and qualityControlDeskVo.assignDateEnd !='' ">
+                AND assign_date <![CDATA[  < ]]> #{qualityControlDeskVo.assignDateEnd,jdbcType=TIMESTAMP}
+            </if>
+            <if test="qualityControlDeskVo.productTypeName != null and qualityControlDeskVo.productTypeName !='' ">
+                AND product_name = #{qualityControlDeskVo.productTypeName,jdbcType=VARCHAR}
+            </if>
+            <if test="qualityControlDeskVo.qualityCheckId != null and qualityControlDeskVo.qualityCheckId !='' ">
+                AND id = #{qualityControlDeskVo.qualityCheckId,jdbcType=VARCHAR}
+            </if>
+            <if test="qualityControlDeskVo.assignType != null and qualityControlDeskVo.assignType !='' ">
+                AND assign_type = #{qualityControlDeskVo.assignType,jdbcType=VARCHAR}
+            </if>
+   </sql>
+</mapper>

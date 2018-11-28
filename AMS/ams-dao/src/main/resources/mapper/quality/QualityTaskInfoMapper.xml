@@ -1,0 +1,232 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.yuminsoft.ams.system.dao.quality.QualityTaskInfoMapper">
+    <resultMap id="BaseResultMap" type="com.yuminsoft.ams.system.domain.quality.QualityTaskInfo">
+        <id column="id" property="id" jdbcType="DECIMAL"/>
+        <result column="created_by" property="createdBy" jdbcType="VARCHAR"/>
+        <result column="created_date" property="createdDate" jdbcType="TIMESTAMP"/>
+        <result column="last_modified_by" property="lastModifiedBy" jdbcType="VARCHAR"/>
+        <result column="last_modified_date" property="lastModifiedDate" jdbcType="TIMESTAMP"/>
+        <result column="check_user" property="checkUser" jdbcType="VARCHAR"/>
+        <result column="if_accept" property="ifAccept" jdbcType="VARCHAR"/>
+        <result column="check_user_name" property="checkUserName" jdbcType="VARCHAR"/>
+        <result column="max_task_num" property="maxTaskNum" jdbcType="INTEGER"/>
+        <result column="if_apply_check" property="ifApplyCheck" jdbcType="VARCHAR"/>
+        <result column="if_reback" property="ifReback" jdbcType="VARCHAR"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+    id, created_by, created_date, last_modified_by, last_modified_date, check_user, if_accept, 
+	max_task_num,check_user_name,if_apply_check,if_reback
+  </sql>
+
+    <select id="findOne" resultMap="BaseResultMap" parameterType="java.util.Map">
+        select
+        <include refid="Base_Column_List"/>
+        from ams_quality_task_info
+        where 1=1
+        <if test="checkUser != null">
+            AND check_user = #{checkUser,jdbcType=VARCHAR}
+        </if>
+        <if test="checkUserName != null">
+            AND check_user_name = #{checkUserName,jdbcType=VARCHAR}
+        </if>
+        <if test="ifAccept != null">
+            AND if_accept != #{ifAccept,jdbcType=VARCHAR}
+        </if>
+        <if test="ifApplyCheck != null">
+            AND if_apply_check = #{ifApplyCheck,jdbcType=VARCHAR}
+        </if>
+    </select>
+
+    <select id="findById" resultMap="BaseResultMap" parameterType="java.lang.Long">
+        select
+        <include refid="Base_Column_List"/>
+        from ams_quality_task_info
+        where id = #{id,jdbcType=DECIMAL}
+    </select>
+
+    <select id="findAll" resultMap="BaseResultMap" parameterType="java.util.Map">
+        select
+        <include refid="Base_Column_List"/>
+        from ams_quality_task_info
+        where 1=1
+        <if test="ifAccept != null">
+            AND if_accept != #{ifAccept,jdbcType=VARCHAR}
+        </if>
+        <if test="checkUser != null">
+            AND check_user = #{checkUser,jdbcType=VARCHAR}
+        </if>
+        <if test="checkUserName != null">
+            AND check_user_name = #{checkUserName,jdbcType=VARCHAR}
+        </if>
+        <if test="codeList !=null">
+            AND check_user in
+            <foreach item="item" index="index" collection="codeList" open="(" separator="," close=")">
+                #{item}
+            </foreach>
+        </if>
+    </select>
+
+    <select id="findUse" resultMap="BaseResultMap" parameterType="java.util.Map">
+        select
+        <include refid="Base_Column_List"/>
+        from ams_quality_task_info
+        where 1=1
+        <if test="ifAccept != null">
+            AND if_accept = #{ifAccept,jdbcType=VARCHAR}
+        </if>
+        <if test="codeList !=null">
+            AND check_user in
+            <foreach item="item" index="index" collection="codeList" open="(" separator="," close=")">
+                #{item}
+            </foreach>
+        </if>
+    </select>
+    
+     <!-- 查询手动分派质检员 -->
+    <select id="findForManual" resultMap="BaseResultMap" parameterType="java.util.Map">
+        select
+        <include refid="Base_Column_List"/>
+        from ams_quality_task_info
+        where if_accept != '2'
+        <if test="codeList !=null">
+            AND check_user in
+            <foreach item="item" index="index" collection="codeList" open="(" separator="," close=")">
+                #{item}
+            </foreach>
+        </if>
+    </select>
+
+    <!-- 查询条件 -->
+    <sql id="amsConditions">
+        <if test="id != null">
+            AND id = #{id,jdbcType=DECIMAL}
+        </if>
+        <if test="createdBy != null">
+            AND created_by = #{createdBy,jdbcType=VARCHAR}
+        </if>
+        <if test="createdDate != null">
+            AND created_date = #{createdDate,jdbcType=TIMESTAMP}
+        </if>
+        <if test="lastModifiedBy != null">
+            AND last_modified_by = #{lastModifiedBy,jdbcType=VARCHAR}
+        </if>
+        <if test="lastModifiedDate != null">
+            AND last_modified_date = #{lastModifiedDate,jdbcType=TIMESTAMP}
+        </if>
+        <if test="checkUser != null">
+            AND check_user = #{checkUser,jdbcType=VARCHAR}
+        </if>
+        <if test="ifAccept != null">
+            AND if_accept = #{ifAccept,jdbcType=VARCHAR}
+        </if>
+        <if test="maxTaskNum != null">
+            AND max_task_num = #{maxTaskNum,jdbcType=INTEGER}
+        </if>
+        <if test="checkUserName != null">
+            AND check_user_name = #{checkUserName,jdbcType=VARCHAR}
+        </if>
+    </sql>
+
+    <delete id="delete" parameterType="java.lang.Long">
+    update ams_quality_task_info set if_accept='2'
+    where id = #{id,jdbcType=DECIMAL}
+  </delete>
+
+    <delete id="deleteBatch" parameterType="java.lang.String">
+        update ams_quality_task_info set if_accept='2'
+        where id in
+        <foreach item="item" index="index" collection="array" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+    </delete>
+
+    <insert id="save" parameterType="com.yuminsoft.ams.system.domain.quality.QualityTaskInfo" useGeneratedKeys="true"
+            keyProperty="id">
+    insert into ams_quality_task_info (created_by, created_date, last_modified_by, 
+      last_modified_date, check_user, if_accept, 
+      max_task_num,check_user_name,if_reback,if_apply_check)
+    values (#{createdBy,jdbcType=VARCHAR}, #{createdDate,jdbcType=TIMESTAMP}, #{lastModifiedBy,jdbcType=VARCHAR}, 
+      #{lastModifiedDate,jdbcType=TIMESTAMP}, #{checkUser,jdbcType=VARCHAR}, #{ifAccept,jdbcType=VARCHAR}, 
+      #{maxTaskNum,jdbcType=INTEGER},#{checkUserName,jdbcType=VARCHAR},
+      #{ifReback,jdbcType=VARCHAR},#{ifApplyCheck,jdbcType=VARCHAR})
+  </insert>
+
+    <update id="update" parameterType="com.yuminsoft.ams.system.domain.quality.QualityTaskInfo">
+        update ams_quality_task_info
+        <set>
+            <if test="createdBy != null">
+                created_by = #{createdBy,jdbcType=VARCHAR},
+            </if>
+            <if test="createdDate != null">
+                created_date = #{createdDate,jdbcType=TIMESTAMP},
+            </if>
+            <if test="lastModifiedBy != null">
+                last_modified_by = #{lastModifiedBy,jdbcType=VARCHAR},
+            </if>
+            <if test="lastModifiedDate != null">
+                last_modified_date = #{lastModifiedDate,jdbcType=TIMESTAMP},
+            </if>
+            <if test="checkUser != null">
+                check_user = #{checkUser,jdbcType=VARCHAR},
+            </if>
+            <if test="ifAccept != null">
+                if_accept = #{ifAccept,jdbcType=VARCHAR},
+            </if>
+            <if test="maxTaskNum != null">
+                max_task_num = #{maxTaskNum,jdbcType=INTEGER},
+            </if>
+            <if test="ifReback != null">
+                if_reback = #{ifReback,jdbcType=VARCHAR},
+            </if>
+            <if test="ifApplyCheck != null">
+                if_apply_check = #{ifApplyCheck,jdbcType=VARCHAR},
+            </if>
+        </set>
+        where id = #{id,jdbcType=DECIMAL}
+    </update>
+
+    <select id="findForAssign" resultMap="BaseResultMap" parameterType="java.util.Map">
+	SELECT
+		*
+	FROM
+		(
+			SELECT
+				t.*, (
+					SELECT
+						count(f.id)
+					FROM
+						ams_quality_check_info f
+					LEFT JOIN ams_quality_check_result result ON f.id = result.quality_check_id
+					WHERE
+						f.check_user = t.check_user
+					AND (
+						result.id IS NULL
+						OR (
+							result.id IN (
+								SELECT
+									max(id)
+								FROM
+									ams_quality_check_result
+								GROUP BY
+									quality_check_id
+							)
+							<if test="status != null">
+								AND result.status = #{status,jdbcType=VARCHAR}
+							</if>
+						)
+					)
+					AND f.is_closed = '1'
+				) d
+			FROM
+				ams_quality_task_info t
+		) q
+	WHERE
+		q.d &lt; q.max_task_num
+		<if test="ifAccept != null">
+			AND q.if_accept = #{ifAccept,jdbcType=VARCHAR}
+		</if>
+	ORDER BY
+		q.d ASC
+    </select>
+</mapper>

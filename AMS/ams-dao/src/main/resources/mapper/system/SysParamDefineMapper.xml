@@ -1,0 +1,204 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.yuminsoft.ams.system.dao.system.SysParamDefineMapper">
+	<resultMap id="BaseResultMap" type="com.yuminsoft.ams.system.domain.system.SysParamDefine">
+		<id column="ID" property="id" jdbcType="DECIMAL" />
+		<result column="PARAM_KEY" property="paramKey" jdbcType="VARCHAR" />
+		<result column="PARAM_TYPE" property="paramType" jdbcType="VARCHAR" />
+		<result column="PARAM_NAME" property="paramName" jdbcType="VARCHAR" />
+		<result column="PARAM_VALUE" property="paramValue" jdbcType="VARCHAR" />
+		<result column="PARAM_DESC" property="paramDesc" jdbcType="VARCHAR" />
+		<result column="PARAM_STATUS" property="paramStatus" jdbcType="VARCHAR" />
+		<result column="MEMO" property="memo" jdbcType="VARCHAR" />
+		<result column="created_by" property="createdBy" jdbcType="VARCHAR" />
+	    <result column="created_date" property="createdDate" jdbcType="TIMESTAMP" />
+	    <result column="last_modified_by" property="lastModifiedBy" jdbcType="VARCHAR" />
+	    <result column="last_modified_date" property="lastModifiedDate" jdbcType="TIMESTAMP" />
+	</resultMap>
+	
+	<sql id="Base_Column_List">
+		ID, PARAM_KEY, PARAM_TYPE, PARAM_NAME, PARAM_VALUE, PARAM_DESC, PARAM_STATUS, MEMO, created_by, created_date, last_modified_by, last_modified_date
+	</sql>
+	
+	
+  <select id="findOne" resultMap="BaseResultMap" parameterType="java.util.Map" >
+    select
+    <include refid="Base_Column_List" />
+    from AMS_SYS_PARAM_DEFINE
+    where 1=1
+    <include refid="amsConditions" />
+  </select>
+  
+  <select id="findAll" resultMap="BaseResultMap" parameterType="java.util.Map" >
+    select
+    <include refid="Base_Column_List" />
+    from AMS_SYS_PARAM_DEFINE
+    where 1=1
+    <include refid="amsConditions" />
+  </select>
+  
+   <select id="findAllConditions" resultMap="BaseResultMap" parameterType="com.yuminsoft.ams.system.domain.system.SysParamDefine" >
+    select
+    <include refid="Base_Column_List" />
+    from AMS_SYS_PARAM_DEFINE
+    where 1=1
+    <if test="paramName != null" >
+        AND param_name like '%${paramName}%'
+    </if>
+    <if test="paramType != null">
+		AND PARAM_TYPE = #{paramType,jdbcType=VARCHAR}
+	</if>
+  </select>
+	
+	<select id="findById" resultMap="BaseResultMap" parameterType="java.lang.Long">
+		select
+		<include refid="Base_Column_List" />
+		from AMS_SYS_PARAM_DEFINE
+		where ID = #{id,jdbcType=DECIMAL}
+	</select>
+	<delete id="delete" parameterType="java.math.BigDecimal">
+		delete from AMS_SYS_PARAM_DEFINE
+		where ID = #{id,jdbcType=DECIMAL}
+	</delete>
+	
+	<delete id="deletes" parameterType="java.lang.String">
+		delete from AMS_SYS_PARAM_DEFINE
+		where id in
+		<foreach item="item" index="index" collection="array" open="(" separator="," close=")">
+			#{item}
+		</foreach>
+	</delete>
+	
+	<insert id="save" parameterType="com.yuminsoft.ams.system.domain.system.SysParamDefine" useGeneratedKeys="true" keyProperty="id">
+		insert into AMS_SYS_PARAM_DEFINE (created_by, created_date, 
+      	last_modified_by, last_modified_date,PARAM_KEY, PARAM_TYPE,
+		PARAM_NAME, PARAM_VALUE, PARAM_DESC,PARAM_STATUS,
+		MEMO)
+		values (#{createdBy,jdbcType=VARCHAR}, #{createdDate,jdbcType=TIMESTAMP}, 
+      	#{lastModifiedBy,jdbcType=VARCHAR}, #{lastModifiedDate,jdbcType=TIMESTAMP},#{paramKey,jdbcType=VARCHAR},
+		#{paramType,jdbcType=VARCHAR}, #{paramName,jdbcType=VARCHAR}, #{paramValue,jdbcType=VARCHAR}, 
+		#{paramDesc,jdbcType=VARCHAR},#{paramStatus,jdbcType=VARCHAR}, #{memo,jdbcType=VARCHAR})
+	</insert>
+	
+	<update id="update" parameterType="com.yuminsoft.ams.system.domain.system.SysParamDefine">
+		update AMS_SYS_PARAM_DEFINE
+		<set>
+			<if test="paramKey != null">
+				PARAM_KEY = #{paramKey,jdbcType=VARCHAR},
+			</if>
+			<if test="paramType != null">
+				PARAM_TYPE = #{paramType,jdbcType=VARCHAR},
+			</if>
+			<if test="paramName != null">
+				PARAM_NAME = #{paramName,jdbcType=VARCHAR},
+			</if>
+			<if test="paramValue != null">
+				PARAM_VALUE = #{paramValue,jdbcType=VARCHAR},
+			</if>
+			<if test="paramDesc != null">
+				PARAM_DESC = #{paramDesc,jdbcType=VARCHAR},
+			</if>
+			<if test="paramStatus != null">
+				PARAM_STATUS = #{paramStatus,jdbcType=VARCHAR},
+			</if>
+			<if test="memo != null">
+				MEMO = #{memo,jdbcType=VARCHAR},
+			</if>
+			<!-- <if test="createdBy != null" >
+		        created_by = #{createdBy,jdbcType=VARCHAR},
+		      </if>
+		      <if test="createdDate != null" >
+		        created_date = #{createdDate,jdbcType=TIMESTAMP},
+		      </if> -->
+		      <if test="lastModifiedBy != null" >
+		        last_modified_by = #{lastModifiedBy,jdbcType=VARCHAR},
+		      </if>
+		      <if test="lastModifiedDate != null" >
+		        last_modified_date = #{lastModifiedDate,jdbcType=TIMESTAMP},
+		      </if>
+		</set>
+		where ID = #{id,jdbcType=DECIMAL}
+	</update>
+
+
+	<sql id="amsConditions">
+		<if test="id != null">
+			AND AND ID= #{id}
+		</if>
+		<if test="paramKey != null">
+			AND PARAM_KEY = #{paramKey,jdbcType=VARCHAR}
+		</if>
+		<if test="paramType != null">
+			AND PARAM_TYPE = #{paramType,jdbcType=VARCHAR}
+		</if>
+		<if test="paramName != null">
+			AND PARAM_NAME = #{paramName,jdbcType=VARCHAR}
+		</if>
+		<if test="paramValue != null">
+			AND PARAM_VALUE = #{paramValue,jdbcType=VARCHAR}
+		</if>
+		<if test="paramDesc != null">
+			AND PARAM_DESC = #{paramDesc,jdbcType=VARCHAR}
+		</if>
+		<if test="paramStatus != null">
+			AND PARAM_STATUS = #{paramStatus,jdbcType=VARCHAR}
+		</if>
+		<if test="memo != null">
+			AND MEMO = #{memo,jdbcType=VARCHAR}
+		</if>
+		<if test="createdBy != null" >
+	        AND created_by = #{createdBy,jdbcType=VARCHAR}
+	    </if>
+        <if test="createdDate != null" >
+            AND created_date = #{createdDate,jdbcType=TIMESTAMP}
+        </if>
+        <if test="lastModifiedBy != null" >
+            AND last_modified_by = #{lastModifiedBy,jdbcType=VARCHAR}
+        </if>
+        <if test="lastModifiedDate != null" >
+            AND last_modified_date = #{lastModifiedDate,jdbcType=TIMESTAMP}
+        </if>
+	</sql>
+	
+	 <select id="findByParamDefine" resultMap="BaseResultMap" parameterType="com.yuminsoft.ams.system.domain.system.SysParamDefine" >
+	    select
+	    <include refid="Base_Column_List" />
+	    from AMS_SYS_PARAM_DEFINE
+	    where 1=1
+	    <if test="paramName != null" >
+	        AND param_name like '%${paramName}%'
+	    </if>
+	    <if test="paramType != null">
+			AND PARAM_TYPE = #{paramType,jdbcType=VARCHAR}
+		</if>
+  	</select>
+
+	<select id="findByParamType" resultMap="BaseResultMap" parameterType="String" >
+		select
+		<include refid="Base_Column_List" />
+		from AMS_SYS_PARAM_DEFINE
+		where PARAM_TYPE = #{paramType,jdbcType=VARCHAR}
+	</select>
+
+    <!-- 查询所有终审角色额度权限 -->
+	<select id="findAllFinalParam" resultMap="BaseResultMap" parameterType="java.util.Map">
+		select
+		<include refid="Base_Column_List" />
+		from ams_sys_param_define
+		where 1=1
+		and param_type = 'FinalAuditLevel'
+		GROUP BY param_value
+	</select>
+	 <!-- 根据审批金额查询终审对应的审批层级 -->
+	<select id="findFinalAuditLevel" resultType="java.lang.String" parameterType="java.math.BigDecimal" >
+		select param_key from ams_sys_param_define where #{accLmt,jdbcType=DECIMAL} <![CDATA[ > ]]> substring_index(param_value, '-', 1) AND #{accLmt,jdbcType=DECIMAL} <![CDATA[ <= ]]> substring_index(param_value, '-', -1) and param_type='FinalAuditLevel' order BY created_date DESC LIMIT 1
+	</select>
+	<!-- 查询出初终审正常队列的上限最大值 -->
+	<select id="findMaxNormalQueue" resultType="java.lang.String">
+		select param_value from ams_sys_param_define where  param_key='MaxNormalQueue' order BY created_date DESC LIMIT 1
+	</select>
+	<!-- 查询出初终审挂起队列的上限最大值 -->
+	<select id="findMaxHangQueue" resultType="java.lang.String">
+		select param_value from ams_sys_param_define where  param_key='MaxHangQueue' order BY created_date DESC LIMIT 1
+	</select>
+</mapper>

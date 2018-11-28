@@ -1,0 +1,79 @@
+<%@ page language="java" contentType="text/html; charset=utf-8" pageEncoding="utf-8"%>
+<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<jsp:include page="../../common/commonJS.jsp"></jsp:include>
+<jsp:include page="../../common/theme.jsp"></jsp:include>
+</head>
+<body class="padding_20">
+	<table class="table_list W100">
+		<thead>
+			<tr>
+				<td>环节</td>
+				<td>操作</td>
+				<td>操作人</td>
+				<td>操作时间</td>
+				<td>备注详情</td>
+				<td>备注原因</td>
+			</tr>
+		</thead>
+		<tr>
+			<td>初审自动分派</td>
+			<td>系统自动</td>
+			<td>张学敏</td>
+			<td>2013-01-01</td>
+			<td>初审自动分派至张学敏</td>
+			<td>初审自动分派至张学敏</td>
+		</tr>
+		<tr>
+			<td>初审自动分派</td>
+			<td>系统自动</td>
+			<td>张学敏</td>
+			<td>2013-01-01</td>
+			<td>初审自动分派至张学敏</td>
+			<td>初审自动分派至张学敏</td>
+		</tr>
+		<tr>
+			<td>初审自动分派</td>
+			<td>系统自动</td>
+			<td>张学敏</td>
+			<td>2013-01-01</td>
+			<td>初审自动分派至张学敏</td>
+			<td>初审自动分派至张学敏</td>
+		</tr>
+		<tr>
+			<td>初审自动分派</td>
+			<td>系统自动</td>
+			<td>张学敏</td>
+			<td>2013-01-01</td>
+			<td>初审自动分派至张学敏</td>
+			<td>初审自动分派至张学敏</td>
+		</tr>
+		<tr>
+			<td>初审自动分派</td>
+			<td>系统自动</td>
+			<td>张学敏</td>
+			<td>2013-01-01</td>
+			<td>初审自动分派至张学敏</td>
+			<td>初审自动分派至张学敏</td>
+		</tr>
+		<tr>
+			<td>初审自动分派</td>
+			<td>系统自动</td>
+			<td>张学敏</td>
+			<td>2013-01-01</td>
+			<td>初审自动分派至张学敏</td>
+			<td>初审自动分派至张学敏</td>
+		</tr>
+		<tr>
+			<td>初审自动分派</td>
+			<td>系统自动</td>
+			<td>张学敏</td>
+			<td>2013-01-01</td>
+			<td>初审自动分派至张学敏</td>
+			<td>初审自动分派至张学敏</td>
+		</tr>
+	</table>
+</body>
+</html>

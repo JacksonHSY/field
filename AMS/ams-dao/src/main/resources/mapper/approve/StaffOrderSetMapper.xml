@@ -1,0 +1,170 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.yuminsoft.ams.system.dao.approve.StaffOrderSetMapper" >
+  <resultMap id="BaseResultMap" type="com.yuminsoft.ams.system.domain.approve.StaffOrderSet" >
+    <id column="id" property="id" jdbcType="DECIMAL" />
+    <result column="created_by" property="createdBy" jdbcType="VARCHAR" />
+    <result column="created_date" property="createdDate" jdbcType="TIMESTAMP" />
+    <result column="last_modified_by" property="lastModifiedBy" jdbcType="VARCHAR" />
+    <result column="last_modified_date" property="lastModifiedDate" jdbcType="TIMESTAMP" />
+    <result column="hang_queue_max" property="hangQueueMax" jdbcType="INTEGER" />
+    <result column="normal_queue_max" property="normalQueueMax" jdbcType="INTEGER" />
+    <result column="staff_code" property="staffCode" jdbcType="VARCHAR" />
+    <result column="task_def_id" property="taskDefId" jdbcType="VARCHAR" />
+  </resultMap>
+  
+  <sql id="Base_Column_List" >
+    id, created_by, created_date, last_modified_by, last_modified_date, hang_queue_max, 
+    normal_queue_max, staff_code,task_def_id
+  </sql>
+  
+  <select id="findOne" resultMap="BaseResultMap" parameterType="java.util.Map" >
+    select
+    <include refid="Base_Column_List" />
+    from ams_staff_order_set
+    where 1=1
+    <include refid="amsConditions" />
+  </select>
+  
+  <select id="findById" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select
+    <include refid="Base_Column_List" />
+    from ams_staff_order_set
+    where id = #{id,jdbcType=DECIMAL}
+  </select>
+  
+  <select id="findAll" resultMap="BaseResultMap" parameterType="java.util.Map" >
+    select
+    <include refid="Base_Column_List" />
+    from ams_staff_order_set
+    where 1=1
+    <include refid="amsConditions" />
+  </select>
+  
+  <!-- 查询条件 -->
+  <sql id="amsConditions">
+      <if test="id != null" >
+        AND id = #{id,jdbcType=DECIMAL}
+      </if>
+      <if test="createdBy != null" >
+        AND created_by = #{createdBy,jdbcType=VARCHAR}
+      </if>
+      <if test="createdDate != null" >
+        AND created_date = #{createdDate,jdbcType=TIMESTAMP}
+      </if>
+      <if test="lastModifiedBy != null" >
+        AND last_modified_by = #{lastModifiedBy,jdbcType=VARCHAR}
+      </if>
+      <if test="lastModifiedDate != null" >
+        AND last_modified_date = #{lastModifiedDate,jdbcType=TIMESTAMP}
+      </if>
+      <if test="hangQueueMax != null" >
+        AND hang_queue_max = #{hangQueueMax,jdbcType=INTEGER}
+      </if>
+      <if test="normalQueueMax != null" >
+        AND normal_queue_max = #{normalQueueMax,jdbcType=INTEGER}
+      </if>
+      <if test="staffCode != null" >
+        AND staff_code = #{staffCode,jdbcType=VARCHAR}
+      </if>
+      <if test="taskDefId != null" >
+        AND task_def_id = #{taskDefId,jdbcType=VARCHAR}
+      </if>
+    </sql>
+    
+  <delete id="delete" parameterType="java.lang.Long" >
+    delete from ams_staff_order_set
+    where id = #{id,jdbcType=DECIMAL}
+  </delete>
+  
+  <delete id="deleteByUserCode" parameterType="java.lang.String" >
+    delete from ams_staff_order_set
+    where staff_code = #{staffCode,jdbcType=VARCHAR}
+    
+  </delete>
+  
+  <insert id="save" parameterType="com.yuminsoft.ams.system.domain.approve.StaffOrderSet" useGeneratedKeys="true" keyProperty="id" >
+    insert into ams_staff_order_set (created_by, created_date, last_modified_by, 
+      last_modified_date, hang_queue_max, normal_queue_max, 
+      staff_code,task_Def_Id)
+    values (#{createdBy,jdbcType=VARCHAR}, #{createdDate,jdbcType=TIMESTAMP}, #{lastModifiedBy,jdbcType=VARCHAR}, 
+      #{lastModifiedDate,jdbcType=TIMESTAMP}, #{hangQueueMax,jdbcType=INTEGER}, #{normalQueueMax,jdbcType=INTEGER}, 
+      #{staffCode,jdbcType=VARCHAR},#{taskDefId,jdbcType=VARCHAR})
+  </insert>
+  
+  <update id="updateUserCode" parameterType="com.yuminsoft.ams.system.domain.approve.StaffOrderSet" >
+    update ams_staff_order_set
+    <set >
+      <if test="createdBy != null" >
+        created_by = #{createdBy,jdbcType=VARCHAR},
+      </if>
+      <if test="createdDate != null" >
+        created_date = #{createdDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="lastModifiedBy != null" >
+        last_modified_by = #{lastModifiedBy,jdbcType=VARCHAR},
+      </if>
+      <if test="lastModifiedDate != null" >
+        last_modified_date = #{lastModifiedDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="hangQueueMax != null" >
+        hang_queue_max = #{hangQueueMax,jdbcType=INTEGER},
+      </if>
+      <if test="normalQueueMax != null" >
+        normal_queue_max = #{normalQueueMax,jdbcType=INTEGER},
+      </if>
+      <if test="taskDefId != null" >
+        task_def_id = #{taskDefId,jdbcType=VARCHAR}
+      </if>
+    </set>
+    where  staff_code = #{staffCode,jdbcType=VARCHAR}
+    <!--<if test="taskDefId != null" >-->
+      <!--and task_def_id = #{taskDefId,jdbcType=VARCHAR}-->
+    <!--</if>-->
+  </update>
+  
+  
+  <update id="update" parameterType="com.yuminsoft.ams.system.domain.approve.StaffOrderSet" >
+    update ams_staff_order_set
+    <set >
+      <if test="createdBy != null" >
+        created_by = #{createdBy,jdbcType=VARCHAR},
+      </if>
+      <if test="createdDate != null" >
+        created_date = #{createdDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="lastModifiedBy != null" >
+        last_modified_by = #{lastModifiedBy,jdbcType=VARCHAR},
+      </if>
+      <if test="lastModifiedDate != null" >
+        last_modified_date = #{lastModifiedDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="hangQueueMax != null" >
+        hang_queue_max = #{hangQueueMax,jdbcType=INTEGER},
+      </if>
+      <if test="normalQueueMax != null" >
+        normal_queue_max = #{normalQueueMax,jdbcType=INTEGER},
+      </if>
+      <if test="staffCode != null" >
+        staff_code = #{staffCode,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=DECIMAL}
+  </update>
+
+  <!-- 同步员工队列上限初终审标识字段 -->
+  <update id="syncWithOrderTask">
+     update ams_staff_order_set t1 set
+        t1.task_def_id = (
+          select tt1.task_def_id from ams_staff_order_task tt1
+          where tt1.staff_code = t1.staff_code
+          limit 1
+        )
+      where t1.task_def_id is null
+      and exists (
+        select 1 from ams_staff_order_task tt1
+        where tt1.staff_code = t1.staff_code
+      )
+  </update>
+  
+</mapper>

@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<uflo-process name="approve">
+   <start g="28,158,137,91" name="开始">
+      <sequence-flow to="初审" g="-16,2" name="to初审"/>
+   </start>
+   <end g="1162,148,138,112" terminate="true" name="结束"/>
+   <task g="276,157,139,91" allow-specify-assignee="false" task-type="Normal" assignment-handler-bean="firstApprove" assignment-type="Handler" name="初审">
+      <sequence-flow to="终审" g="593,203:-111,-23" name="to终审"/>
+      <sequence-flow to="复核确认" g="-61,-3" name="to初审复核"/>
+      <sequence-flow to="结束" g="341,465;1329,466;1331,205:-45,-22" name="to结束"/>
+      <sequence-flow to="开始" g="211,258:-11,-23" name="to开始"/>
+      <sequence-flow to="协审" g="-45,-22" name="to 协审"/>
+   </task>
+   <task g="612,150,147,100" allow-specify-assignee="false" task-type="Countersign" assignment-handler-bean="finalProcess" assignment-type="Handler" name="终审">
+      <sequence-flow to="申请金额判断" g="840,202:-50,-28" name="to 申请金额判断"/>
+      <sequence-flow to="开始" g="687,292;114,291:-45,-22" name="to 开始"/>
+   </task>
+   <decision g="908,150,125,108" handler-bean="approveHandler" name="申请金额判断" decision-type="Handler">
+      <sequence-flow to="结束" g="-24,-28" name="to 结束"/>
+      <sequence-flow to="终审" g="824,246:-24,8" name="返回终审"/>
+      <sequence-flow to="协审" g="13,-13" name="to 协审"/>
+   </decision>
+   <task g="889,319,165,109" allow-specify-assignee="false" task-type="Countersign" assignment-handler-bean="approvalProcess" assignment-type="Handler" name="协审">
+      <sequence-flow to="结束" g="1228,372:-45,-22" name="to 结束"/>
+      <sequence-flow to="开始" g="94,371:-45,-22" name="to 开始"/>
+   </task>
+   <task g="279,44,140,75" allow-specify-assignee="false" task-type="Normal" assignment-handler-bean="firstCheckApprove" assignment-type="Handler" name="复核确认">
+      <sequence-flow to="终审" g="-45,-22" name="to终审"/>
+      <sequence-flow to="结束" g="1231,85:-45,-22" name="to 结束"/>
+      <sequence-flow to="开始" g="-29,-15" name="to开始"/>
+      <sequence-flow to="协审" g="545,323:-45,-22" name="to 协审"/>
+   </task>
+</uflo-process>

@@ -1,0 +1,409 @@
+@CHARSET "UTF-8";
+/*******Start Common ******/
+*::before, *::after {
+	box-sizing: border-box;
+}
+
+* {
+	margin: 0px;
+	padding: 0px;
+	font-size: 12px;
+}
+
+a, button, li {
+	font-family: '微软雅黑', 'Helvetica Neue', Helvetica, 'PingFang SC', 'Lantinghei SC', 'Hiragino Sans GB', 'WenQuanYi Micro Hei', sans-serif;
+}
+
+h1, h2, h3, h4, h5, h6, h7 {
+	margin: 0px;
+	padding: 5px;
+}
+
+h3 {
+	font-size: 12px;
+	background-color: #f5f5f6;
+}
+
+li {
+	list-style: none;
+}
+
+a i {
+	margin-right: 8px;
+}
+
+hr {
+	border-color: #eee;
+	border-image: none;
+	border-style: solid none none;
+	border-width: 2px 0 0;
+	margin: 10px 0px;
+	box-sizing: content-box;
+	height: 0;
+}
+
+.panel-body-noborder .W100 {
+	width: 100%;
+	background-color: #f2f5f8;
+}
+
+.W100 {
+	width: 100%;
+	background-color: #ffffff;
+}
+
+.W90 {
+	width: 90%;
+}
+
+.W80 {
+	width: 80%;
+}
+
+.W70 {
+	width: 70%;
+}
+
+.W65 {
+	width: 65%;
+}
+
+.W60 {
+	width: 60%;
+}
+
+.W55 {
+	width: 55%;
+}
+
+.W50 {
+	width: 50%;
+}
+
+.W45 {
+	width: 45%;
+}
+
+.W40 {
+	width: 40%;
+}
+
+.W35 {
+	width: 35%;
+}
+
+.W30 {
+	width: 30%;
+}
+
+.W20 {
+	width: 20%;
+}
+.W15 {
+	width: 15%;
+}
+.W10 {
+	width: 10%;
+}
+
+.WH100 {
+	width: 100%;
+	height: 100%;
+}
+
+.center_m {
+	margin: 0px auto;
+}
+
+.center_text {
+	text-align: center;
+}
+
+.margin_20 {
+	margin: 0px;
+}
+
+.padding_20 {
+	padding: 0px;
+}
+.padding20 {
+	padding: 20px;
+}
+
+.table_ui tr {
+	height: 30px;
+}
+
+/**** 标红 /不标红noMarkRed*****/
+.markRed {
+	color: red;
+}
+/**** 必填项字体加粗/不加粗requiredNotFontWeight*****/
+.table_ui .requiredFontWeight {
+	font-weight: bold;
+}
+
+.table_ui th {
+	text-align: right;
+	font-size: 13px;
+	font-weight: normal;
+	font-family: "微软雅黑";
+	/* 	font-weight: bold; */
+}
+
+.table_ui td {
+	padding-left: 10px;
+	font-size: 14px;
+	font-family: "微软雅黑";
+}
+
+.table_list {
+	border-color: #95B8E7;
+	border-width: 1px;
+	border-style: solid;
+	border-collapse: collapse;
+	border-spacing: 0px;
+	font-size: 14px;
+}
+
+.table_list>thead tr td {
+	font-size: 14px;
+	font-weight: bold;
+	font-family: "微软雅黑";
+}
+
+.table_list>thead td, .table_list>tbody>tr>td {
+	border-color: #c0c0c0;
+	border-image: none;
+	border-style: solid dotted none;
+	border-width: 1px 1px 0;
+	box-sizing: content-box;
+	height: 25px;
+	padding-left: 5px;
+	font-size: 14px;
+	font-family: "微软雅黑";
+}
+
+.input {
+	border: 1px solid #d1d1d1;
+	border-radius: 5px;
+	height: 25px;
+	padding-left: 10px;
+	width: 100%;
+	min-width: 180px;
+	max-width: 200px;
+}
+
+.input:hover {
+	border-color: #66afe9;
+	box-shadow: 0 1px 1px rgba(0, 0, 0, 0.075) inset, 0 0 8px rgba(102, 175, 233, 0.6);
+}
+
+.input:focus {
+	border-color: #66afe9;
+	box-shadow: 0 1px 1px rgba(0, 0, 0, 0.075) inset, 0 0 8px rgba(102, 175, 233, 0.6);
+}
+
+.textarea {
+	height: 40px;
+	width: 90%;
+	border: 1px solid #d1d1d1;
+	border-radius: 5px;
+	padding-left: 10px;
+	padding-top: 8px;
+}
+
+.textarea:hover {
+	border-color: #66afe9;
+	box-shadow: 0 1px 1px rgba(0, 0, 0, 0.075) inset, 0 0 8px rgba(102, 175, 233, 0.6);
+}
+
+.textarea:focus {
+	border-color: #66afe9;
+	box-shadow: 0 1px 1px rgba(0, 0, 0, 0.075) inset, 0 0 8px rgba(102, 175, 233, 0.6);
+}
+
+.select {
+	border: 1px solid #d1d1d1;
+	border-radius: 5px;
+	height: 25px;
+	padding-left: 10px;
+	width: 100%;
+	min-width: 194px;
+	max-width: 214px;
+}
+
+.select:hover {
+	border-color: #66afe9;
+	box-shadow: 0 1px 1px rgba(0, 0, 0, 0.075) inset, 0 0 8px rgba(102, 175, 233, 0.6);
+}
+
+.select:focus {
+	border-color: #66afe9;
+	box-shadow: 0 1px 1px rgba(0, 0, 0, 0.075) inset, 0 0 8px rgba(102, 175, 233, 0.6);
+}
+
+.display_block {
+	display: block;
+}
+
+.display_none {
+	/* display: none; */
+	visibility: hidden;
+	height: 1px;
+	overflow-x: hidden;
+	padding: 0px;
+}
+
+.display_noH {
+	display: none;
+}
+
+.hand {
+	cursor: pointer;
+}
+
+.float_left {
+	float: left;
+}
+
+.float_right {
+	float: right;
+}
+
+.alert_info {
+	font-size: 12px;
+	font-weight: bold;
+	text-align: center;
+}
+
+.alert_info .info {
+	color: green;
+	font-size: 28px;
+	margin-right: 10px;
+	vertical-align: middle;
+}
+
+.alert_info .error {
+	color: red;
+	font-size: 28px;
+	margin-right: 10px;
+	vertical-align: middle;
+}
+
+.alert_info .warning {
+	color: #FFD900;
+	font-size: 28px;
+	margin-right: 10px;
+	vertical-align: middle;
+}
+
+/**************End Common *************/
+/*******Start Menu********************/
+.accordion-body ul li {
+	background-image: none;
+	padding-left: 15px;
+}
+
+.menu_ui li {
+	height: 22px;
+}
+
+.menu_ui li:hover {
+	background-color: #d7ebf9;
+	color: #ffffff;
+}
+
+.menu_ui a {
+	line-height: 10px;
+	font-size: 12px;
+	color: #545759;
+	font-weight: 500;
+	display: block;
+	/* text-indent: 10px; */
+}
+
+.selected_menu_li {
+	background-color: #d7ebf9;
+}
+
+.selected_menu_li a {
+	
+}
+/*******End Menu********************/
+
+/****Start extends easyui **********/
+/**tabs***/
+.tabs-panels>.panel>.panel-body {
+	padding: 0px;
+}
+
+/*** combobox ***/
+.combobox-item, .combobox-group {
+	padding: 8px 0 8px 3px;
+}
+
+body .combo-p>.combo-panel {
+	background-color: #ffffff;
+	border: 1px solid #AED0EA;
+}
+/****End extends easyui **********/
+/***审批意见申请信息锁定****/
+.approve_info_fixed {
+	position: fixed;
+	margin-top: -20px;
+	z-index: 100;
+	width: 1345px;
+	background-color: white;
+}
+/****任务数显示***/
+.taskNumberTooltip {
+	float: right;
+	background-color: red;
+	color: white;
+	margin-right: 15px;
+	width: 20px;
+	height: 20px;
+	font-size: 8px;
+	display: block;
+	line-height: 20px;
+	text-align: center;
+	border-radius: 50%;
+}
+
+#firstApproval_submit_btn.submit_disable, #finalApproval_submit_btn.submit_disable {
+	border: 1px slide #969090;
+	background-color: #969090;
+	color: white;
+}
+
+#firstApproval_submit_btn.submit_disable:HOVER, #finalApproval_submit_btn.submit_disable:HOVER {
+	border: 1px slide #969090;
+	background-color: #969090;
+	color: white;
+}
+
+/**复选框右侧的红色小红点的样式**/
+.redPointTooltip {
+	background-color: #CAE1FF;
+	color: white;
+	width: 21.3px;
+	height: 20px;
+	font-size: 8px;
+	line-height: 20px;
+	text-align: center;
+	border-radius: 50%;
+	display: inline-block;
+}
+
+.numFormat {
+	font-size: 14px;
+}
+
+.specialThCol{
+	color: #2779AA;
+}
+
+.specialTrCol{
+	background-color: #fff8dc;
+}

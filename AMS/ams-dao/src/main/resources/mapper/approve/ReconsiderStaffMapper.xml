@@ -1,0 +1,285 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.yuminsoft.ams.system.dao.approve.ReconsiderStaffMapper">
+	<resultMap id="BaseResultMap" type="com.yuminsoft.ams.system.domain.approve.ReconsiderStaff">
+		<id column="id" property="id" jdbcType="BIGINT" />
+		<result column="staff_code" property="staffCode" jdbcType="VARCHAR" />
+		<result column="staff_name" property="staffName" jdbcType="VARCHAR" />
+		<result column="staff_email" property="staffEmail" jdbcType="VARCHAR" />
+		<result column="if_accept" property="ifAccept" jdbcType="VARCHAR" />
+		<result column="rule_level" property="ruleLevel" jdbcType="VARCHAR" />
+		<result column="status" property="status" jdbcType="VARCHAR" />
+		<result column="created_by" property="createdBy" jdbcType="VARCHAR" />
+		<result column="created_date" property="createdDate" jdbcType="TIMESTAMP" />
+		<result column="last_modified_by" property="lastModifiedBy" jdbcType="VARCHAR" />
+		<result column="last_modified_date" property="lastModifiedDate" jdbcType="TIMESTAMP" />
+	</resultMap>
+
+	<sql id="Base_Column_List">
+		id,
+		staff_code,
+		staff_name,
+		staff_email,
+		if_accept,
+		rule_level,
+		status,
+		created_by,
+		created_date,
+		last_modified_by,
+		last_modified_date
+	</sql>
+
+	<select id="findOne" resultMap="BaseResultMap" parameterType="java.util.Map">
+		select
+		<include refid="Base_Column_List" />
+		from
+		ams_reconsider_staff
+		where 1=1
+		<include refid="conditions" />
+	</select>
+
+	<select id="findAll" resultMap="BaseResultMap" parameterType="java.util.Map">
+		select
+			<include refid="Base_Column_List" />
+		from 
+			ams_reconsider_staff
+		where 1=1
+			<include refid="conditions" />
+	</select>
+
+	<!-- 查询条件 -->
+	<sql id="conditions">
+		<if test="id != null">
+			AND id = #{id,jdbcType=DECIMAL}
+		</if>
+		<if test="staffCode != null">
+			AND staff_code = #{staffCode,jdbcType=VARCHAR}
+		</if>
+		<if test="staffName != null">
+			AND staff_name = #{staffName,jdbcType=VARCHAR}
+		</if>
+		<if test="staffEmail != null">
+			AND staff_email = #{staffEmail,jdbcType=VARCHAR}
+		</if>
+		<if test="ifAccept !=null">
+			AND if_accept=#{ifAccept,jdbcType=VARCHAR}
+		</if>
+		<if test="ruleLevel !=null">
+			AND rule_level=#{ruleLevel,jdbcType=VARCHAR}
+		</if>
+		<if test="status !=null">
+			AND status=#{status,jdbcType=VARCHAR}
+		</if>
+		<if test="createdBy != null">
+			AND created_by = #{createdBy,jdbcType=VARCHAR}
+		</if>
+		<if test="createdDate != null">
+			AND created_date = #{createdDate,jdbcType=TIMESTAMP}
+		</if>
+		<if test="lastModifiedBy != null">
+			AND last_modified_by = #{lastModifiedBy,jdbcType=VARCHAR}
+		</if>
+		<if test="lastModifiedDate != null">
+			AND last_modified_date = #{lastModifiedDate,jdbcType=TIMESTAMP}
+		</if>
+	</sql>
+
+
+	<insert id="insert" parameterType="com.yuminsoft.ams.system.domain.approve.ReconsiderStaff" useGeneratedKeys="true" keyProperty="id">
+		insert into ams_reconsider_staff (
+			staff_code,
+			staff_name,
+			staff_email,
+			if_accept,
+			rule_level,
+			status,
+			created_by,
+			created_date,
+			last_modified_by,
+			last_modified_date
+		) values (
+			#{staffCode,jdbcType=VARCHAR},
+			#{staffName,jdbcType=VARCHAR},
+			#{staffEmail,jdbcType=VARCHAR},
+			#{ifAccept,jdbcType=VARCHAR},
+			#{ruleLevel,jdbcType=VARCHAR},
+			#{status,jdbcType=VARCHAR},
+			#{createdBy,jdbcType=VARCHAR},
+			SYSDATE(),
+			#{lastModifiedBy,jdbcType=VARCHAR},
+			SYSDATE()
+		)
+	</insert>
+
+	<update id="update" parameterType="com.yuminsoft.ams.system.domain.approve.ReconsiderStaff">
+		update ams_reconsider_staff
+		<set>
+			<if test="staffCode != null">
+				staff_code = #{staffCode,jdbcType=VARCHAR},
+			</if>
+			<if test="staffName != null">
+				staff_name = #{staffName,jdbcType=VARCHAR},
+			</if>
+			<if test="staffEmail != null">
+				staff_email = #{staffEmail,jdbcType=VARCHAR},
+			</if>
+			<if test="ifAccept !=null">
+				if_accept=#{ifAccept,jdbcType=VARCHAR},
+			</if>
+			<if test="ruleLevel !=null">
+				rule_level=#{ruleLevel,jdbcType=VARCHAR},
+			</if>
+			<if test="status !=null">
+				status=#{status,jdbcType=VARCHAR},
+			</if>
+			<if test="lastModifiedBy != null">
+				last_modified_by = #{lastModifiedBy,jdbcType=VARCHAR},
+			</if>
+			last_modified_date = SYSDATE()
+		</set>
+		where id = #{id,jdbcType=BIGINT}
+	</update>
+	
+	<!-- 批量插入员工接单任务表 -->
+	<insert id="batchInsert" parameterType="List">
+		INSERT INTO ams_reconsider_staff
+		(
+			staff_code,
+			staff_name,
+			staff_email,
+			if_accept,
+			rule_level,
+			status,
+			created_by,
+			created_date,
+			last_modified_by,
+			last_modified_date
+		)
+		VALUES
+		<foreach collection="list" item="item" index="index" separator=",">
+        (
+        	#{item.staffCode,			jdbcType=VARCHAR},
+			#{item.staffName,			jdbcType=VARCHAR},
+			#{item.staffEmail,			jdbcType=VARCHAR},
+			#{item.ifAccept,			jdbcType=VARCHAR},
+			#{item.ruleLevel,			jdbcType=VARCHAR},
+			#{item.status,				jdbcType=VARCHAR},
+			#{item.createdBy,			jdbcType=VARCHAR},
+			SYSDATE(),
+			#{item.lastModifiedBy,		jdbcType=VARCHAR},
+			SYSDATE()
+        )
+	    </foreach>
+	</insert>
+	
+	<!-- 批量更新员工接单任务表 -->
+	<update id="batchUpdate" parameterType="List">
+		<foreach collection="list" item="item" index="index" open="" close="" separator=";">
+			UPDATE ams_reconsider_staff
+		     <set>
+				staff_code          	=#{item.staffCode,			jdbcType=VARCHAR},  
+				staff_name          	=#{item.staffName,			jdbcType=VARCHAR},  
+				staff_email         	=#{item.staffEmail,			jdbcType=VARCHAR},  
+				if_accept           	=#{item.ifAccept,			jdbcType=VARCHAR},  
+				rule_level           	=#{item.ruleLevel,			jdbcType=VARCHAR},
+				status              	=#{item.status,				jdbcType=VARCHAR},  
+				last_modified_by    	=#{item.lastModifiedBy,		jdbcType=VARCHAR},  
+				last_modified_date   	=SYSDATE() 
+		     </set>  
+		       where id = #{item.id,jdbcType=BIGINT}
+		</foreach>
+	</update>
+
+	<!-- 根据级别查询所有有效的复议人员-->
+	<select id="findReconsiderStaffByRuleLevel" resultMap="BaseResultMap" parameterType="java.lang.String">
+		SELECT
+		<include refid="Base_Column_List" />
+		FROM
+		ams_reconsider_staff
+		WHERE  status =0
+		<if test="ifAccept != null">
+			and if_accept=#{ifAccept,jdbcType=VARCHAR}
+		</if>
+		and rule_level  LIKE CONCAT('%',#{ruleLevel,jdbcType=VARCHAR},'%') order by staff_code
+	</select>
+
+
+	<!-- 根据复议层级和该层级最后一次分派人，查询下一个可以派单的复议员工code -->
+	<select id="findDispatchUser" resultMap="BaseResultMap" parameterType="java.util.Map">
+		SELECT  <include refid="Base_Column_List" /> FROM ams_reconsider_staff WHERE staff_code =(
+		SELECT
+		IF (
+		(
+		SELECT
+		count(staff_code) > 0
+		FROM
+		ams_reconsider_staff
+		WHERE
+		rule_level LIKE CONCAT('%' , #{level, jdbcType = VARCHAR}, '%')
+		AND `status` = '0'
+		AND if_accept = 'Y'
+		AND staff_code > #{userCode, jdbcType = VARCHAR}
+		ORDER BY
+		staff_code ASC
+		LIMIT 1
+		),
+		(
+		SELECT
+		staff_code
+		FROM
+		ams_reconsider_staff
+		WHERE
+		rule_level LIKE CONCAT('%' ,#{level, jdbcType = VARCHAR}, '%')
+		AND `status` = '0'
+		AND if_accept = 'Y'
+		AND staff_code > #{userCode, jdbcType = VARCHAR}
+		ORDER BY
+		staff_code ASC
+		LIMIT 1
+		),
+		(
+		SELECT
+		staff_code
+		FROM
+		ams_reconsider_staff
+		WHERE
+		rule_level LIKE CONCAT('%' ,#{level, jdbcType = VARCHAR}, '%')
+		AND `status` = '0'
+		AND if_accept = 'Y'
+		ORDER BY
+		staff_code ASC
+		LIMIT 1
+		)
+		))
+	</select>
+
+
+	<!-- 复议改派查询可以改派的人 -->
+	<select id="findReconsiderReformHandler" resultMap="BaseResultMap" parameterType="java.util.Map">
+		SELECT  <include refid="Base_Column_List" /> FROM ams_reconsider_staff
+		WHERE `status` = '0'
+		<if test="filterStaff !=null">
+			and staff_code not IN (
+			<foreach collection="filterStaff" item="level" index="index" separator=",">
+				#{level,jdbcType=VARCHAR}
+			</foreach>
+			)
+		</if>
+		<if test="F1 != null">
+			and (LOCATE('F1', rule_level) > 0)
+		</if>
+		<if test="F2 != null">
+			and (LOCATE('F2', rule_level) > 0)
+		</if>
+		<if test="F3 != null">
+			and (LOCATE('F3', rule_level) > 0)
+		</if>
+		<if test="F4 != null">
+			and (LOCATE('F4', rule_level) > 0)
+		</if>
+		<if test="staffCode">
+			and staff_code = #{staffCode,jdbcType=VARCHAR}
+		</if>
+	</select>
+</mapper>
+ 

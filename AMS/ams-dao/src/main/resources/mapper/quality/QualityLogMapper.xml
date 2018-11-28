@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.yuminsoft.ams.system.dao.quality.QualityLogMapper" >
+  <resultMap id="BaseResultMap" type="com.yuminsoft.ams.system.vo.quality.QualityLogVo" >
+    <id column="id" property="id" jdbcType="DECIMAL" />
+    <result column="created_by" property="createdBy" jdbcType="VARCHAR" />
+    <result column="created_date" property="createdDate" jdbcType="TIMESTAMP" />
+    <result column="last_modified_by" property="lastModifiedBy" jdbcType="VARCHAR" />
+    <result column="last_modified_date" property="lastModifiedDate" jdbcType="TIMESTAMP" />
+    <result column="loan_no" property="loanNo" jdbcType="VARCHAR" />
+    <result column="remark" property="remark" jdbcType="VARCHAR" />
+    <result column="link" property="link" jdbcType="VARCHAR" />
+    <result column="operation" property="operation" jdbcType="VARCHAR" />
+  </resultMap>
+
+  <sql id="Base_Column_List" >
+    id, created_by, created_date, last_modified_by, last_modified_date, loan_no, 
+    remark,link,operation
+  </sql>
+
+  <select id="findOne" resultMap="BaseResultMap" parameterType="java.util.Map" >
+    select
+    <include refid="Base_Column_List" />
+    from ams_quality_log
+    where 1=1
+    <include refid="amsConditions" />
+  </select>
+
+  <select id="findById" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select
+    <include refid="Base_Column_List" />
+    from ams_quality_log
+    where id = #{id,jdbcType=DECIMAL}
+  </select>
+
+  <select id="findAll" resultMap="BaseResultMap" parameterType="java.util.Map" >
+    select
+    <include refid="Base_Column_List" />
+    from ams_quality_log
+    where 1=1
+    <include refid="amsConditions" />
+  </select>
+
+  <!-- 查询条件 -->
+  <sql id="amsConditions">
+      <if test="id != null" >
+        AND id = #{id,jdbcType=DECIMAL}
+      </if>
+      <if test="createdBy != null" >
+        AND created_by = #{createdBy,jdbcType=VARCHAR}
+      </if>
+      <if test="createdDate != null" >
+        AND created_date = #{createdDate,jdbcType=TIMESTAMP}
+      </if>
+      <if test="lastModifiedBy != null" >
+        AND last_modified_by = #{lastModifiedBy,jdbcType=VARCHAR}
+      </if>
+      <if test="lastModifiedDate != null" >
+        AND last_modified_date = #{lastModifiedDate,jdbcType=TIMESTAMP}
+      </if>
+      <if test="loanNo != null" >
+        AND loan_no = #{loanNo,jdbcType=VARCHAR}
+      </if>
+      <if test="remark != null" >
+        AND remark = #{remark,jdbcType=VARCHAR}
+      </if>
+      <if test="link != null">
+          AND link = #{link,jdbcType=VARCHAR}
+      </if>
+      <if test="operation != null">
+          AND operation = #{operation,jdbcType=VARCHAR}
+      </if>
+      <if test="showOperations != null">
+      	 AND operation in
+      	<foreach collection="showOperations" item="operation" index="index" open="(" close=")" separator=",">
+			#{operation,jdbcType=VARCHAR}
+      	</foreach>
+      </if>
+      <if test="showLinks != null">
+      	 AND link in
+      	<foreach collection="showLinks" item="link" index="index" open="(" close=")" separator=",">
+			#{link,jdbcType=VARCHAR}
+      	</foreach>
+      </if>
+  </sql>
+
+
+  <delete id="delete" parameterType="java.lang.Long" >
+    delete from ams_quality_log
+    where id = #{id,jdbcType=DECIMAL}
+  </delete>
+
+  <insert id="save" parameterType="com.yuminsoft.ams.system.domain.quality.QualityLog" useGeneratedKeys="true" keyProperty="id" >
+    insert into ams_quality_log (created_by, created_date, last_modified_by, 
+      last_modified_date, loan_no, remark,link,operation)
+   	values (#{createdBy,jdbcType=VARCHAR}, #{createdDate,jdbcType=TIMESTAMP}, #{lastModifiedBy,jdbcType=VARCHAR}, 
+      #{lastModifiedDate,jdbcType=TIMESTAMP}, #{loanNo,jdbcType=VARCHAR},
+      #{remark,jdbcType=VARCHAR},#{link,jdbcType=VARCHAR},#{operation,jdbcType=VARCHAR})
+  </insert>
+
+  <update id="update" parameterType="com.yuminsoft.ams.system.domain.quality.QualityLog" >
+    update ams_quality_log
+    <set >
+      <if test="createdBy != null" >
+        created_by = #{createdBy,jdbcType=VARCHAR},
+      </if>
+      <if test="createdDate != null" >
+        created_date = #{createdDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="lastModifiedBy != null" >
+        last_modified_by = #{lastModifiedBy,jdbcType=VARCHAR},
+      </if>
+      <if test="lastModifiedDate != null" >
+        last_modified_date = #{lastModifiedDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="loanNo != null" >
+        loan_no = #{loanNo,jdbcType=VARCHAR},
+      </if>
+      <if test="remark != null" >
+        remark = #{remark,jdbcType=VARCHAR},
+      </if>
+      <if test="link != null" >
+          link = #{link,jdbcType=VARCHAR},
+      </if>
+      <if test="operation != null" >
+          operation = #{operation,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=DECIMAL}
+  </update>
+  
+  <select id="findForShow" resultMap="BaseResultMap" parameterType="java.util.Map" >
+    select
+    <include refid="Base_Column_List" />
+    from ams_quality_log
+    where 1=1
+    <include refid="amsConditions" />
+  </select>
+
+</mapper>

@@ -1,0 +1,182 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.yuminsoft.ams.system.dao.CarInfoMapper" >
+  <resultMap id="BaseResultMap" type="com.yuminsoft.ams.system.domain.CarInfo" >
+    <id column="id" property="id" jdbcType="DECIMAL" />
+    <result column="created_by" property="createdBy" jdbcType="VARCHAR" />
+    <result column="created_date" property="createdDate" jdbcType="TIMESTAMP" />
+    <result column="last_modified_by" property="lastModifiedBy" jdbcType="VARCHAR" />
+    <result column="last_modified_date" property="lastModifiedDate" jdbcType="TIMESTAMP" />
+    <result column="loan_no" property="loanNo" jdbcType="VARCHAR" />
+    <result column="car_buy_date" property="carBuyDate" jdbcType="TIMESTAMP" />
+    <result column="car_buy_price" property="carBuyPrice" jdbcType="DECIMAL" />
+    <result column="car_loan" property="carLoan" jdbcType="VARCHAR" />
+    <result column="car_loan_term" property="carLoanTerm" jdbcType="INTEGER" />
+    <result column="car_seat" property="carSeat" jdbcType="VARCHAR" />
+    <result column="car_typr" property="carTypr" jdbcType="VARCHAR" />
+    <result column="local_plate" property="localPlate" jdbcType="VARCHAR" />
+    <result column="month_payment_amt" property="monthPaymentAmt" jdbcType="DECIMAL" />
+    <result column="naked_car_price" property="nakedCarPrice" jdbcType="DECIMAL" />
+    <result column="operation_status" property="operationStatus" jdbcType="VARCHAR" />
+    <result column="transfer_date" property="transferDate" jdbcType="TIMESTAMP" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, created_by, created_date, last_modified_by, last_modified_date, loan_no, car_buy_date, 
+    car_buy_price, car_loan, car_loan_term, car_seat, car_typr, local_plate, month_payment_amt, 
+    naked_car_price, operation_status, transfer_date
+  </sql>
+  
+  <select id="findOne" resultMap="BaseResultMap" parameterType="java.util.Map" >
+    select
+    <include refid="Base_Column_List" />
+    from ams_car_info
+    where 1=1
+    <include refid="amsConditions" />
+  </select>
+  
+  <select id="findById" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select
+    <include refid="Base_Column_List" />
+    from ams_car_info
+    where id = #{id,jdbcType=DECIMAL}
+  </select>
+  
+  <select id="findAll" resultMap="BaseResultMap" parameterType="java.util.Map" >
+    select
+    <include refid="Base_Column_List" />
+    from ams_car_info
+    where 1=1
+    <include refid="amsConditions" />
+  </select>
+  
+  <!-- 查询条件 -->
+  <sql id="amsConditions">
+      <if test="id != null" >
+        AND id = #{id,jdbcType=DECIMAL}
+      </if>
+      <if test="createdBy != null" >
+        AND created_by = #{createdBy,jdbcType=VARCHAR}
+      </if>
+      <if test="createdDate != null" >
+        AND created_date = #{createdDate,jdbcType=TIMESTAMP}
+      </if>
+      <if test="lastModifiedBy != null" >
+        AND last_modified_by = #{lastModifiedBy,jdbcType=VARCHAR}
+      </if>
+      <if test="lastModifiedDate != null" >
+        AND last_modified_date = #{lastModifiedDate,jdbcType=TIMESTAMP}
+      </if>
+      <if test="loanNo != null" >
+        AND loan_no = #{loanNo,jdbcType=VARCHAR}
+      </if>
+      <if test="carBuyDate != null" >
+        AND car_buy_date = #{carBuyDate,jdbcType=TIMESTAMP}
+      </if>
+      <if test="carBuyPrice != null" >
+        AND car_buy_price = #{carBuyPrice,jdbcType=DECIMAL}
+      </if>
+      <if test="carLoan != null" >
+        AND car_loan = #{carLoan,jdbcType=VARCHAR}
+      </if>
+      <if test="carLoanTerm != null" >
+        AND car_loan_term = #{carLoanTerm,jdbcType=INTEGER}
+      </if>
+      <if test="carSeat != null" >
+        AND car_seat = #{carSeat,jdbcType=VARCHAR}
+      </if>
+      <if test="carTypr != null" >
+        AND car_typr = #{carTypr,jdbcType=VARCHAR}
+      </if>
+      <if test="localPlate != null" >
+        AND local_plate = #{localPlate,jdbcType=VARCHAR}
+      </if>
+      <if test="monthPaymentAmt != null" >
+        AND month_payment_amt = #{monthPaymentAmt,jdbcType=DECIMAL}
+      </if>
+      <if test="nakedCarPrice != null" >
+        AND naked_car_price = #{nakedCarPrice,jdbcType=DECIMAL}
+      </if>
+      <if test="operationStatus != null" >
+        AND operation_status = #{operationStatus,jdbcType=VARCHAR}
+      </if>
+      <if test="transferDate != null" >
+        AND transfer_date = #{transferDate,jdbcType=TIMESTAMP}
+      </if>
+  </sql>
+ 
+  <delete id="delete" parameterType="java.lang.Long" >
+    delete from ams_car_info
+    where id = #{id,jdbcType=DECIMAL}
+  </delete>
+  
+  <insert id="save" parameterType="com.yuminsoft.ams.system.domain.CarInfo" >
+    insert into ams_car_info (id, created_by, created_date, 
+      last_modified_by, last_modified_date, loan_no, 
+      car_buy_date, car_buy_price, car_loan, 
+      car_loan_term, car_seat, car_typr, 
+      local_plate, month_payment_amt, naked_car_price, 
+      operation_status, transfer_date)
+    values (#{id,jdbcType=DECIMAL}, #{createdBy,jdbcType=VARCHAR}, #{createdDate,jdbcType=TIMESTAMP}, 
+      #{lastModifiedBy,jdbcType=VARCHAR}, #{lastModifiedDate,jdbcType=TIMESTAMP}, #{loanNo,jdbcType=VARCHAR}, 
+      #{carBuyDate,jdbcType=TIMESTAMP}, #{carBuyPrice,jdbcType=DECIMAL}, #{carLoan,jdbcType=VARCHAR}, 
+      #{carLoanTerm,jdbcType=INTEGER}, #{carSeat,jdbcType=VARCHAR}, #{carTypr,jdbcType=VARCHAR}, 
+      #{localPlate,jdbcType=VARCHAR}, #{monthPaymentAmt,jdbcType=DECIMAL}, #{nakedCarPrice,jdbcType=DECIMAL}, 
+      #{operationStatus,jdbcType=VARCHAR}, #{transferDate,jdbcType=TIMESTAMP})
+  </insert>
+  
+  <update id="update" parameterType="com.yuminsoft.ams.system.domain.CarInfo" >
+    update ams_car_info
+    <set >
+      <if test="createdBy != null" >
+        created_by = #{createdBy,jdbcType=VARCHAR},
+      </if>
+      <if test="createdDate != null" >
+        created_date = #{createdDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="lastModifiedBy != null" >
+        last_modified_by = #{lastModifiedBy,jdbcType=VARCHAR},
+      </if>
+      <if test="lastModifiedDate != null" >
+        last_modified_date = #{lastModifiedDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="loanNo != null" >
+        loan_no = #{loanNo,jdbcType=VARCHAR},
+      </if>
+      <if test="carBuyDate != null" >
+        car_buy_date = #{carBuyDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="carBuyPrice != null" >
+        car_buy_price = #{carBuyPrice,jdbcType=DECIMAL},
+      </if>
+      <if test="carLoan != null" >
+        car_loan = #{carLoan,jdbcType=VARCHAR},
+      </if>
+      <if test="carLoanTerm != null" >
+        car_loan_term = #{carLoanTerm,jdbcType=INTEGER},
+      </if>
+      <if test="carSeat != null" >
+        car_seat = #{carSeat,jdbcType=VARCHAR},
+      </if>
+      <if test="carTypr != null" >
+        car_typr = #{carTypr,jdbcType=VARCHAR},
+      </if>
+      <if test="localPlate != null" >
+        local_plate = #{localPlate,jdbcType=VARCHAR},
+      </if>
+      <if test="monthPaymentAmt != null" >
+        month_payment_amt = #{monthPaymentAmt,jdbcType=DECIMAL},
+      </if>
+      <if test="nakedCarPrice != null" >
+        naked_car_price = #{nakedCarPrice,jdbcType=DECIMAL},
+      </if>
+      <if test="operationStatus != null" >
+        operation_status = #{operationStatus,jdbcType=VARCHAR},
+      </if>
+      <if test="transferDate != null" >
+        transfer_date = #{transferDate,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where id = #{id,jdbcType=DECIMAL}
+  </update>
+  
+</mapper>

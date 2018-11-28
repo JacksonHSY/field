@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.yuminsoft.ams.system.dao.system.UserLogMapper" >
+	
+   <resultMap id="BaseResultMap" type="com.yuminsoft.ams.system.domain.system.UserLog">
+		<id column="ID" property="id" jdbcType="DECIMAL" />
+		<result column="OPERATION" property="operation" jdbcType="VARCHAR" />
+		<result column="LOAN_NO" property="loanNo" jdbcType="VARCHAR" />
+		<result column="LINK" property="link" jdbcType="VARCHAR" />
+		<result column="METHOD" property="method" jdbcType="VARCHAR" />
+		<result column="ARGS" property="args" jdbcType="VARCHAR" />
+		<result column="REMARK" property="remark" jdbcType="VARCHAR" />
+		<result column="created_by" property="createdBy" jdbcType="VARCHAR" />
+	    <result column="created_date" property="createdDate" jdbcType="TIMESTAMP" />
+	    <result column="last_modified_by" property="lastModifiedBy" jdbcType="VARCHAR" />
+	    <result column="last_modified_date" property="lastModifiedDate" jdbcType="TIMESTAMP" />
+	    <result column="IP" property="ip" jdbcType="VARCHAR" />
+	    <result column="type" property="type" jdbcType="VARCHAR" />
+	</resultMap>
+	
+	<sql id="Base_Column_List" >
+		ID,
+    	OPERATION,
+    	LOAN_NO,
+    	LINK,
+    	METHOD,
+    	LINK,
+      	ARGS,
+      	CREATED_DATE,
+      	LAST_MODIFIED_DATE,
+      	CREATED_BY,
+      	LAST_MODIFIED_BY,
+      	IP,
+      	TYPE,
+      	REMARK
+  	</sql>
+	
+	<insert id="save" parameterType="com.yuminsoft.ams.system.domain.system.UserLog" useGeneratedKeys="true" keyProperty="id">
+    insert into AMS_USER_LOG (
+    	OPERATION,
+    	LOAN_NO,
+    	LINK,
+    	METHOD,
+      	ARGS,
+      	REMARK,
+      	CREATED_DATE,
+      	LAST_MODIFIED_DATE,
+      	CREATED_BY,
+      	LAST_MODIFIED_BY,
+      	IP,
+      	TYPE
+      )
+    values (
+    	#{operation,jdbcType=VARCHAR},
+    	#{loanNo,jdbcType=VARCHAR}, 
+     	#{link,jdbcType=VARCHAR}, 
+     	#{method,jdbcType=VARCHAR}, 
+     	#{args,jdbcType=VARCHAR}, 
+      	#{remark,jdbcType=VARCHAR},
+      	#{createdDate,jdbcType=TIMESTAMP},
+      	#{lastModifiedDate,jdbcType=TIMESTAMP},
+      	#{createdBy,jdbcType=VARCHAR},
+      	#{lastModifiedBy,jdbcType=VARCHAR},
+      	#{ip,jdbcType=VARCHAR},
+      	#{type,jdbcType=VARCHAR}
+      )
+  </insert>
+  
+  <select id="findOne" resultMap="BaseResultMap" parameterType="java.util.Map" >
+    select
+    <include refid="Base_Column_List" />
+    from AMS_USER_LOG
+    where 1=1
+    <include refid="amsConditions" />
+  </select>
+  
+  <select id="findAll" resultMap="BaseResultMap" parameterType="java.util.Map" >
+    select <include refid="Base_Column_List" /> from AMS_USER_LOG
+    where 1=1
+    <include refid="amsConditions" />
+	order by created_date desc
+  </select>
+	
+	<select id="findById" resultMap="BaseResultMap" parameterType="java.lang.Long">
+		select
+		<include refid="Base_Column_List" />
+		from AMS_USER_LOG
+		where ID = #{id,jdbcType=DECIMAL}
+	</select>
+	
+	<delete id="delete" parameterType="java.lang.Long">
+		delete from AMS_USER_LOG
+		where ID = #{id,jdbcType=DECIMAL}
+	</delete>
+    
+  <sql id="amsConditions">
+		<if test="id != null">
+		    AND ID= #{id}
+		</if>
+		<if test="operation != null">
+			AND operation = #{operation,jdbcType=VARCHAR}
+		</if>
+		<if test="loanNo != null">
+			AND LOAN_NO = #{loanNo,jdbcType=VARCHAR}  
+		</if>
+		<if test="link != null">
+			AND LINK = #{link,jdbcType=VARCHAR}
+		</if>
+		<if test="args != null">
+			AND ARGS = #{args,jdbcType=VARCHAR} 
+		</if>
+		<if test="method != null">
+			AND METHOD = #{method,jdbcType=VARCHAR}
+		</if>
+		<if test="ip != null">
+			AND IP = #{ip,jdbcType=TIMESTAMP}
+		</if>
+		<if test="remark != null">
+			AND REMARK = #{remark,jdbcType=VARCHAR}
+		</if>
+		<if test="type != null">
+			AND TYPE = #{type,jdbcType=VARCHAR}
+		</if>
+		<if test="createdBy != null" >
+	        AND created_by = #{createdBy,jdbcType=VARCHAR}
+	    </if>
+	    <if test="createdDate != null" >
+	        AND created_date = #{createdDate,jdbcType=TIMESTAMP}
+	    </if>
+	    <if test="lastModifiedBy != null" >
+	        AND last_modified_by = #{lastModifiedBy,jdbcType=VARCHAR}
+	    </if>
+	    <if test="lastModifiedDate != null" >
+	        AND last_modified_date = #{lastModifiedDate,jdbcType=TIMESTAMP}
+	    </if>
+	</sql>
+  
+</mapper>
+
+

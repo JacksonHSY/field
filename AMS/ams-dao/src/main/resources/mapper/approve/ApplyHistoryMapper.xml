@@ -1,0 +1,548 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.yuminsoft.ams.system.dao.approve.ApplyHistoryMapper">
+
+	<resultMap id="BaseResultMap" type="com.yuminsoft.ams.system.domain.approve.ApplyHistory">
+		<id column="id" property="id" jdbcType="DECIMAL" />
+		<result column="created_by" property="createdBy" jdbcType="VARCHAR" />
+		<result column="created_date" property="createdDate" jdbcType="TIMESTAMP" />
+		<result column="last_modified_by" property="lastModifiedBy" jdbcType="VARCHAR" />
+		<result column="last_modified_date" property="lastModifiedDate" jdbcType="TIMESTAMP" />
+		<result column="loan_no" property="loanNo" jdbcType="VARCHAR" />
+		<result column="approval_person" property="approvalPerson" jdbcType="VARCHAR" />
+		<result column="check_person" property="checkPerson" jdbcType="VARCHAR" />
+		<result column="check_complex" property="checkComplex" jdbcType="VARCHAR" />
+		<result column="final_person" property="finalPerson" jdbcType="VARCHAR" />
+		<result column="final_role" property="finalRole" jdbcType="VARCHAR" />
+		<result column="id_no" property="idNo" jdbcType="VARCHAR" javaType="encrypt"/>
+		<result column="name" property="name" jdbcType="VARCHAR" javaType="encrypt"/>
+		<result column="patch_bolt" property="patchBolt" jdbcType="VARCHAR" />
+		<result column="pro_name" property="proName" jdbcType="VARCHAR" />
+		<result column="pro_num" property="proNum" jdbcType="VARCHAR" />
+		<result column="refuse_code" property="refuseCode" jdbcType="VARCHAR" />
+		<result column="remark" property="remark" jdbcType="VARCHAR" />
+		<result column="rtf_state" property="rtfState" jdbcType="VARCHAR" />
+		<result column="rtf_node_state" property="rtfNodeState" jdbcType="VARCHAR" />
+		<result column="check_node_state" property="checkNodeState" jdbcType="VARCHAR" />
+		<result column="approval_leader" property="approvalLeader" jdbcType="VARCHAR" />
+		<result column="approval_director" property="approvalDirector" jdbcType="VARCHAR" />
+		<result column="approval_manager" property="approvalManager" jdbcType="VARCHAR" />
+		<result column="auto_refuse" property="autoRefuse" jdbcType="VARCHAR" />
+	</resultMap>
+
+	<sql id="Base_Column_List">
+		id,
+		created_by,
+		created_date,
+		last_modified_by,
+		last_modified_date,
+		loan_no,
+		approval_person,
+		check_person,
+		final_person,
+		final_role,
+		id_no,
+		`name`,
+		patch_bolt,
+		pro_name,
+		pro_num,
+		refuse_code,
+		remark,
+		rtf_state,
+		rtf_node_state,
+		check_node_state,
+		check_complex,
+		approval_leader,
+		approval_director,
+		approval_manager,
+		auto_refuse
+	</sql>
+
+	<select id="findOne" resultMap="BaseResultMap" parameterType="java.util.Map">
+		select
+		  <include refid="Base_Column_List" />
+		from ams_apply_history
+		where 1=1
+		<include refid="amsConditions" />
+	</select>
+
+	<select id="findById" resultMap="BaseResultMap" parameterType="java.lang.Long">
+		select
+		  <include refid="Base_Column_List" />
+		from ams_apply_history
+		where id = #{id,jdbcType=DECIMAL}
+	</select>
+
+	<select id="findAll" resultMap="BaseResultMap" parameterType="java.util.Map">
+		select
+		  <include refid="Base_Column_List" />
+		from ams_apply_history
+		where 1=1
+		<include refid="amsConditions" />
+	</select>
+
+	<!-- 查询申请件最高终审级别 -->
+	<select id="findHighestFinalLevel" resultType="String" parameterType="java.lang.String">
+		select
+		  IfNULL(max(t2.final_Audit_Level), '')
+		from ams_apply_history t1
+		  left join ams_staff_order_task t2 on t2.staff_code = t1.final_person
+		where t1.loan_no = #{loanNo, jdbcType=VARCHAR}
+		and t1.final_person is not null
+	</select>
+
+	<!-- 查询做过审核操作的单子(初审通过的和初审拒绝的-质检用) -->
+	<select id="findDoCheck" resultMap="BaseResultMap" parameterType="java.util.Map">
+		select
+		  <include refid="Base_Column_List" />
+		from ams_apply_history
+		where (approval_leader IS NOT NULL
+		OR approval_director IS NOT NULL
+		OR approval_manager IS NOT NULL)
+		<if test="loanNo != null">
+			AND loan_no = #{loanNo,jdbcType = VARCHAR}
+		</if>
+		<if test="rtfState != null">
+			AND rtf_state = #{rtfState,jdbcType = VARCHAR}
+		</if>
+		ORDER BY created_date DESC
+		limit 1
+	</select>
+
+	<!-- 查询条件 -->
+	<sql id="amsConditions">
+		<if test="id != null">
+			AND id = #{id,jdbcType=DECIMAL}
+		</if>
+		<if test="createdBy != null">
+			AND created_by = #{createdBy,jdbcType=VARCHAR}
+		</if>
+		<if test="createdDate != null">
+			AND created_date = #{createdDate,jdbcType=TIMESTAMP}
+		</if>
+		<if test="lastModifiedBy != null">
+			AND last_modified_by = #{lastModifiedBy,jdbcType=VARCHAR}
+		</if>
+		<if test="lastModifiedDate != null">
+			AND last_modified_date = #{lastModifiedDate,jdbcType=TIMESTAMP}
+		</if>
+		<if test="loanNo != null">
+			AND loan_no = #{loanNo,jdbcType=VARCHAR}
+		</if>
+		<if test="approvalPerson != null">
+			AND approval_person = #{approvalPerson,jdbcType=VARCHAR}
+		</if>
+		<if test="checkPerson != null">
+			AND check_person = #{checkPerson,jdbcType=VARCHAR}
+		</if>
+		<if test="checkComplex != null">
+			AND check_complex =#{checkComplex,jdbcType=VARCHAR}
+		</if>
+		<if test="finalPerson != null">
+			AND final_person = #{finalPerson,jdbcType=VARCHAR}
+		</if>
+		<if test="finalRole != null">
+			AND final_role = #{finalRole,jdbcType=VARCHAR}
+		</if>
+		<if test="idNo != null">
+			AND id_no = #{idNo,jdbcType=VARCHAR,javaType=encrypt}
+		</if>
+		<if test="name != null">
+			AND `name` = #{name,jdbcType=VARCHAR,javaType=encrypt}
+		</if>
+		<if test="patchBolt != null">
+			AND patch_bolt = #{patchBolt,jdbcType=VARCHAR}
+		</if>
+		<if test="proName != null">
+			AND pro_name = #{proName,jdbcType=VARCHAR}
+		</if>
+		<if test="proNum != null">
+			AND pro_num = #{proNum,jdbcType=VARCHAR}
+		</if>
+		<if test="refuseCode != null">
+			AND refuse_code = #{refuseCode,jdbcType=VARCHAR}
+		</if>
+		<if test="remark != null">
+			AND remark = #{remark,jdbcType=VARCHAR}
+		</if>
+		<if test="rtfState != null">
+			AND rtf_state = #{rtfState,jdbcType=VARCHAR}
+		</if>
+		<if test="rtfNodeState !=null">
+			AND rtf_node_state=#{rtfNodeState,jdbcType=VARCHAR}
+		</if>
+		<if test="checkNodeState !=null">
+			AND check_node_state=#{checkNodeState,jdbcType=VARCHAR}
+		</if>
+		<if test="approvalLeader !=null">
+			AND approval_leader=#{approvalLeader,jdbcType=VARCHAR}
+		</if>
+		<if test="approvalDirector !=null">
+			AND approval_director=#{approvalDirector,jdbcType=VARCHAR}
+		</if>
+		<if test="approvalManager !=null">
+			AND approval_manager=#{approvalManager,jdbcType=VARCHAR}
+		</if>
+		<if test="autoRefuse != null">
+			AND auto_refuse=#{autoRefuse, jdbcType=VARCHAR}
+		</if>
+	</sql>
+
+	<delete id="delete" parameterType="java.lang.Long">
+		delete from ams_apply_history
+		where id = #{id,jdbcType=DECIMAL}
+	</delete>
+
+	<insert id="save" parameterType="com.yuminsoft.ams.system.domain.approve.ApplyHistory" useGeneratedKeys="true" keyProperty="id">
+		insert into ams_apply_history (
+		  created_by,
+		  created_date,
+          last_modified_by,
+          last_modified_date, loan_no,
+		  approval_person,
+		  check_person,
+		  final_person,
+		  final_role,
+		  id_no,
+		  id_no_bak,
+		  `name`,
+		  `name_bak`,
+		  patch_bolt,
+		  pro_name,
+		  pro_num,
+		  refuse_code,
+		  remark,
+		  rtf_state,
+		  rtf_node_state,
+		  check_node_state,
+		  check_complex,
+		  approval_leader,
+		  approval_director,
+		  approval_manager,
+		  auto_refuse
+		)
+		values (
+		  #{createdBy,jdbcType=VARCHAR},
+		  #{createdDate,jdbcType=TIMESTAMP},
+		  #{lastModifiedBy,jdbcType=VARCHAR},
+		  #{lastModifiedDate,jdbcType=TIMESTAMP},
+		  #{loanNo,jdbcType=VARCHAR},
+		  #{approvalPerson,jdbcType=VARCHAR},
+		  #{checkPerson,jdbcType=VARCHAR},
+		  #{finalPerson,jdbcType=VARCHAR},
+		  #{finalRole,jdbcType=VARCHAR},
+		  #{idNo,jdbcType=VARCHAR,javaType=encrypt},
+		  #{idNoBak,jdbcType=VARCHAR},
+		  #{name,jdbcType=VARCHAR,javaType=encrypt},
+		  #{nameBak,jdbcType=VARCHAR},
+		  #{patchBolt,jdbcType=VARCHAR},
+		  #{proName,jdbcType=VARCHAR},
+		  #{proNum,jdbcType=VARCHAR},
+		  #{refuseCode,jdbcType=VARCHAR},
+		  #{remark,jdbcType=VARCHAR},
+		  #{rtfState,jdbcType=VARCHAR},
+		  #{rtfNodeState,jdbcType=VARCHAR},
+		  #{checkNodeState,jdbcType=VARCHAR},
+		  #{checkComplex,jdbcType=VARCHAR},
+		  #{approvalLeader,jdbcType=VARCHAR},
+		  #{approvalDirector,jdbcType=VARCHAR},
+		  #{approvalManager,jdbcType=VARCHAR},
+		  #{autoRefuse,jdbcType=VARCHAR}
+		)
+	</insert>
+
+	<update id="update" parameterType="com.yuminsoft.ams.system.domain.approve.ApplyHistory">
+		update ams_apply_history
+		<set>
+			<if test="createdBy != null">
+				created_by = #{createdBy,jdbcType=VARCHAR},
+			</if>
+			<if test="createdDate != null">
+				created_date = #{createdDate,jdbcType=TIMESTAMP},
+			</if>
+			<if test="lastModifiedBy != null">
+				last_modified_by = #{lastModifiedBy,jdbcType=VARCHAR},
+			</if>
+			<if test="lastModifiedDate != null">
+				last_modified_date = #{lastModifiedDate,jdbcType=TIMESTAMP},
+			</if>
+			<if test="loanNo != null">
+				loan_no = #{loanNo,jdbcType=VARCHAR},
+			</if>
+			<if test="approvalPerson != null">
+				approval_person = #{approvalPerson,jdbcType=VARCHAR},
+			</if>
+			<if test="checkPerson != null">
+				check_person = #{checkPerson,jdbcType=VARCHAR},
+			</if>
+			<if test="checkComplex != null">
+				check_complex =#{checkComplex,jdbcType=VARCHAR},
+			</if>
+			<if test="finalPerson != null">
+				final_person = #{finalPerson,jdbcType=VARCHAR},
+			</if>
+			<if test="finalRole != null">
+				final_role = #{finalRole,jdbcType=VARCHAR},
+			</if>
+			<if test="idNo != null">
+				id_no = #{idNo,jdbcType=VARCHAR,javaType=encrypt},
+			</if>
+			<if test="name != null">
+				`name` = #{name,jdbcType=VARCHAR,javaType=encrypt},
+			</if>
+			<if test="patchBolt != null">
+				patch_bolt = #{patchBolt,jdbcType=VARCHAR},
+			</if>
+			<if test="proName != null">
+				pro_name = #{proName,jdbcType=VARCHAR},
+			</if>
+			<if test="proNum != null">
+				pro_num = #{proNum,jdbcType=VARCHAR},
+			</if>
+			<if test="refuseCode != null">
+				refuse_code = #{refuseCode,jdbcType=VARCHAR},
+			</if>
+			<if test="remark != null">
+				remark = #{remark,jdbcType=VARCHAR},
+			</if>
+			<if test="rtfState != null">
+				rtf_state = #{rtfState,jdbcType=VARCHAR},
+			</if>
+			<if test="rtfNodeState !=null">
+				rtf_node_state=#{rtfNodeState,jdbcType=VARCHAR},
+			</if>
+			<if test="checkNodeState !=null">
+				check_node_state=#{checkNodeState,jdbcType=VARCHAR},
+			</if>
+			<if test="approvalLeader !=null">
+				approval_leader=#{approvalLeader,jdbcType=VARCHAR},
+			</if>
+			<if test="approvalDirector !=null">
+				approval_director=#{approvalDirector,jdbcType=VARCHAR},
+			</if>
+			<if test="approvalManager !=null">
+				approval_manager=#{approvalManager,jdbcType=VARCHAR},
+			</if>
+            <if test="autoRefuse != null">
+                auto_refuse=#{autoRefuse, jdbcType=VARCHAR}
+            </if>
+		</set>
+		where id = #{id,jdbcType=DECIMAL}
+	</update>
+
+	<!-- 根据状态查询首次提交终审 -->
+	<select id="findFirstSubmitToFinal" resultMap="BaseResultMap" parameterType="java.util.Map">
+		select
+		<include refid="Base_Column_List" />
+		from ams_apply_history
+		where loan_no =#{loanNo,jdbcType=VARCHAR} and
+		rtf_state = #{rtfState,jdbcType=VARCHAR}
+		and rtf_node_state=#{rtfNodeState,jdbcType=VARCHAR}
+		and (check_node_state =#{noCheck,jdbcType=VARCHAR}
+		or check_node_state=#{checkPass,jdbcType=VARCHAR})
+	</select>
+
+	<!-- 已完成页面查询出最后一次信审操作 -->
+	<select id="findLastOperationState" resultMap="BaseResultMap" parameterType="java.lang.String">
+		select
+		  <include refid="Base_Column_List" />
+		from ams_apply_history
+		where
+		loan_no = #{loanNo,jdbcType=VARCHAR} order by created_date desc LIMIT 1
+	</select>
+
+	<!-- 根据借款编号查询初审最近一次提交终审、高审、退回门店的操作 -->
+	<select id="findLastByLoanNo" resultMap="BaseResultMap" parameterType="java.lang.String">
+		select
+			<include refid="Base_Column_List" />
+		from ams_apply_history
+		where loan_no = #{loanNo, jdbcType=VARCHAR}
+		and (
+			rtf_node_state in ('XSCS-PASS','HIGH-PASS','XSCS-RETURN','XSCS-ZDQQRETURN') or
+			(
+				rtf_state='XSCS'
+				and pro_name='信审初审批量改派'
+			)
+		)
+		order by created_date desc
+		LIMIT 1
+	</select>
+
+	<select id="findByLoanNoAndRtfStateInAndRtfNodeStateIn" resultMap="BaseResultMap" parameterType="java.util.Map">
+		select
+			<include refid="Base_Column_List" />
+		from ams_apply_history
+		where loan_no = #{loanNo, jdbcType=VARCHAR}
+		and rtf_state in
+		<foreach collection="rtfState" index="index" item="item" open="(" separator="," close=")">
+			#{item}
+		</foreach>
+		and rtf_node_state in
+		<foreach collection="rtfNodeState" index="index" item="item" open="(" separator="," close=")">
+			#{item}
+		</foreach>
+		<!-- 排序字段 -->
+		<if test="sortList != null">
+			ORDER BY
+			<foreach collection="sortList" item="item" index="index" separator=",">
+				${item.property} ${item.direction}
+			</foreach>
+		</if>
+		LIMIT 1
+	</select>
+
+	<select id="findByLoanNoAndUserCodeAndRtfStateAndRtfNodeStateIn" resultMap="BaseResultMap" parameterType="java.util.Map">
+		select
+		<include refid="Base_Column_List" />
+		from ams_apply_history
+		where loan_no = #{loanNo, jdbcType=VARCHAR}
+		and final_person = #{userCode, jdbcType=VARCHAR}
+		and rtf_state = #{rtfState, jdbcType=VARCHAR}
+		and rtf_node_state in
+		<foreach collection="rtfNodeState" index="index" item="item" open="(" separator="," close=")">
+			#{item}
+		</foreach>
+		order by created_date desc
+	</select>
+
+	<!-- 根据借款编号查询初审最近一次提交终审、高审、退回门店的操作 -->
+	<select id="getWorkbenchStateByLoanNo" resultMap="BaseResultMap" parameterType="java.lang.String">
+		select
+		  <include refid="Base_Column_List" />
+		from ams_apply_history
+		where loan_no=#{loanNo,jdbcType=VARCHAR}
+        and (
+          (rtf_state='XSZS' and rtf_node_state in ('XSZS-RTNCS','XSZS-RETURN','XSZS-ZDQQRETURN')) or
+          (rtf_state='XSCS' and check_node_state in ('NO_CHECK','CHECK_PASS') and rtf_node_state in ('XSCS-RETURN','XSCS-ZDQQRETURN')) OR
+          (rtf_state = 'CSFP' AND (rtf_node_state = 'CSFP-RETURN' or rtf_node_state='CSFP-ZDQQRETURN')) or
+          check_node_state='CHECK_NO_PASS'
+        )
+        order by created_date desc LIMIT 1
+	</select>
+
+	<!-- 查询历史上曾经对这些单子审批通过的终审员列表 -->
+	<select id="findApprovePassedPersonByLoanNos" resultType="java.lang.String">
+		SELECT
+		DISTINCT final_person
+		FROM
+		ams_apply_history
+		WHERE
+		rtf_state = 'XSZS'
+		AND rtf_node_state IN (
+		'XSZS-SUBMIT-APPROVAL',
+		'XSZS-SUBMIT-BACK',
+		'XSZS-SUBMIT-HIGH'
+		)
+		<if test="array != null and array.length > 0">
+			AND loan_no IN
+			<foreach collection="array" index="index" item="item" open="(" separator="," close=")">
+				#{item}
+			</foreach>
+		</if>
+	</select>
+
+	<!-- 历史上对这些单子审批过的终审员所在层级，取其中最大值 -->
+	<select id="findMaxLevelOfApprovedPersonByLoanNos" resultType="java.lang.String">
+		SELECT
+		MAX(final_Audit_Level)
+		FROM
+		ams_staff_order_task
+		WHERE
+		STATUS = '0'
+		AND task_def_id = 'applyinfo-finalaudit'
+		AND staff_code IN (
+		SELECT
+		*
+		FROM
+		(
+		(
+		SELECT DISTINCT
+		approval_person testcode
+		FROM
+		ams_apply_history
+		WHERE
+		rtf_state = 'XSZS'
+		AND rtf_node_state IN (
+		'XSZS-SUBMIT-APPROVAL',
+		'XSZS-SUBMIT-BACK',
+		'XSZS-SUBMIT-HIGH',
+		'XSZS-RETURN',
+		'XSZS-RTNCS',
+		'XSZS-ZDQQRETURN'
+		)
+		AND loan_no IN
+		<foreach collection="array" index="index" item="item" open="(" separator="," close=")">
+			#{item}
+		</foreach>
+		AND approval_person IS NOT NULL
+		)
+		UNION ALL
+		(
+		SELECT DISTINCT
+		final_person testcode
+		FROM
+		ams_apply_history
+		WHERE
+		rtf_state = 'XSZS'
+		AND rtf_node_state IN (
+		'XSZS-SUBMIT-APPROVAL',
+		'XSZS-SUBMIT-BACK',
+		'XSZS-SUBMIT-HIGH',
+		'XSZS-RETURN',
+		'XSZS-RTNCS',
+		'XSZS-ZDQQRETURN'
+		)
+		AND loan_no IN
+		<foreach collection="array" index="index" item="item" open="(" separator="," close=")">
+			#{item}
+		</foreach>
+		AND final_person IS NOT NULL
+		)
+		) a
+		)
+	</select>
+
+	<select id="findHistory" parameterType="java.util.Map" resultMap="BaseResultMap">
+		SELECT
+			*
+		FROM
+			ams_apply_history a
+		WHERE
+ 			a.loan_no = #{loanNo}
+	</select>
+
+	<!-- 根据借款编号查询最后一次初审审批历史(用于复议再申请) -->
+	<select id="findLastFirstApplyHistory" resultMap="BaseResultMap" parameterType="java.lang.String">
+		SELECT
+		<include refid="Base_Column_List" />
+		FROM
+		ams_apply_history
+		<where>
+			(((check_node_state ='NO_CHECK' or check_node_state ='CHECK') and  rtf_state = 'XSCS')
+			or
+			(rtf_state='CSFP' and rtf_node_state='CSFP-REJECT'))
+			and pro_name !='申请件维护'
+			<if test="loanNo != null">
+				AND loan_no = #{loanNo,jdbcType=VARCHAR}
+			</if>
+			ORDER BY  id DESC limit 1
+		</where>
+	</select>
+
+
+    <!-- 根据单号查询历史处理过的初审员(初审改派查询) -->
+	<select id="findHistoryApplyDealsPerson" resultMap="BaseResultMap" parameterType="java.util.Map">
+		SELECT <include refid="Base_Column_List" />
+		FROM (
+		  SELECT <include refid="Base_Column_List" /> FROM ams_apply_history
+		  where rtf_state='XSCS' and rtf_node_state='XSCS-ASSIGN' and loan_no in (#{loanNoArray,jdbcType=VARCHAR}) GROUP BY loan_no,check_person
+		) tab  GROUP BY tab.check_person HAVING count(tab.check_person) =#{loanNoCount,jdbcType=INTEGER}
+	</select>
+
+	<!-- 复议查询出拒绝信息-->
+	<select id="findApplyHistoryRejectByLoanNo"  resultMap="BaseResultMap" parameterType="java.lang.String">
+		SELECT <include refid="Base_Column_List" /> FROM (SELECT <include refid="Base_Column_List" /> FROM ams_apply_history where loan_no=#{loanNo,jdbcType=VARCHAR}) tb
+			where  rtf_node_state ='CSFP-REJECT' OR rtf_node_state='CSFP-REJECT'
+    	    OR (rtf_node_state='XSCS-REJECT' and check_node_state='NO_CHECK')OR (rtf_node_state='XSCS-REJECT' and check_node_state='CHECK') OR rtf_node_state ='XSZS-REJECT' ORDER BY id DESC  LIMIT 1
+	</select>
+</mapper>

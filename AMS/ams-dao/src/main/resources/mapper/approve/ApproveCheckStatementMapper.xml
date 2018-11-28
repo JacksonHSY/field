@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.yuminsoft.ams.system.dao.approve.ApproveCheckStatementMapper">
+
+    <resultMap id="BaseResultMap" type="com.yuminsoft.ams.system.domain.approve.ApproveCheckStatement">
+        <id column="id" property="id" jdbcType="BIGINT" />
+        <result column="info_id" property="infoId" jdbcType="BIGINT" />
+        <result column="loan_no" property="loanNo" jdbcType="VARCHAR" />
+        <result column="type" property="type" jdbcType="INTEGER" />
+        <result column="water1" property="water1" jdbcType="DECIMAL" />
+        <result column="water2" property="water2" jdbcType="DECIMAL" />
+        <result column="water3" property="water3" jdbcType="DECIMAL" />
+        <result column="created_by" property="createdBy" jdbcType="VARCHAR" />
+        <result column="created_date" property="createdDate" jdbcType="TIMESTAMP" />
+        <result column="last_modified_by" property="lastModifiedBy" jdbcType="VARCHAR" />
+        <result column="last_modified_date" property="lastModifiedDate" jdbcType="TIMESTAMP" />
+    </resultMap>
+
+    <select id="findById" resultMap="BaseResultMap" parameterType="Long">
+        select * from ams_approve_check_statement
+        where id = #{id,jdbcType=BIGINT}
+    </select>
+
+    <select id="findByLoanNo" resultMap="BaseResultMap" parameterType="String">
+        select * from ams_approve_check_statement
+        where loan_no = #{loanNo,jdbcType=VARCHAR}
+    </select>
+
+    <select id="findByLoanNoAndType" resultMap="BaseResultMap" parameterType="HashMap">
+        select * from ams_approve_check_statement
+        where loan_no = #{loanNo,jdbcType=VARCHAR}
+        and type = #{type,jdbcType=VARCHAR}
+    </select>
+
+    <delete id="delete" parameterType="java.lang.Long">
+        delete from ams_approve_check_statement where id = #{id,jdbcType=BIGINT}
+    </delete>
+
+    <delete id="deleteByLoanNo" parameterType="String">
+        delete from ams_approve_check_statement where loan_no = #{loanNo,jdbcType=VARCHAR}
+    </delete>
+
+    <insert id="insert" parameterType="com.yuminsoft.ams.system.domain.approve.ApproveCheckStatement" useGeneratedKeys="true" keyProperty="id">
+        insert into ams_approve_check_statement (
+            info_id,
+            loan_no,
+            type,
+
+            water1,
+            water2,
+            water3,
+            created_by,
+            created_date,
+            last_modified_by,
+            last_modified_date
+        ) VALUES (
+            #{infoId, jdbcType=BIGINT},
+            #{loanNo, jdbcType=VARCHAR},
+            #{type,jdbcType=VARCHAR},
+            #{water1, jdbcType=DECIMAL},
+            #{water2, jdbcType=DECIMAL},
+            #{water3, jdbcType=DECIMAL},
+            #{createdBy, jdbcType=VARCHAR},
+            #{createdDate, jdbcType=TIMESTAMP},
+            #{lastModifiedBy, jdbcType=VARCHAR},
+            #{lastModifiedDate, jdbcType=TIMESTAMP}
+        )
+    </insert>
+
+    <update id="update" parameterType="com.yuminsoft.ams.system.domain.approve.ApproveCheckStatement">
+        update ams_approve_check_statement SET
+            info_id = #{infoId, jdbcType=BIGINT},
+            loan_no = #{loanNo, jdbcType=VARCHAR},
+            type = #{type,jdbcType=VARCHAR},
+            water1 = #{water1, jdbcType=DECIMAL},
+            water2 = #{water2, jdbcType=DECIMAL},
+            water3 = #{water3, jdbcType=DECIMAL},
+            created_by = #{createdBy, jdbcType=VARCHAR},
+            created_date = #{createdDate, jdbcType=TIMESTAMP},
+            last_modified_by = #{lastModifiedBy, jdbcType=VARCHAR},
+            last_modified_date = #{lastModifiedDate, jdbcType=TIMESTAMP}
+        WHERE id = #{id,jdbcType=DECIMAL}
+    </update>
+
+</mapper>

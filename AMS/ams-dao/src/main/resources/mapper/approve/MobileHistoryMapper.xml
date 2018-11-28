@@ -1,0 +1,272 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.yuminsoft.ams.system.dao.approve.MobileHistoryMapper" >
+  <resultMap id="BaseResultMap" type="com.yuminsoft.ams.system.domain.approve.MobileHistory" >
+    <id column="id" property="id" jdbcType="DECIMAL" />
+    <result column="created_by" property="createdBy" jdbcType="VARCHAR" />
+    <result column="created_date" property="createdDate" jdbcType="TIMESTAMP" />
+    <result column="last_modified_by" property="lastModifiedBy" jdbcType="VARCHAR" />
+    <result column="last_modified_date" property="lastModifiedDate" jdbcType="TIMESTAMP" />
+    <result column="loan_no" property="loanNo" jdbcType="VARCHAR" />
+    <result column="name" property="name" jdbcType="VARCHAR" javaType="encrypt"/>
+    <result column="pri" property="pri" jdbcType="VARCHAR" />
+    <result column="three_source" property="threeSource" jdbcType="VARCHAR" />
+    <result column="tel_relation_type" property="telRelationType" jdbcType="VARCHAR" />
+    <result column="tel_phone_type" property="telPhoneType" jdbcType="VARCHAR" />
+    <result column="tel_phone" property="telPhone" jdbcType="VARCHAR" javaType="encrypt"/>
+    <result column="tel_date" property="telDate" jdbcType="VARCHAR" />
+    <result column="ask_type_one" property="askTypeOne" jdbcType="VARCHAR" />
+    <result column="ask_type_two" property="askTypeTwo" jdbcType="VARCHAR" />
+    <result column="ask_content" property="askContent" jdbcType="VARCHAR" />
+    <result column="name_title" property="nameTitle" jdbcType="VARCHAR" />
+    <result column="tel_phone_type_cn" property="telPhoneTypeCn" jdbcType="VARCHAR" />
+    <result column="relation_type_sort" property="relationTypeSort" jdbcType="VARCHAR" />
+    <result column="phone_city" property="phoneCity" jdbcType="VARCHAR" />
+    <result column="carrier" property="carrier" jdbcType="VARCHAR" />
+  </resultMap>
+  
+  <resultMap id="BaseResultMapVO" type="com.yuminsoft.ams.system.vo.firstApprove.MobileHistoryVO" >
+    <id column="id" property="id" jdbcType="DECIMAL" />
+    <result column="created_by" property="createdBy" jdbcType="VARCHAR" />
+    <result column="created_date" property="createdDate" jdbcType="TIMESTAMP" />
+    <result column="last_modified_by" property="lastModifiedBy" jdbcType="VARCHAR" />
+    <result column="last_modified_date" property="lastModifiedDate" jdbcType="TIMESTAMP" />
+    <result column="loan_no" property="loanNo" jdbcType="VARCHAR" />
+    <result column="name" property="name" jdbcType="VARCHAR" javaType="encrypt"/>
+    <result column="pri" property="pri" jdbcType="VARCHAR" />
+    <result column="three_source" property="threeSource" jdbcType="VARCHAR" />
+    <result column="tel_relation_type" property="telRelationType" jdbcType="VARCHAR" />
+    <result column="tel_phone_type" property="telPhoneType" jdbcType="VARCHAR" />
+    <result column="tel_phone" property="telPhone" jdbcType="VARCHAR" javaType="encrypt"/>
+    <result column="tel_date" property="telDate" jdbcType="VARCHAR" />
+    <result column="ask_type_one" property="askTypeOne" jdbcType="VARCHAR" />
+    <result column="ask_type_two" property="askTypeTwo" jdbcType="VARCHAR" />
+    <result column="ask_content" property="askContent" jdbcType="VARCHAR" />
+    <result column="name_title" property="nameTitle" jdbcType="VARCHAR" />
+    <result column="tel_phone_type_cn" property="telPhoneTypeCn" jdbcType="VARCHAR" />
+    <result column="relation_type_sort" property="relationTypeSort" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, created_by, created_date, last_modified_by, last_modified_date, loan_no, name, 
+    pri, three_source, tel_relation_type, tel_phone_type, tel_phone, tel_date, ask_type_one, ask_type_two, 
+    ask_content, name_title, tel_phone_type_cn,relation_type_sort,phone_city,carrier
+  </sql>
+  
+  <select id="findOne" resultMap="BaseResultMap" parameterType="java.util.Map" >
+    select
+    <include refid="Base_Column_List" />
+    from ams_mobile_history
+    where 1=1
+    <include refid="amsConditions" />
+  </select>
+  
+  <select id="findById" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select
+    <include refid="Base_Column_List" />
+    from ams_mobile_history
+    where id = #{id,jdbcType=DECIMAL}
+  </select>
+  
+  <select id="findAll" resultMap="BaseResultMap" parameterType="java.util.Map" >
+    select
+    <include refid="Base_Column_List" />
+    from ams_mobile_history
+    where 1=1
+    <include refid="amsConditions" />
+  </select>
+  
+  <select id="queryMobileHisByLoanId" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select
+    <include refid="Base_Column_List" />
+    from ams_mobile_history
+    where ask_content is null  and loan_no = #{loanNo,jdbcType=VARCHAR}
+  </select>
+  
+  <!-- 根据借款号查询电核记录  其中不包含第三方联系人 -->
+  <select id="queryMobileHis" resultMap="BaseResultMapVO" parameterType="java.lang.String" >
+    select
+    <include refid="Base_Column_List" />
+    from ams_mobile_history
+    where ask_content is not null  and tel_phone is not null  and loan_no = #{loanNo,jdbcType=VARCHAR}  ORDER BY created_date asc
+  </select>
+  
+  
+  <!-- 查询条件 -->
+  <sql id="amsConditions">
+      <if test="id != null" >
+        AND id = #{id,jdbcType=DECIMAL}
+      </if>
+      <if test="createdBy != null" >
+        AND created_by = #{createdBy,jdbcType=VARCHAR}
+      </if>
+      <if test="createdDate != null" >
+        AND created_date = #{createdDate,jdbcType=TIMESTAMP}
+      </if>
+      <if test="lastModifiedBy != null" >
+        AND last_modified_by = #{lastModifiedBy,jdbcType=VARCHAR}
+      </if>
+      <if test="lastModifiedDate != null" >
+        AND last_modified_date = #{lastModifiedDate,jdbcType=TIMESTAMP}
+      </if>
+      <if test="loanNo != null" >
+        AND loan_no = #{loanNo,jdbcType=VARCHAR}
+      </if>
+      <if test="name != null" >
+        AND name = #{name,jdbcType=VARCHAR,javaType=encrypt}
+      </if>
+      <if test="pri != null" >
+        AND pri = #{pri,jdbcType=VARCHAR}
+      </if>
+      <if test="threeSource != null" >
+        AND three_source = #{threeSource,jdbcType=VARCHAR}
+      </if>
+      <if test="telRelationType != null" >
+        AND tel_relation_type = #{telRelationType,jdbcType=VARCHAR}
+      </if>
+      <if test="telPhoneType != null" >
+        AND tel_phone_type = #{telPhoneType,jdbcType=VARCHAR}
+      </if>
+      <if test="telPhone != null" >
+        AND tel_phone = #{telPhone,jdbcType=VARCHAR,javaType=encrypt}
+      </if>
+      <if test="telDate != null" >
+        AND tel_date = #{telDate,jdbcType=VARCHAR}
+      </if>
+      <if test="askTypeOne != null" >
+        AND ask_type_one = #{askTypeOne,jdbcType=VARCHAR}
+      </if>
+      <if test="askTypeTwo != null" >
+        AND ask_type_two = #{askTypeTwo,jdbcType=VARCHAR}
+      </if>
+      <if test="askContent != null" >
+        AND ask_content = #{askContent,jdbcType=VARCHAR}
+      </if>
+      <if test="nameTitle != null" >
+        AND name_title = #{nameTitle,jdbcType=VARCHAR}
+      </if>
+      <if test="telPhoneTypeCn != null" >
+        AND tel_phone_type_cn = #{telPhoneTypeCn,jdbcType=VARCHAR}
+      </if>
+      <if test="relationTypeSort != null" >
+        AND relation_type_sort = #{relationTypeSort,jdbcType=VARCHAR}
+      </if>
+      <if test="phoneCity != null" >
+        AND phone_city = #{phoneCity,jdbcType=VARCHAR}
+      </if>
+      <if test="carrier != null" >
+        AND carrier = #{carrier,jdbcType=VARCHAR}
+      </if>
+  </sql>
+  
+  <delete id="delete" parameterType="java.lang.Long" >
+    delete from ams_mobile_history
+    where id = #{id,jdbcType=DECIMAL}
+  </delete>
+  
+  <insert id="save" parameterType="com.yuminsoft.ams.system.domain.approve.MobileHistory" useGeneratedKeys="true" keyProperty="id">
+    insert into ams_mobile_history (created_by, created_date, 
+      last_modified_by, last_modified_date, loan_no, name, name_bak,
+      pri, three_source, tel_relation_type, tel_phone_type, 
+      tel_phone, tel_phone_bak,tel_date, ask_type_one, ask_type_two, ask_content,
+      name_title, tel_phone_type_cn,relation_type_sort,phone_city,carrier
+      )
+    values (#{createdBy,jdbcType=VARCHAR}, #{createdDate,jdbcType=TIMESTAMP}, 
+      #{lastModifiedBy,jdbcType=VARCHAR}, #{lastModifiedDate,jdbcType=TIMESTAMP}, #{loanNo,jdbcType=VARCHAR}, 
+      #{name,jdbcType=VARCHAR,javaType=encrypt},#{nameBak,jdbcType=VARCHAR}, #{pri,jdbcType=VARCHAR}, #{threeSource,jdbcType=VARCHAR},
+      #{telRelationType,jdbcType=VARCHAR}, #{telPhoneType,jdbcType=VARCHAR}, #{telPhone,jdbcType=VARCHAR,javaType=encrypt},#{telPhoneBak,jdbcType=VARCHAR},
+      #{telDate,jdbcType=VARCHAR}, #{askTypeOne,jdbcType=VARCHAR}, #{askTypeTwo,jdbcType=VARCHAR}, 
+      #{askContent,jdbcType=VARCHAR}, #{nameTitle,jdbcType=VARCHAR}, #{telPhoneTypeCn,jdbcType=VARCHAR},
+      #{relationTypeSort,jdbcType=VARCHAR},#{phoneCity,jdbcType=VARCHAR},#{carrier,jdbcType=VARCHAR}
+      )
+  </insert>
+  
+  <update id="update" parameterType="com.yuminsoft.ams.system.domain.approve.MobileHistory" >
+    update ams_mobile_history
+    <set >
+      <if test="lastModifiedBy != null" >
+        last_modified_by = #{lastModifiedBy,jdbcType=VARCHAR},
+      </if>
+      <if test="lastModifiedDate != null" >
+        last_modified_date = #{lastModifiedDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="loanNo != null" >
+        loan_no = #{loanNo,jdbcType=VARCHAR},
+      </if>
+      <if test="name != null" >
+        name = #{name,jdbcType=VARCHAR,javaType=encrypt},
+      </if>
+      <if test="pri != null" >
+        pri = #{pri,jdbcType=VARCHAR},
+      </if>
+      <if test="threeSource != null" >
+        three_source = #{threeSource,jdbcType=VARCHAR},
+      </if>
+      <if test="telRelationType != null" >
+        tel_relation_type = #{telRelationType,jdbcType=VARCHAR},
+      </if>
+      <if test="telPhoneType != null" >
+        tel_phone_type = #{telPhoneType,jdbcType=VARCHAR},
+      </if>
+      <if test="telPhone != null" >
+        tel_phone = #{telPhone,jdbcType=VARCHAR,javaType=encrypt},
+      </if>
+      <if test="telDate != null" >
+        tel_date = #{telDate,jdbcType=VARCHAR},
+      </if>
+      <if test="askTypeOne != null" >
+        ask_type_one = #{askTypeOne,jdbcType=VARCHAR},
+      </if>
+      <if test="askTypeTwo != null" >
+        ask_type_two = #{askTypeTwo,jdbcType=VARCHAR},
+      </if>
+      <if test="askContent != null" >
+        ask_content = #{askContent,jdbcType=VARCHAR},
+      </if>
+      <if test="nameTitle != null" >
+        name_title = #{nameTitle,jdbcType=VARCHAR},
+      </if>
+      <if test="telPhoneTypeCn != null" >
+        tel_phone_type_cn = #{telPhoneTypeCn,jdbcType=VARCHAR},
+      </if>
+      <if test="relationTypeSort != null" >
+        relation_type_sort = #{relationTypeSort,jdbcType=VARCHAR},
+      </if>
+      <if test="phoneCity != null" >
+        phone_city = #{phoneCity,jdbcType=VARCHAR},
+      </if>
+      <if test="carrier != null" >
+        carrier = #{carrier,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=DECIMAL}
+  </update>
+  
+  <update id="updateMobileHisById" parameterType="com.yuminsoft.ams.system.domain.approve.MobileHistory" >
+    update ams_mobile_history 
+       set tel_relation_type = #{telRelationType,jdbcType=VARCHAR},
+       ask_content = #{askContent,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=DECIMAL}
+  </update>
+  
+  <!-- 根据号码查找第三方电话来源的借款编号列表 -->
+  <select id="findLoanNosByThirdTelNum" resultType="java.lang.String" parameterType="java.lang.String" >
+	  	SELECT
+			loan_no
+		FROM
+			ams_mobile_history
+		WHERE
+			ask_content IS NULL
+		AND tel_phone = #{telPhone,jdbcType=VARCHAR,javaType=encrypt}
+		GROUP BY
+			loan_no
+  </select>
+  
+  <!-- 根据借款编号查询电核记录 -->
+  <select id="queryTelephoneCheckList" resultMap="BaseResultMap" parameterType="java.util.Map" >
+    select
+    <include refid="Base_Column_List" />
+    from ams_mobile_history
+    where ask_content is not null  and tel_phone is not null  and loan_no = #{loanNo,jdbcType=VARCHAR}  ORDER BY tel_date desc
+  </select>
+  
+</mapper>

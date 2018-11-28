@@ -1,0 +1,197 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.yuminsoft.ams.system.dao.approve.ApprovalDispatchMapper">
+
+    <resultMap id="BaseResultMap" type="com.yuminsoft.ams.system.domain.approve.ApprovalDispatch">
+        <id column="id" property="id" jdbcType="BIGINT" />
+        <result column="loan_no" property="loanNo" jdbcType="VARCHAR" />
+        <result column="final_level" property="finalLevel" jdbcType="VARCHAR" />
+        <result column="is_prior" property="isPrior" jdbcType="VARCHAR" />
+        <result column="is_high_pass" property="isHighPass" jdbcType="VARCHAR" />
+        <result column="is_approval" property="isApproval" jdbcType="VARCHAR" />
+        <result column="is_reconsider" property="isReconsider" jdbcType="VARCHAR" />
+        <result column="status" property="status" jdbcType="VARCHAR" />
+        <result column="final_person" property="finalPerson" jdbcType="VARCHAR" />
+        <result column="created_by" property="createdBy" jdbcType="VARCHAR" />
+        <result column="created_date" property="createdDate" jdbcType="TIMESTAMP" />
+        <result column="last_modified_by" property="lastModifiedBy" jdbcType="VARCHAR" />
+        <result column="last_modified_date" property="lastModifiedDate" jdbcType="TIMESTAMP" />
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        id,
+        loan_no,
+        final_level,
+        is_prior,
+        is_high_pass,
+        is_approval,
+        is_reconsider,
+        status,
+        final_person,
+        created_by,
+        created_date,
+        last_modified_by,
+        last_modified_date
+    </sql>
+
+    <select id="findOne" resultMap="BaseResultMap" parameterType="java.util.Map">
+        select
+          <include refid="Base_Column_List" />
+        from ams_apply_history
+        where 1=1
+        <include refid="amsConditions" />
+    </select>
+
+    <select id="findById" resultMap="BaseResultMap" parameterType="Long">
+        select
+          <include refid="Base_Column_List" />
+        from ams_approval_dispatch
+        where id = #{id,jdbcType=BIGINT}
+    </select>
+
+    <select id="findByLoanNo" resultMap="BaseResultMap" parameterType="String">
+        select
+        <include refid="Base_Column_List" />
+        from ams_approval_dispatch
+        where loan_no = #{loanNo,jdbcType=VARCHAR}
+    </select>
+
+    <select id="findAll" resultMap="BaseResultMap">
+        select
+          <include refid="Base_Column_List" />
+        from ams_approval_dispatch
+    </select>
+
+    <!-- 查找待分派池(不含协审件) -->
+    <select id="findWaitPoolWithoutApproval" resultMap="BaseResultMap" parameterType="String">
+        select
+          <include refid="Base_Column_List" />
+        from ams_approval_dispatch t1
+        where t1.final_level = #{finalLevel, jdbcType=VARCHAR}
+        and t1.status = 'WAIT'
+        and t1.id not in (
+          select tt1.id from ams_approval_dispatch tt1
+          where tt1.is_approval = 'Y'
+          and tt1.status = 'WAIT'
+        )
+    </select>
+
+    <!-- 查找待分派池里，协审件的提交人工号 -->
+    <select id="findWaitPoolFinalPersonList" resultType="String">
+        select DISTINCT t1.final_person from ams_approval_dispatch t1
+        where t1.is_approval = 'Y'
+        and t1.status = 'WAIT'
+    </select>
+
+    <delete id="deleteById" parameterType="Long">
+        delete from ams_approval_dispatch
+        where id = #{id,jdbcType=BIGINT}
+    </delete>
+
+    <delete id="deleteAll">
+        delete from ams_approval_dispatch
+    </delete>
+
+    <delete id="deleteByLoanNoNotIn">
+        delete from ams_approval_dispatch
+        where loan_no not in
+        <foreach collection="loanNoList" index="index" item="item" open="(" separator="," close=")">
+            #{item,jdbcType=VARCHAR}
+        </foreach>
+    </delete>
+
+    <delete id="deleteByStatus" parameterType="String">
+        delete from ams_approval_dispatch
+        where status = #{status,jdbcType=VARCHAR}
+    </delete>
+
+    <insert id="insert" parameterType="com.yuminsoft.ams.system.domain.approve.ApprovalDispatch" useGeneratedKeys="true" keyProperty="id">
+        insert into `ams_approval_dispatch` (
+            `loan_no`,
+            `final_level`,
+            `is_prior`,
+            `is_high_pass`,
+            `is_approval` ,
+            `status`,
+            `final_person`,
+            `is_reconsider`,
+            `created_by`,
+            `created_date`,
+            `last_modified_by`,
+            `last_modified_date`
+        ) VALUES (
+            #{loanNo, jdbcType=VARCHAR},
+            #{finalLevel, jdbcType=VARCHAR},
+            #{isPrior, jdbcType=VARCHAR},
+            #{isHighPass, jdbcType=VARCHAR},
+            #{isApproval, jdbcType=VARCHAR},
+            #{status, jdbcType=VARCHAR},
+            #{finalPerson, jdbcType=VARCHAR},
+            #{isReconsider, jdbcType=VARCHAR},
+            #{createdBy, jdbcType=VARCHAR},
+            #{createdDate, jdbcType=TIMESTAMP},
+            #{lastModifiedBy, jdbcType=VARCHAR},
+            #{lastModifiedDate, jdbcType=TIMESTAMP}
+        )
+    </insert>
+
+    <update id="update" parameterType="com.yuminsoft.ams.system.domain.approve.ApprovalDispatch">
+        update `ams_approval_dispatch` set
+            `loan_no` = #{loanNo, jdbcType=VARCHAR},
+            `final_level` = #{finalLevel, jdbcType=VARCHAR},
+            `is_prior` = #{isPrior, jdbcType=VARCHAR},
+            `is_high_pass` = #{isHighPass, jdbcType=VARCHAR},
+            `is_approval` = #{isApproval, jdbcType=VARCHAR},
+            `status` = #{status, jdbcType=VARCHAR},
+            `final_person` = #{finalPerson, jdbcType=VARCHAR},
+            `is_reconsider`=#{isReconsider, jdbcType=VARCHAR},
+            `created_by` = #{createdBy, jdbcType=VARCHAR},
+            `created_date` = #{createdDate, jdbcType=TIMESTAMP},
+            `last_modified_by` = #{lastModifiedBy, jdbcType=VARCHAR},
+            `last_modified_date` = #{lastModifiedDate, jdbcType=TIMESTAMP}
+        where ID = #{id,jdbcType=BIGINT}
+    </update>
+
+    <sql id="amsConditions">
+        <if test="id != null">
+            AND id = #{id,jdbcType=DECIMAL}
+        </if>
+        <if test="loanNo != null">
+            AND loan_no = #{loanNo,jdbcType=VARCHAR}
+        </if>
+        <if test="finalLevel != null">
+            AND final_level = #{finalLevel, jdbcType=VARCHAR}
+        </if>
+        <if test="isPrior != null">
+            AND is_prior = #{isPrior, jdbcType=VARCHAR}
+        </if>
+        <if test="isHighPass != null">
+            AND is_high_pass = #{isHighPass, jdbcType=VARCHAR}
+        </if>
+        <if test="isApproval != null">
+            AND is_approval = #{isApproval, jdbcType=VARCHAR}
+        </if>
+        <if test="status != null">
+            AND status = #{status, jdbcType=VARCHAR}
+        </if>
+        <if test="finalPerson != null">
+            AND final_person = #{finalPerson, jdbcType=VARCHAR}
+        </if>
+        <if test="createdBy != null">
+            AND created_by = #{createdBy,jdbcType=VARCHAR}
+        </if>
+        <if test="createdDate != null">
+            AND created_date = #{createdDate,jdbcType=TIMESTAMP}
+        </if>
+        <if test="lastModifiedBy != null">
+            AND last_modified_by = #{lastModifiedBy,jdbcType=VARCHAR}
+        </if>
+        <if test="lastModifiedDate != null">
+            AND last_modified_date = #{lastModifiedDate,jdbcType=TIMESTAMP}
+        </if>
+        <if test="isReconsider!=null">
+          AND is_reconsider=#{isReconsider, jdbcType=VARCHAR}
+        </if>
+    </sql>
+
+</mapper>

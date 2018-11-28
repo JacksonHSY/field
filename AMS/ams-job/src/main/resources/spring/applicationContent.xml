@@ -1,0 +1,167 @@
+<beans 
+ xmlns="http://www.springframework.org/schema/beans"
+ xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+ xmlns:aop="http://www.springframework.org/schema/aop"
+ xmlns:tx="http://www.springframework.org/schema/tx"
+ xmlns:task="http://www.springframework.org/schema/task"
+ xmlns:context="http://www.springframework.org/schema/context"
+ xmlns:mvc="http://www.springframework.org/schema/mvc"
+ xmlns:apollo="http://www.ctrip.com/schema/apollo"
+ xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
+ http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-2.5.xsd
+ http://www.springframework.org/schema/context
+ http://www.springframework.org/schema/context/spring-context-3.2.xsd 
+ http://www.springframework.org/schema/tx 
+ http://www.springframework.org/schema/tx/spring-tx.xsd 
+ http://www.springframework.org/schema/mvc 
+ http://www.springframework.org/schema/mvc/spring-mvc-3.2.xsd
+ http://www.springframework.org/schema/task 
+ http://www.springframework.org/schema/task/spring-task-3.1.xsd
+ http://www.ctrip.com/schema/apollo http://www.ctrip.com/schema/apollo.xsd">
+
+
+	<!-- 开启apollo配置 -->
+	<!-- <apollo:config namespaces="xxxxx"/>  表示默认读取 namespace xxxxx.properties 配置到spring 环境中 -->
+	<!-- 优先以外部文件配置为准，以方便不同环境动态使用不同namespace -->
+	<apollo:config />
+  <!-- 引用uflo源配置文件 -->
+  <import resource="classpath:uflo-console-context.xml" /> 
+   <aop:aspectj-autoproxy />
+    <!-- 开启定时任务注解 -->
+    <task:annotation-driven/> 
+    <!-- 激活spring的注解. -->
+	<context:annotation-config />
+	<!-- 扫描注解组件并且自动的注入spring beans中. 
+	例如,他会扫描@Controller 和@Service下的文件.所以确保此base-package设置正确. -->
+	<context:component-scan base-package="com.*" />
+	 
+	<mvc:annotation-driven >
+		<mvc:message-converters register-defaults="true">
+			<bean class="org.springframework.http.converter.StringHttpMessageConverter">
+				<constructor-arg value="UTF-8" />
+			</bean>
+		</mvc:message-converters>
+	</mvc:annotation-driven>
+
+	<!-- 针对配置文件的特殊处理 -->
+	<bean id="propertyConfigurer" class="com.yuminsoft.ams.system.config.DefaultPropertyPlaceholderConfigurer" init-method="loadProperties" ></bean>
+
+	<!-- 数据源配置 -->
+	<bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource" destroy-method="close">
+		<property name="driverClassName">
+			<value>${jdbc.driver}</value>
+		</property>
+		<property name="url">
+			<value>${jdbc.driverUrl}</value>
+		</property>
+		<property name="username">
+			<value>${jdbc.username}</value>
+		</property>
+		<property name="password">
+			<value>${jdbc.password}</value>
+		</property>
+		<property name="maxActive" value="${jdbc.maxActive}"/><!-- 最大连接数 -->
+        <property name="maxWait" value="${jdbc.maxWait}"/><!-- 最大等待时间 -->
+        <property name="initialSize" value="${jdbc.initialSize}"/>  <!--初始个数 -->
+        <property name="maxIdle" value="${jdbc.maxIdle}"/> <!--最大空闲 -->
+        <property name="minIdle" value="${jdbc.minIdle}"/><!--最小空闲 -->
+        <property name="testOnBorrow" value="${jdbc.testOnBorrow}"/><!--borrowObject进行处理时，对拿到的connection进行validateObject校验 -->
+        <property name="testWhileIdle" value="${jdbc.testWhileIdle}"/><!--是否测试连接 -->
+        <property name="validationQuery" value="${jdbc.validationQuery}"/><!--测试语句-->
+        <property name="timeBetweenEvictionRunsMillis" value="${jdbc.timeBetweenEvictionRunsMillis}"/><!-- 设置的Evict测试线程的时间，单位ms，大于0才会开启evict检查线程 -->
+		<property name="validationQueryTimeout" value="${jdbc.validationQueryTimeout}"/><!--代表在执行检查时，通过statement设置，statement.setQueryTimeout(validationQueryTimeout)-->
+		<property name="numTestsPerEvictionRun" value="${jdbc.maxActive}"/><!-- 代表每次检查链接的数量，建议设置和maxActive一样大，这样每次可以有效检查所有的链接. -->    
+	</bean>
+	
+	<!-- 配置事务管理器 -->
+	<bean id="transactionManager" class="org.springframework.orm.hibernate3.HibernateTransactionManager">
+		<property name="sessionFactory" ref="sessionFactory"/>
+	</bean>
+	
+   <tx:annotation-driven transaction-manager="transactionManager" />
+   <!--声明事务管理 -->
+   <tx:advice id="txAdvice" transaction-manager="transactionManager">
+	    <tx:attributes>
+	      <tx:method name="find*" propagation="SUPPORTS" read-only="true"/>
+	      <tx:method name="get*" propagation="SUPPORTS" read-only="true"/>
+	      <tx:method name="query*" propagation="SUPPORTS" read-only="true"/>
+	      <tx:method name="save*" rollback-for="Exception"/>
+		  <tx:method name="delete*" rollback-for="Exception" />
+		  <tx:method name="update*" rollback-for="Exception" />
+	      <!-- 支持当前事务，如果当前没有事务，就新建一个事务 -->
+	      <tx:method name="*" propagation="REQUIRED" rollback-for="Exception"/>
+	    </tx:attributes>
+	</tx:advice>
+	
+	<!--  配置参与事务的类 -->
+	<aop:config proxy-target-class="true">
+		<!-- 声明一个切面 -->
+		<aop:pointcut id="servicePointcut" expression="execution(* com.yuminsoft.ams.system.service..*.*(..))"/>
+		<aop:advisor pointcut-ref="servicePointcut" advice-ref="txAdvice" />
+	</aop:config>
+   
+   <bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+		<property name="dataSource" ref="dataSource" />
+		<property name="configLocation" value="classpath:/mybatis/configuration.xml" />
+		<!-- 
+			<property name="typeAliasesPackage" value="" />
+		-->
+	   <!-- 敏感信息加解密 -->
+	   <property name="typeAliasesPackage" value="com.zdmoney.credit.encrypt.mybatis.alias" />
+	   <property name="typeHandlersPackage" value="com.zdmoney.credit.encrypt.mybatis.type" />
+
+		<!-- mapper和resultmap配置路径 -->
+		<property name="mapperLocations">
+			<list>
+				<!-- 表示在mapper包所有目录中，以-Mapper.xml结尾所有文件 -->
+				<value>classpath:/mapper/**/*Mapper.xml</value>
+			</list>
+		</property>
+	</bean>
+	<!-- job config-->
+	<bean id="schedulerFactoryBean" class="org.springframework.scheduling.quartz.SchedulerFactoryBean" /> 
+	    
+   <!-- spring与mybatis整合配置，扫描所有dao -->
+	<bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
+		<property name="basePackage" value="com.yuminsoft.ams.system.dao"/>
+		<property name="sqlSessionFactoryBeanName" value="sqlSessionFactory"/>
+	</bean>
+	  <!-- cas import -->
+	 <import resource="classpath:sso-client-context.xml"/>
+	 <!-- uflo import -->
+	 <import resource="classpath:spring/spring-uflo.xml"/>
+	 <import resource="classpath:spring/spring-redis.xml"/>
+
+	<!-- Java Mail配置 -->
+	<bean id="mailSender" class="org.springframework.mail.javamail.JavaMailSenderImpl">
+		<property name="host" value="${ams.admin.email.host}"/>
+		<property name="port" value="${ams.admin.email.smtp.port}" />
+		<property name="protocol" value="${ams.admin.email.smtp.protocol}" />
+		<property name="username" value="${ams.admin.email.username}"/>
+		<property name="password" value="${ams.admin.email.password}"/>
+		<property name="defaultEncoding" value="${ams.admin.email.encoding}"/>
+		<property name="javaMailProperties">
+			<props>
+				<prop key="mail.smtp.auth">${ams.admin.email.smtp.auth}</prop>
+				<prop key="mail.smtp.socketFactory.class">javax.net.ssl.SSLSocketFactory</prop>
+				<prop key="mail.smtp.socketFactory.port">${ams.admin.email.smtp.protocol}</prop>
+				<prop key="mail.smtp.socketFactory.fallback">false</prop>
+				<prop key="mail.smtp.auth">${ams.admin.email.smtp.auth}</prop>
+				<prop key="mail.smtp.starttls.enable">${ams.admin.email.smtp.starttls.enable}</prop>
+				<prop key="mail.smtp.timeout">${ams.admin.email.smtp.timeout}</prop>
+			</props>
+		</property>
+	</bean>
+
+	<!-- FreeMarker模板配置 -->
+	<bean id="freeMarkerConfigurer" class="org.springframework.web.servlet.view.freemarker.FreeMarkerConfigurer">
+		<property name="templateLoaderPath" value="/WEB-INF/views/mail/" />
+		<property name="freemarkerSettings">
+			<props>
+				<prop key="template_update_delay">0</prop>
+				<prop key="default_encoding">UTF-8</prop>
+				<prop key="locale">zh_CN</prop>
+			</props>
+		</property>
+	</bean>
+ </beans>  

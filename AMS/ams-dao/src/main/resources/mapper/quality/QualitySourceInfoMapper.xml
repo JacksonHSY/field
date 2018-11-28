@@ -1,0 +1,156 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.yuminsoft.ams.system.dao.quality.QualitySourceInfoMapper" >
+  <resultMap id="BaseResultMap" type="com.yuminsoft.ams.system.domain.quality.QualitySourceInfo" >
+    <id column="id" property="id" jdbcType="DECIMAL" />
+    <result column="created_by" property="createdBy" jdbcType="VARCHAR" />
+    <result column="created_date" property="createdDate" jdbcType="TIMESTAMP" />
+    <result column="last_modified_by" property="lastModifiedBy" jdbcType="VARCHAR" />
+    <result column="last_modified_date" property="lastModifiedDate" jdbcType="TIMESTAMP" />
+    <result column="quality_source" property="qualitySource" jdbcType="VARCHAR" />
+    <result column="status" property="status" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, created_by, created_date, last_modified_by, last_modified_date,quality_source,status
+  </sql>
+  
+ <select id="findOne" resultMap="BaseResultMap" parameterType="java.util.Map" >
+    select
+    <include refid="Base_Column_List" />
+    from ams_quality_source_info
+    where quality_source = #{qualitySource,jdbcType=VARCHAR}
+     <if test="status !=null">
+     AND status != #{status,jdbcType=VARCHAR}
+    </if>
+  </select>
+  
+  <select id="findUse" resultMap="BaseResultMap" parameterType="java.util.Map" >
+    select
+    <include refid="Base_Column_List" />
+    from ams_quality_source_info
+    where quality_source = #{qualitySource,jdbcType=VARCHAR}
+     <if test="status !=null">
+     AND status = #{status,jdbcType=VARCHAR}
+    </if>
+  </select>
+  
+  <select id="findById" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select
+    <include refid="Base_Column_List" />
+    from ams_quality_source_info
+    where id = #{id,jdbcType=DECIMAL}
+  </select>
+  
+  <select id="findAll" resultMap="BaseResultMap" parameterType="java.util.Map" >
+    select
+    	distinct(quality_source)
+    from ams_quality_source_info
+    where 1=1
+    <if test="qualitySource !=null">
+     AND quality_source = #{qualitySource,jdbcType=VARCHAR}
+    </if>
+    <if test="status !=null">
+     AND status != #{status,jdbcType=VARCHAR}
+    </if>
+  </select>
+  <!-- 查找有效的来源 -->
+   <select id="findInUse" resultMap="BaseResultMap" parameterType="java.util.Map" >
+    select
+    	 <include refid="Base_Column_List"/>
+    from ams_quality_source_info
+    where 1=1
+    <if test="qualitySource !=null">
+     AND quality_source = #{qualitySource,jdbcType=VARCHAR}
+    </if>
+    <if test="status !=null">
+     AND status != #{status,jdbcType=VARCHAR}
+    </if>
+  </select>
+  
+  <!-- 查询条件 -->
+  <sql id="amsConditions">
+      <if test="id != null" >
+        AND id = #{id,jdbcType=DECIMAL}
+      </if>
+      <if test="createdBy != null" >
+        AND created_by = #{createdBy,jdbcType=VARCHAR}
+      </if>
+      <if test="createdDate != null" >
+        AND created_date = #{createdDate,jdbcType=TIMESTAMP}
+      </if>
+      <if test="lastModifiedBy != null" >
+        AND last_modified_by = #{lastModifiedBy,jdbcType=VARCHAR}
+      </if>
+      <if test="lastModifiedDate != null" >
+        AND last_modified_date = #{lastModifiedDate,jdbcType=TIMESTAMP}
+      </if>
+      <if test="qualitySource != null" >
+        AND quality_source = #{qualitySource,jdbcType=VARCHAR}
+      </if>
+  </sql>
+  
+  <delete id="delete" parameterType="java.lang.Long" >
+    delete from ams_quality_source_info
+    where id = #{id,jdbcType=DECIMAL}
+  </delete>
+  
+  <delete id="deletes" parameterType="java.lang.String">
+		update ams_quality_source_info set status='2'
+		where id in
+		<foreach item="item" index="index" collection="array" open="(" separator="," close=")">
+			#{item}
+		</foreach>
+	</delete>
+  
+  <insert id="save" parameterType="com.yuminsoft.ams.system.domain.quality.QualitySourceInfo" useGeneratedKeys="true" keyProperty="id" >
+    insert into ams_quality_source_info (created_by, created_date, last_modified_by, 
+      last_modified_date, quality_source,status)
+    values (#{createdBy,jdbcType=VARCHAR}, #{createdDate,jdbcType=TIMESTAMP}, #{lastModifiedBy,jdbcType=VARCHAR}, 
+      #{lastModifiedDate,jdbcType=TIMESTAMP}, #{qualitySource,jdbcType=VARCHAR}, #{status,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.yuminsoft.ams.system.domain.quality.QualitySourceInfo" useGeneratedKeys="true" keyProperty="id" >
+    insert into ams_quality_source_info
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      created_by,
+      created_date,
+      last_modified_by,
+      last_modified_date,
+      quality_source,
+      status
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      #{createdBy,jdbcType=VARCHAR},
+      #{createdDate,jdbcType=TIMESTAMP},
+      #{lastModifiedBy,jdbcType=VARCHAR},
+      #{lastModifiedDate,jdbcType=TIMESTAMP},
+      #{qualitySource,jdbcType=VARCHAR},
+      #{status,jdbcType=VARCHAR}
+    </trim>
+  </insert>
+  
+  <update id="update" parameterType="com.yuminsoft.ams.system.domain.quality.QualitySourceInfo" >
+    update ams_quality_source_info
+    <set >
+      <if test="createdBy != null" >
+        created_by = #{createdBy,jdbcType=VARCHAR},
+      </if>
+      <if test="createdDate != null" >
+        created_date = #{createdDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="lastModifiedBy != null" >
+        last_modified_by = #{lastModifiedBy,jdbcType=VARCHAR},
+      </if>
+      <if test="lastModifiedDate != null" >
+        last_modified_date = #{lastModifiedDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="status != null" >
+        status = #{status,jdbcType=VARCHAR},
+      </if>
+      <if test="qualitySource != null" >
+        quality_source = #{qualitySource,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=DECIMAL}
+  </update>
+  
+</mapper>

@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	   xmlns:dubbo="http://code.alibabatech.com/schema/dubbo" xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.1.xsd
+        http://code.alibabatech.com/schema/dubbo
+		http://code.alibabatech.com/schema/dubbo/dubbo.xsd">
+
+	<dubbo:application name="${dubbo.application.name}" />
+	<!-- 使用zookeeper注册中心暴露服务地址 -->
+	<dubbo:registry protocol="zookeeper" address="${dubbo.zookeeper.address}" />
+	<!-- 用dubbo协议在20880端口暴露服务 -->
+	<dubbo:protocol name="dubbo" port="${dubbo.protocol.port}" />
+	<!-- 借款录入或修改接口 -->
+	<dubbo:reference id="applyEnterExecuter" interface="com.ymkj.ams.api.service.apply.IApplyEnterExecuter" timeout="50000" />
+	<!-- 平台系统接口 -->
+	<dubbo:reference id="organizationExecuter" interface="com.ymkj.pms.biz.api.service.IOrganizationExecuter" timeout="50000" />
+	<dubbo:reference id="organizationExecuterV1" interface="com.ymkj.pms.biz.api.service.v1.IOrganizationExecuterV1" timeout="50000"/>
+	<dubbo:reference id="iEmployeeExecuterV1" interface="com.ymkj.pms.biz.api.service.v1.IEmployeeExecuterV1" timeout="50000"/>
+	<dubbo:reference id="iRoleExecuterV1" interface="com.ymkj.pms.biz.api.service.v1.IRoleExecuterV1" timeout="50000"/>
+	<dubbo:reference id="iRoleExecuter" interface="com.ymkj.pms.biz.api.service.IRoleExecuter" timeout="50000"/>
+	<!-- 工作日接口 -->
+	<dubbo:reference id="iCalendarExecuter" interface="com.ymkj.pms.biz.api.service.ICalendarExecuter" timeout="50000" />
+	<!-- 站内消息接口 -->
+	<dubbo:reference id="iMessageExecuter" interface="com.ymkj.pms.biz.api.service.IMessageExecuter" timeout="50000" />
+	<!-- 行为库接口 -->
+	<dubbo:reference id="blackListExecuter" interface="com.ymkj.bds.biz.api.service.IBlackListExecuter" timeout="60000" />
+	<dubbo:reference id="internalMatchingExecuter" interface="com.ymkj.bds.biz.api.service.IInternalMatchingExecuter" timeout="240000" />
+	<!-- 规则引擎 -->
+	<dubbo:reference id="iRuleEngineExecuter" interface="com.ymkj.rule.biz.api.service.IRuleEngineExecuter" timeout="60000" check="false" retries="0"/>
+	
+	<!-- 整理后的接口 -->
+	<!-- 联系人相关接口 -->
+	<dubbo:reference id="contactInfoExecuter" interface="com.ymkj.ams.api.service.approve.audit.ContactInfoExecuter" timeout="50000" />
+	
+	<!-- 终审审核相关接口 -->
+	<dubbo:reference id="finalApproveExecuter" interface="com.ymkj.ams.api.service.approve.audit.FinalApproveExecuter" timeout="50000" />
+	
+	<!-- 初审审核相关接口 -->
+	<dubbo:reference id="firstApproveExecuter" interface="com.ymkj.ams.api.service.approve.audit.FirstApproveExecuter" timeout="70000" />
+	
+	<!-- 终审派单相关接口（包含改派） -->
+	<dubbo:reference id="finalDispatchExecuter" interface="com.ymkj.ams.api.service.approve.dispatch.FinalDispatchExecuter" timeout="50000" />
+	
+	<!-- 初审派单相关接口（包含改派） -->
+	<dubbo:reference id="firstDispatchExecuter" interface="com.ymkj.ams.api.service.approve.dispatch.FirstDispatchExecuter" timeout="70000" />
+	
+	<!-- 申请信息相关接口 -->
+	<dubbo:reference id="applyInfoExecuter" interface="com.ymkj.ams.api.service.approve.integrate.ApplyInfoExecuter" timeout="50000" />
+	
+	<!-- 省市区相关接口 -->
+	<dubbo:reference id="districtExecuter" interface="com.ymkj.ams.api.service.approve.integrate.DistrictExecuter" timeout="50000" />
+	
+	<!-- 枚举值相关接口 -->
+	<dubbo:reference id="enumExecuter" interface="com.ymkj.ams.api.service.approve.integrate.EnumExecuter" timeout="50000" />
+	
+	<!-- 综合查询相关接口 -->
+	<dubbo:reference id="integrateSearchExecuter" interface="com.ymkj.ams.api.service.approve.integrate.IntegrateSearchExecuter" timeout="60000" />
+	
+	<!-- 原因查询相关接口 -->
+	<dubbo:reference id="reasonExecuter" interface="com.ymkj.ams.api.service.approve.integrate.ReasonExecuter" timeout="50000" />
+	
+	<!-- 申请件维护相关接口 -->
+	<dubbo:reference id="applicationMaintainExecuter" interface="com.ymkj.ams.api.service.approve.maintain.ApplicationMaintainExecuter" timeout="50000" />
+	
+	<!-- 产品相关接口 -->
+	<dubbo:reference id="productExecuter" interface="com.ymkj.ams.api.service.approve.product.ProductExecuter" timeout="50000" />
+	
+	<!-- 复核确认相关接口 -->
+	<dubbo:reference id="recheckExecuter" interface="com.ymkj.ams.api.service.approve.recheck.RecheckExecuter" timeout="50000" />
+	
+	<!-- 复议相关接口 -->
+	<dubbo:reference id="reconsiderExecuter" interface="com.ymkj.ams.api.service.approve.reconsider.ReconsiderExecuter" timeout="50000" />
+	
+	<!-- 规则引擎相关接口 -->
+	<dubbo:reference id="ruleEngineExecuter" interface="com.ymkj.ams.api.service.approve.ruleengine.RuleEngineExecuter" timeout="60000" check="false" retries="0" />
+	
+	<!-- 规则引擎相关接口 -->
+	<dubbo:reference id="taskNumberExecuter" interface="com.ymkj.ams.api.service.approve.task.TaskNumberExecuter" timeout="50000" />
+	
+	<!-- 质检相关接口 -->
+	<dubbo:reference id="qualityExecuter" interface="com.ymkj.ams.api.service.quality.QualityExecuter" timeout="50000" />
+	
+	
+	<!-- 录单借款API(众安反欺诈) -->
+	<dubbo:reference id="ibmsSLoanJobExecuter" interface="com.ymkj.bms.biz.api.service.job.IBMSLoanJobExecuter" timeout="50000" />
+
+	<!-- 前前进件 -->
+	<dubbo:reference id="applicationInfoExecuter" interface="com.ymkj.ams.api.service.approve.integrate.ApplicationInfoExecuter" timeout="50000" />
+</beans>    

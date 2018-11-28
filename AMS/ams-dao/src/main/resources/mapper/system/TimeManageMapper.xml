@@ -1,0 +1,318 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.yuminsoft.ams.system.dao.system.TimeManageMapper" >
+	
+	<!-- 根据条件查找列表 -->
+  <select id="findAll" resultType="com.yuminsoft.ams.system.domain.system.TimeManagement" parameterType="java.util.Map" >
+    SELECT
+    	id			  id,
+    	role_code	  roleCode,
+    	user_code 	  userCode,
+    	time_type	  timeType,
+    	special_date  date,
+    	start_time	  startTime,
+    	end_time	  endTime,
+    	create_time	  createTime,
+    	creator		  creator,
+    	creator_name  creatorName,
+    	modify_time	  modifyTime,
+    	modifier	  modifier,
+    	modifier_name modifierName
+    FROM
+    	ams_time_management
+    WHERE 1 = 1
+    <if test="startDate == null and endDate == null">
+    	AND IF (
+			special_date IS NULL,
+			DATE_ADD(CURRENT_DATE (),INTERVAL 1 DAY),
+			DATE_FORMAT(special_date, '%Y-%m-%d')
+		) <![CDATA[ >= ]]> CURRENT_DATE ()
+    </if>
+    <if test="empList != null">
+    	AND user_code IN
+    	<foreach collection="empList" index="index" item="item" open="(" separator="," close=")">
+			#{item.usercode}
+		</foreach>
+	</if>
+	<if test="roleCode != null">
+	    AND role_code = #{roleCode,jdbcType=VARCHAR}
+	</if>
+	<if test="timeType != null">
+	    AND time_type = #{timeType,jdbcType=CHAR}
+	</if>
+	<if test="startDate != null">
+	    AND special_date <![CDATA[ >= ]]> #{startDate,jdbcType=CHAR}
+	</if>
+	<if test="endDate != null">
+	    AND special_date <![CDATA[ <= ]]> #{endDate,jdbcType=CHAR}
+	</if>
+	<if test="searchType != null ">
+		<choose>  
+			<!-- 其他角色节点 -->
+            <when test="searchType == 1">  
+				order by timeType asc,special_date asc
+            </when>
+            <otherwise>  
+                order by  userCode asc,timeType asc,special_date asc
+            </otherwise>  
+        </choose> 
+	</if>
+  </select>
+  
+  <!-- 根据条件查找单个记录 -->
+  <select id="findOne" resultType="com.yuminsoft.ams.system.domain.system.TimeManagement" parameterType="java.util.Map">
+  	 SELECT
+    	id				id,
+    	role_code		roleCode,
+    	time_type		timeType,
+    	special_date	date,
+    	start_time		startTime,
+    	end_time		endTime,
+    	create_time		createTime,
+    	creator			creator,
+    	creator_name  	creatorName,
+    	modify_time		modifyTime,
+    	modifier		modifier,
+    	modifier_name 	modifierName
+    FROM
+    	ams_time_management
+    WHERE
+    	1=1
+   	<if test="roleCode != null">
+	    AND role_code = #{roleCode,jdbcType=VARCHAR}
+	</if>
+  	<if test="timeType != null">
+	    AND time_type = #{timeType,jdbcType=CHAR}
+	</if>
+	<if test="date != null">
+	    AND special_date = #{date,jdbcType=CHAR}
+	</if>
+	<if test="userCode != null">
+	    AND user_code = #{userCode,jdbcType=CHAR}
+	</if>
+  </select>
+  
+  <!-- 更新一条记录 -->
+  <update id="update" parameterType="com.yuminsoft.ams.system.domain.system.TimeManagement">
+  	UPDATE
+  		ams_time_management
+  	<set>
+		<if test="roleCode != null">
+			role_code = #{roleCode,jdbcType=VARCHAR},
+		</if>
+		<if test="timeType != null">
+			time_type = #{timeType,jdbcType=CHAR},
+		</if>
+		<if test="date != null">
+			special_date = #{date,jdbcType=CHAR},
+		</if>
+		<if test="startTime != null">
+			start_time = #{startTime,jdbcType=CHAR},
+		</if>
+		<if test="endTime != null">
+			end_time = #{endTime,jdbcType=CHAR},
+		</if>
+		<if test="modifier != null">
+			modifier = #{modifier,jdbcType=VARCHAR},
+		</if>
+		<if test="modifierName != null">
+			modifier_name = #{modifierName,jdbcType=VARCHAR},
+		</if>
+		<if test="modifyTime != null">
+			modify_time = #{modifyTime,jdbcType=TIMESTAMP},
+		</if>
+	</set>
+	WHERE
+		id = #{id,jdbcType=BIGINT}
+  </update>
+  
+  <!-- 批量更新记录 -->
+  <update id="batchUpdate" parameterType="java.util.Map">
+  	UPDATE
+  		ams_time_management
+  	<set>
+		<if test="roleCode != null">
+			role_code = #{roleCode,jdbcType=VARCHAR},
+		</if>
+		<if test="timeType != null">
+			time_type = #{timeType,jdbcType=CHAR},
+		</if>
+		<if test="date != null">
+			special_date = #{date,jdbcType=CHAR},
+		</if>
+		<if test="startTime != null">
+			start_time = #{startTime,jdbcType=CHAR},
+		</if>
+		<if test="endTime != null">
+			end_time = #{endTime,jdbcType=CHAR},
+		</if>
+		<if test="modifier != null">
+			modifier = #{modifier,jdbcType=VARCHAR},
+		</if>
+		<if test="modifierName != null">
+			modifier_name = #{modifierName,jdbcType=VARCHAR},
+		</if>
+		<if test="modifyTime != null">
+			modify_time = #{modifyTime,jdbcType=TIMESTAMP},
+		</if>
+	</set>
+	WHERE
+		id in(
+			<foreach collection="ids" item="id" index="index" separator="," >    
+	              #{id}
+	        </foreach>
+		) 
+  </update>
+  
+  <!-- 插入一条记录 -->
+  <insert id="insert" parameterType="com.yuminsoft.ams.system.domain.system.TimeManagement">
+  	INSERT INTO ams_time_management
+		(
+			role_code	,
+			user_code	,
+			time_type	,   
+			special_date,       
+			start_time	,  
+			end_time	,    
+			create_time	, 
+			creator		,
+			creator_name,  
+			modify_time	, 
+			modifier	,
+			modifier_name   
+		)
+		values
+		(
+			#{roleCode,			jdbcType=VARCHAR},
+			#{userCode,			jdbcType=VARCHAR},
+			#{timeType,			jdbcType=CHAR},
+			#{date,				jdbcType=CHAR},
+			#{startTime,		jdbcType=CHAR},
+			#{endTime,			jdbcType=CHAR},
+			#{createTime,		jdbcType=TIMESTAMP},
+			#{creator,			jdbcType=VARCHAR},
+			#{creatorName,		jdbcType=VARCHAR},
+			#{modifyTime,		jdbcType=TIMESTAMP},
+			#{modifier,			jdbcType=VARCHAR},
+			#{modifierName,		jdbcType=VARCHAR}
+		)
+  </insert>
+  
+  <!-- 删除某个角色今天之后的单独日期的记录 -->
+  <delete id="deleteAppointedDate" parameterType="String">
+  	DELETE
+	FROM
+		ams_time_management
+	WHERE
+		role_code = #{roleCode,jdbcType=VARCHAR}
+	AND time_type = '2'
+	AND DATE_FORMAT(special_date, '%Y-%m-%d') <![CDATA[ > ]]> CURRENT_DATE();
+  </delete>
+  
+  <!-- 根据id删除某条记录 -->
+  <delete id="delete" parameterType="java.lang.Long">
+  	DELETE
+	FROM
+		ams_time_management
+	WHERE
+		id = #{id,jdbcType=BIGINT}
+  </delete>
+  
+  <!-- 查询某个角色今天的有效时间限制记录（可能会有多条，如果有单独时间设置，以单独时间设置为准） -->
+  <select id="findOneOfToday" resultType="com.yuminsoft.ams.system.domain.system.TimeManagement" parameterType="java.util.Map">
+  	 SELECT
+    	id			             id,
+    	role_code	             roleCode,
+    	user_code	             userCode,
+    	time_type	             timeType,
+    	special_date		     date,
+    	start_time	             startTime,
+    	end_time	             endTime,
+    	create_time	             createTime,
+    	creator		             creator,
+    	creator_name             creatorName,
+    	modify_time	             modifyTime,
+    	modifier	             modifier,
+    	modifier_name			 modifierName
+    FROM
+    	(
+			SELECT
+			  *
+			FROM
+				ams_time_management
+			WHERE
+				role_code = #{roleCode,jdbcType=VARCHAR}
+				<if test="roleCode == 'check'">
+					AND user_code = #{userCode,jdbcType=VARCHAR}
+				</if>
+				AND time_type = '2'
+				AND DATE_FORMAT(special_date, '%Y-%m-%d') = CURRENT_DATE()
+			UNION
+				SELECT
+					*
+				FROM
+					ams_time_management
+				WHERE
+					role_code = #{roleCode,jdbcType=VARCHAR}
+					<if test="roleCode == 'check'">
+						AND user_code = #{userCode,jdbcType=VARCHAR}
+					</if>
+					AND time_type = #{timeType,jdbcType=CHAR}
+		) tm
+	ORDER BY
+		tm.time_type DESC
+	LIMIT 1
+  </select>
+  
+  <!-- 批量插入 -->
+  <insert id="batchInsert" parameterType="List">
+	<foreach collection="list" item="item" index="index" separator=";">
+		INSERT INTO ams_time_management
+		(
+			role_code	,
+			user_code	,
+			time_type	,   
+			special_date,       
+			start_time	,  
+			end_time	,    
+			create_time	, 
+			creator		,  
+			creator_name,
+			modify_time	, 
+			modifier	,
+			modifier_name    
+		)
+		values
+		(
+			#{item.roleCode,			jdbcType=VARCHAR},
+			#{item.userCode,			jdbcType=VARCHAR},
+			#{item.timeType,			jdbcType=CHAR},
+			#{item.date,				jdbcType=CHAR},
+			#{item.startTime,			jdbcType=CHAR},
+			#{item.endTime,				jdbcType=CHAR},
+			#{item.createTime,			jdbcType=TIMESTAMP},
+			#{item.creator,				jdbcType=VARCHAR},
+			#{item.creatorName,			jdbcType=VARCHAR},
+			#{item.modifyTime,			jdbcType=TIMESTAMP},
+			#{item.modifier,			jdbcType=VARCHAR},
+			#{item.modifierName,		jdbcType=VARCHAR}
+		)
+    </foreach>
+  </insert>
+	
+  <!-- 根据id删除批量删除记录 -->
+  <delete id="batchDelete" >
+  	DELETE
+	FROM
+		ams_time_management
+	WHERE
+		id in(
+			<foreach collection="ids" item="id" index="index" separator="," >    
+                #{id,jdbcType=INTEGER}
+            </foreach> 
+		)
+  </delete>
+  
+</mapper>
+
+

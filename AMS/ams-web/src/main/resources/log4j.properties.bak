@@ -1,0 +1,31 @@
+log4j.rootLogger = INFO, CONSOLE, FILE
+
+log4j.appender.CONSOLE.Target=System.out
+
+log4j.appender.CONSOLE = org.apache.log4j.ConsoleAppender
+log4j.appender.CONSOLE.layout = org.apache.log4j.PatternLayout
+#log4j.appender.CONSOLE.layout.ConversionPattern = [%d{HH:mm:ss.SSS}][%-5p][%t]%l:%m%n
+log4j.appender.CONSOLE.layout.ConversionPattern = [%d{yyyy/MM/dd HH:mm:ss,SSS}] - [%-5p] : %m%n
+
+log4j.appender.FILE = org.apache.log4j.DailyRollingFileAppender
+log4j.appender.FILE.File = /data/logs/tomcat/logs/bds-web.log
+log4j.appender.FILE.Encoding=UTF-8
+log4j.appender.FILE.DatePattern = '.'yyyy-MM-dd'.log'
+log4j.appender.FILE.layout = org.apache.log4j.PatternLayout
+log4j.appender.FILE.layout.ConversionPattern = [%d{yyyy/MM/dd HH:mm:ss,SSS}] - [%-5p] %l : %m%n
+
+#log4j.logger.org.springframework.aop.framework=INFO
+#log4j.logger.org.springframework.aop.interceptor.PerformanceMonitorInterceptor = trace
+log4j.logger.org.apache.zookeeper=INFO
+#log4j.logger.com.ibatis=DEBUG
+#log4j.logger.com.yuminsoft.ams.system=DEBUG
+log4j.logger.jdbc.sqltiming=INFO
+log4j.logger.jdbc.sqlonly=OFF
+log4j.logger.jdbc.audit=OFF
+log4j.logger.jdbc.resultset=OFF
+log4j.logger.jdbc.connection=OFF
+log4j.logger.jdbc.resultsettable=OFF
+#log4j.logger.org.springframework=INFO
+
+
+

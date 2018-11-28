@@ -1,0 +1,185 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.yuminsoft.ams.system.dao.approve.StaffOrderAbilityMapper">
+	<resultMap id="BaseResultMap" type="com.yuminsoft.ams.system.domain.approve.StaffOrderAbility">
+		<id column="id" property="id" jdbcType="DECIMAL" />
+		<result column="created_by" property="createdBy" jdbcType="VARCHAR" />
+		<result column="created_date" property="createdDate" jdbcType="TIMESTAMP" />
+		<result column="last_modified_by" property="lastModifiedBy" jdbcType="VARCHAR" />
+		<result column="last_modified_date" property="lastModifiedDate" jdbcType="TIMESTAMP" />
+		<result column="area_code" property="areaCode" jdbcType="VARCHAR" />
+		<result column="product_code" property="productCode" jdbcType="VARCHAR" />
+		<result column="staff_code" property="staffCode" jdbcType="VARCHAR" />
+		<result column="value" property="value" jdbcType="INTEGER" />
+		<result column="fraud_level" property="fraudLevel" jdbcType="VARCHAR"/>
+		<result column="com_credit_rating" property="comCreditRating" jdbcType="VARCHAR"/>
+
+	</resultMap>
+	<sql id="Base_Column_List">
+		id, created_by, created_date, last_modified_by, last_modified_date, area_code, product_code,
+		staff_code, `value`,fraud_level,com_credit_rating
+	</sql>
+	<select id="findOne" resultMap="BaseResultMap" parameterType="java.util.Map">
+		select
+		<include refid="Base_Column_List" />
+		from ams_staff_order_ability
+		where 1=1
+		<include refid="amsConditions" />
+	</select>
+
+	<select id="findById" resultMap="BaseResultMap" parameterType="java.lang.Long">
+		select
+		<include refid="Base_Column_List" />
+		from ams_staff_order_ability
+		where id = #{id,jdbcType=DECIMAL}
+	</select>
+
+	<select id="findAll" resultMap="BaseResultMap" parameterType="java.util.Map">
+		select
+		<include refid="Base_Column_List" />
+		from ams_staff_order_ability
+		where 1=1
+		<include refid="amsConditions" />
+	</select>
+
+	<!-- 查询条件 -->
+	<sql id="amsConditions">
+		<if test="id != null">
+			AND id = #{id,jdbcType=DECIMAL}
+		</if>
+		<if test="createdBy != null">
+			AND created_by = #{createdBy,jdbcType=VARCHAR}
+		</if>
+		<if test="createdDate != null">
+			AND created_date = #{createdDate,jdbcType=TIMESTAMP}
+		</if>
+		<if test="lastModifiedBy != null">
+			AND last_modified_by = #{lastModifiedBy,jdbcType=VARCHAR}
+		</if>
+		<if test="lastModifiedDate != null">
+			AND last_modified_date = #{lastModifiedDate,jdbcType=TIMESTAMP}
+		</if>
+		<if test="areaCode != null">
+			AND area_code = #{areaCode,jdbcType=VARCHAR}
+		</if>
+		<if test="productCode != null">
+			AND product_code = #{productCode,jdbcType=VARCHAR}
+		</if>
+		<if test="staffCode != null">
+			AND staff_code = #{staffCode,jdbcType=VARCHAR}
+		</if>
+		<if test="value != null">
+			AND `value` = #{value,jdbcType=INTEGER}
+		</if>
+		<if test="fraudLevel!=null">
+			AND fraud_level LIKE #{fraudLevel,jdbcType=VARCHAR}
+		</if>
+		<if test="comCreditRating!=null">
+			AND com_credit_rating LIKE #{comCreditRating,jdbcType=VARCHAR}
+		</if>
+	</sql>
+
+	<delete id="delete" parameterType="java.lang.Long">
+		delete from ams_staff_order_ability
+		where id = #{id,jdbcType=DECIMAL}
+	</delete>
+	<insert id="save" parameterType="com.yuminsoft.ams.system.domain.approve.StaffOrderAbility" useGeneratedKeys="true" keyProperty="id">
+		insert into ams_staff_order_ability (created_by, created_date, last_modified_by,
+		last_modified_date, area_code, product_code,
+		staff_code,`value`,fraud_level,com_credit_rating)
+		values (#{createdBy,jdbcType=VARCHAR}, #{createdDate,jdbcType=TIMESTAMP}, #{lastModifiedBy,jdbcType=VARCHAR},
+		#{lastModifiedDate,jdbcType=TIMESTAMP}, #{areaCode,jdbcType=VARCHAR}, #{productCode,jdbcType=VARCHAR},
+		#{staffCode,jdbcType=VARCHAR}, #{value,jdbcType=INTEGER},#{fraudLevel,jdbcType=VARCHAR},#{comCreditRating,jdbcType=VARCHAR})
+	</insert>
+
+	<update id="update" parameterType="com.yuminsoft.ams.system.domain.approve.StaffOrderAbility">
+		update ams_staff_order_ability
+		<set>
+			<if test="createdBy != null">
+				created_by = #{createdBy,jdbcType=VARCHAR},
+			</if>
+			<if test="createdDate != null">
+				created_date = #{createdDate,jdbcType=TIMESTAMP},
+			</if>
+			<if test="lastModifiedBy != null">
+				last_modified_by = #{lastModifiedBy,jdbcType=VARCHAR},
+			</if>
+			<if test="lastModifiedDate != null">
+				last_modified_date = #{lastModifiedDate,jdbcType=TIMESTAMP},
+			</if>
+			<if test="areaCode != null">
+				area_code = #{areaCode,jdbcType=VARCHAR},
+			</if>
+			<if test="productCode != null">
+				product_code = #{productCode,jdbcType=VARCHAR},
+			</if>
+			<if test="staffCode != null">
+				staff_code = #{staffCode,jdbcType=VARCHAR},
+			</if>
+			<if test="value != null">
+				`value` = #{value,jdbcType=INTEGER},
+			</if>
+			<if test="fraudLevel!=null">
+				fraud_level = #{fraudLevel,jdbcType=VARCHAR}
+			</if>
+			<if test="comCreditRating!=null">
+				com_credit_rating = #{comCreditRating,jdbcType=VARCHAR}
+			</if>
+
+		</set>
+		where id = #{id,jdbcType=DECIMAL}
+	</update>
+
+
+	<!-- 根据机员工编码删除 -->
+	<delete id="deleteByStaffCode" parameterType="java.lang.String">
+		delete from ams_staff_order_ability
+		where staff_code = #{staffCode,jdbcType=VARCHAR}
+	</delete>
+	
+	<!-- 查出为该用户分配的产品code列表 -->
+	<select id="findAllProductCodeByUserCode" parameterType="java.lang.String" resultType = "java.lang.String">
+		SELECT DISTINCT
+			product_code
+		FROM
+			ams_staff_order_ability
+		WHERE
+			staff_code = #{userCode,jdbcType=VARCHAR}
+		AND (`value` = '1' OR `value` = '2')
+		AND LOCATE('-', product_code)
+	</select>
+	
+	<select id="findStaffOrderAbilityByStaffCode" parameterType="java.lang.String" resultMap="BaseResultMap">
+		SELECT  * FROM  ams_staff_order_ability
+		WHERE  staff_code = #{staffCode,jdbcType=VARCHAR} ORDER  BY  last_modified_date DESC  LIMIT 1
+	</select>
+	
+	<select id="findByUserCodes" resultMap="BaseResultMap">
+		select
+		<include refid="Base_Column_List" />
+		from ams_staff_order_ability
+		where 1 = 1
+		<if test="list != null and list.size() > 0">
+			AND staff_code IN
+			<foreach collection="list" index="index" item="item" open="(" separator="," close=")">
+				#{item}
+			</foreach>
+		</if>
+	</select>
+
+	<!-- 查询员工是否同时有N个产品的接单能力 -->
+	<select id="findByMultiProductAndArea" resultMap="BaseResultMap">
+		select <include refid="Base_Column_List" /> from ams_staff_order_ability t1
+		where t1.staff_code = #{staffCode, jdbcType=VARCHAR}
+		and t1.value != 0
+		and (
+		<foreach collection="abilityes" index="index" item="item">
+			t1.area_code = #{item.areaCode, jdbcType=VARCHAR} and t1.product_code = #{item.productCode, jdbcType=VARCHAR} and t1.com_credit_rating like #{item.comCreditRating, jdbcType=VARCHAR}
+			<if test="index != (abilityes.size - 1)">
+				or
+			</if>
+
+		</foreach>
+		)
+	</select>
+</mapper>

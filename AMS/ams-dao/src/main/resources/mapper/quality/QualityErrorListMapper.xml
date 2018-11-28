@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.yuminsoft.ams.system.dao.quality.QualityErrorListMapper">
+    <resultMap id="BaseResultMap" type="com.yuminsoft.ams.system.domain.quality.QualityErrorList">
+        <id column="id" property="id" jdbcType="DECIMAL"/>
+        <result column="created_by" property="createdBy" jdbcType="VARCHAR"/>
+        <result column="created_date" property="createdDate" jdbcType="TIMESTAMP"/>
+        <result column="last_modified_date" property="lastModifiedDate" jdbcType="TIMESTAMP"/>
+        <result column="last_modified_by" property="lastModifiedBy" jdbcType="VARCHAR"/>
+        <result column="name" property="name" jdbcType="VARCHAR"/>
+        <result column="level" property="level" jdbcType="VARCHAR"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+    id, created_by, created_date, last_modified_by, last_modified_date, name, level
+  </sql>
+	<select id="findOne" resultMap="BaseResultMap" parameterType="java.util.Map">
+		select
+			<include refid="Base_Column_List" />
+			from ams_quality_error_list
+			where 1=1
+		 <if test="name != null">
+            AND name = #{name,jdbcType=VARCHAR}
+        </if>
+         <if test="id != null">
+            AND id = #{id,jdbcType=DECIMAL}
+        </if>
+			
+	</select>
+
+    <insert id="save" parameterType="com.yuminsoft.ams.system.domain.quality.QualityErrorList" useGeneratedKeys="true" keyProperty="id">
+    insert into ams_quality_error_list (created_by, created_date, last_modified_by, 
+      last_modified_date, name,level
+      )
+    values (#{createdBy,jdbcType=VARCHAR}, #{createdDate,jdbcType=TIMESTAMP}, #{lastModifiedBy,jdbcType=VARCHAR}, 
+      #{lastModifiedDate,jdbcType=TIMESTAMP}, #{name,jdbcType=VARCHAR}, 
+      #{level,jdbcType=VARCHAR})
+  </insert>
+</mapper>

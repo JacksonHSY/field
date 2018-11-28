@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.yuminsoft.ams.system.dao.quality.TaskMapper">
+
+	<resultMap id="BaseResultMap" type="com.yuminsoft.ams.system.domain.uflo.Task" >
+		<id property="id" column="ID_" jdbcType="BIGINT" />
+		<result property="description" column="DESCRIPTION_" jdbcType="VARCHAR" />
+		<result property="nodeName" column="NODE_NAME_" jdbcType="VARCHAR" />
+		<result property="processId" column="PROCESS_ID_" jdbcType="BIGINT" />
+		<result property="assignee" column="ASSIGNEE_" jdbcType="VARCHAR" />
+		<result property="businessId" column="BUSINESS_ID_" jdbcType="VARCHAR" />
+		<result property="countersignCount" column="COUNTERSIGN_COUNT_" jdbcType="INTEGER" />
+		<result property="createDate" column="CREATE_DATE_" jdbcType="TIMESTAMP" />
+		<result property="dateUnit" column="DATE_UNIT_" jdbcType="VARCHAR" />
+		<result property="dueActionDate" column="DUE_ACTION_DATE_" jdbcType="TIMESTAMP" />
+		<result property="dueDate" column="DUEDATE_" jdbcType="TIMESTAMP" />
+		<result property="opinion" column="OPINION_" jdbcType="VARCHAR" />
+		<result property="owner" column="OWNER_" jdbcType="VARCHAR" />
+		<result property="prevState" column="PREV_STATE_" jdbcType="VARCHAR" />
+		<result property="prevTask" column="PREV_TASK_" jdbcType="VARCHAR" />
+		<result property="processInstanceId" column="PROCESS_INSTANCE_ID_" jdbcType="BIGINT" />
+		<result property="progress" column="PROGRESS_" jdbcType="INTEGER" />
+		<result property="rootProcessInstanceId" column="ROOT_PROCESS_INSTANCE_ID_" jdbcType="BIGINT" />
+		<result property="state" column="STATE_" jdbcType="VARCHAR" />
+		<result property="subject" column="SUBJECT_" jdbcType="VARCHAR" />
+		<result property="taskName" column="TASK_NAME_" jdbcType="VARCHAR" />
+		<result property="type" column="TYPE_" jdbcType="VARCHAR" />
+		<result property="url" column="URL_" jdbcType="VARCHAR" />
+	</resultMap>
+
+	<sql id="Base_Column_List" >
+		ID_,
+		DESCRIPTION_,
+		NODE_NAME_,
+		PROCESS_ID_,
+		ASSIGNEE_,
+		BUSINESS_ID_,
+		COUNTERSIGN_COUNT_,
+		CREATE_DATE_,
+		DATE_UNIT_,
+		DUE_ACTION_DATE_,
+		DUEDATE_,
+		OPINION_,
+		OWNER_,
+		PREV_STATE_,
+		PREV_TASK_,
+		PROCESS_INSTANCE_ID_,
+		PROGRESS_,
+		ROOT_PROCESS_INSTANCE_ID_,
+		STATE_,
+		SUBJECT_,
+		TASK_NAME_,
+		TYPE_,
+		URL_
+	</sql>
+
+	<select id="findTaskIdByBusinessId" resultType="java.lang.Long" parameterType="java.lang.String">
+		select IFNULL(MAX(ID_),0) from uflo_task where BUSINESS_ID_= #{businessId,jdbcType=VARCHAR}
+	</select>
+
+	<select id="findBusinessIdByLoginUser" resultType="java.lang.String" >
+		SELECT BUSINESS_ID_ FROM uflo_task WHERE 1=1
+		AND OWNER_=#{loginUser,jdbcType=VARCHAR} AND PROCESS_ID_=#{processId,jdbcType=BIGINT}
+	</select>
+
+	<!-- 查询任务节点所属人-->
+	<select id="findByBusinessId" resultMap="BaseResultMap" parameterType="java.lang.String" >
+		SELECT
+			<include refid="Base_Column_List" />
+		FROM uflo_task t
+		WHERE t.BUSINESS_ID_ = #{businessId,jdbcType=VARCHAR}
+		ORDER BY t.id_
+		LIMIT 1
+	</select>
+
+</mapper>

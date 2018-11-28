@@ -1,0 +1,316 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.yuminsoft.ams.system.dao.approve.ProcessrulesCfgMapper">
+	<resultMap id="BaseResultMap" type="com.yuminsoft.ams.system.domain.approve.ProcessrulesCfg">
+		<id column="id" property="id" jdbcType="DECIMAL" />
+		<result column="created_by" property="createdBy" jdbcType="VARCHAR" />
+		<result column="created_date" property="createdDate" jdbcType="TIMESTAMP" />
+		<result column="last_modified_by" property="lastModifiedBy" jdbcType="VARCHAR" />
+		<result column="last_modified_date" property="lastModifiedDate" jdbcType="TIMESTAMP" />
+		<result column="userCode" property="userCode" jdbcType="VARCHAR" />
+		<result column="productCode" property="productCode" jdbcType="VARCHAR" />
+		<result column="productName" property="productName" jdbcType="VARCHAR" />
+		<result column="ruleType" property="ruleType" jdbcType="VARCHAR" />
+		<result column="reasonCode" property="reasonCode" jdbcType="VARCHAR" />
+		<result column="reasonName" property="reasonName" jdbcType="VARCHAR" />
+	</resultMap>
+	<sql id="Base_Column_List">
+		id, created_by, created_date, last_modified_by, last_modified_date,
+		userCode, productCode,productName,ruleType,reasonCode,reasonName
+	</sql>
+
+	<select id="findOne" resultMap="BaseResultMap" parameterType="java.util.Map">
+		select
+		<include refid="Base_Column_List" />
+		from ams_processrules_cfg
+		where 1=1
+		<include refid="amsConditions" />
+	</select>
+
+	<select id="findById" resultMap="BaseResultMap" parameterType="java.lang.Long">
+		select
+		<include refid="Base_Column_List" />
+		from ams_processrules_cfg
+		where id = #{id,jdbcType=DECIMAL}
+	</select>
+
+	<select id="findAll" resultMap="BaseResultMap" parameterType="java.util.Map">
+		select
+		<include refid="Base_Column_List" />
+		from ams_processrules_cfg
+		where 1=1
+		<include refid="amsConditions" />
+	</select>
+
+
+	<select id="findByUserCode" resultMap="BaseResultMap" parameterType="java.util.Map">
+		select
+		<include refid="Base_Column_List" />
+		from ams_processrules_cfg
+		where 1=1
+		AND userCode = #{userCode,jdbcType=VARCHAR}
+	</select>
+	
+	<!--  -->
+	<select id="findByUserCodeList" resultMap="BaseResultMap" parameterType="java.util.List">
+		select
+		<include refid="Base_Column_List" />
+		from ams_processrules_cfg
+		where 1=1
+		AND userCode in
+		<foreach item="item" index="index" collection="list" open="(" separator="," close=")">
+                   #{item}
+        </foreach>
+        order by userCode
+	</select>
+
+	<!-- 查询条件 -->
+	<sql id="amsConditions">
+		<if test="id != null">
+			AND id = #{id,jdbcType=DECIMAL}
+		</if>
+		<if test="createdBy != null">
+			AND created_by = #{createdBy,jdbcType=VARCHAR}
+		</if>
+		<if test="createdDate != null">
+			AND created_date = #{createdDate,jdbcType=TIMESTAMP}
+		</if>
+		<if test="lastModifiedBy != null">
+			AND last_modified_by = #{lastModifiedBy,jdbcType=VARCHAR}
+		</if>
+		<if test="lastModifiedDate != null">
+			AND last_modified_date = #{lastModifiedDate,jdbcType=TIMESTAMP}
+		</if>
+		<if test="userCode != null">
+			AND userCode = #{userCode,jdbcType=VARCHAR}
+		</if>
+		<if test="ruleType != null">
+			AND ruleType = #{ruleType,jdbcType=VARCHAR}
+		</if>
+	</sql>
+
+	<delete id="delete" parameterType="java.lang.Long">
+		delete from ams_processrules_cfg
+		where id = #{id,jdbcType=DECIMAL}
+	</delete>
+
+	<insert id="save" parameterType="com.yuminsoft.ams.system.domain.approve.ProcessrulesCfg" useGeneratedKeys="true" keyProperty="id">
+		insert into ams_processrules_cfg 
+		(
+			created_by,
+			created_date,
+			last_modified_by,
+			last_modified_date,
+			userCode,
+			productCode,
+			productName,
+			ruleType,
+			reasonCode,
+			reasonName
+		)
+		values 
+		(
+			#{createdBy,jdbcType=VARCHAR},
+			#{createdDate,jdbcType=TIMESTAMP},
+			#{lastModifiedBy,jdbcType=VARCHAR},
+			#{lastModifiedDate,jdbcType=TIMESTAMP},
+			#{userCode,jdbcType=VARCHAR},
+			#{productCode,jdbcType=VARCHAR},
+			#{productName,jdbcType=VARCHAR},
+			#{ruleType,jdbcType=VARCHAR},
+			#{reasonCode,jdbcType=VARCHAR},
+			#{reasonName,jdbcType=VARCHAR}
+		)
+	</insert>
+
+	<update id="update" parameterType="com.yuminsoft.ams.system.domain.approve.ProcessrulesCfg">
+		update ams_processrules_cfg
+		<set>
+			<!-- <if test="createdBy != null">
+				created_by = #{createdBy,jdbcType=VARCHAR},
+			</if>
+			<if test="createdDate != null">
+				created_date = #{createdDate,jdbcType=TIMESTAMP},
+			</if> -->
+			<if test="lastModifiedBy != null">
+				last_modified_by = #{lastModifiedBy,jdbcType=VARCHAR},
+			</if>
+			<if test="lastModifiedDate != null">
+				last_modified_date = #{lastModifiedDate,jdbcType=TIMESTAMP},
+			</if>
+			<if test="userCode != null">
+				userCode = #{userCode,jdbcType=VARCHAR},
+			</if>
+			<!-- <if test="productCode != null">
+				productCode = #{productCode,jdbcType=VARCHAR},
+			</if> -->
+			<!-- <if test="productName != null">
+				productName = #{productName,jdbcType=VARCHAR},
+			</if> -->
+			<if test="ruleType != null">
+				ruleType = #{ruleType,jdbcType=VARCHAR},
+			</if>
+			<!-- <if test="reasonCode != null and reasonCode != '' "> -->
+				reasonCode = #{reasonCode,jdbcType=VARCHAR},
+			<!-- </if> -->
+			<!-- <if test="reasonName != null  and reasonName != '' "> -->
+				reasonName = #{reasonName,jdbcType=VARCHAR},
+			<!-- </if> -->
+		</set>
+		where id = #{id,jdbcType=DECIMAL}
+	</update>
+
+	<!-- 校验该规则是否已经存在 -->
+	<select id="hasThisRuleOrNot" resultType="boolean" parameterType="com.yuminsoft.ams.system.domain.approve.ProcessrulesCfg">
+		SELECT
+		<![CDATA[	count(1) > 0	]]>
+		FROM
+		ams_processrules_cfg
+		WHERE
+		userCode = #{userCode,jdbcType=VARCHAR}
+		AND ruleType = #{ruleType,jdbcType=VARCHAR}
+		AND productCode = #{productCode,jdbcType=VARCHAR}
+		<if test=" reasonCode != null">
+			AND reasonCode = #{reasonCode,jdbcType=VARCHAR}
+		</if>
+	</select>
+
+	<!-- 查找所有规则信息 -->
+	<select id="findAllProcessrulesCfg" resultMap="BaseResultMap">
+		select
+		<include refid="Base_Column_List" />
+		from ams_processrules_cfg
+	</select>
+
+	<!-- 根据审批结果查询规则(用于判断是否需要复核确认) -->
+	<!-- productCode = #{productCode,jdbcType=VARCHAR} and -->
+	<select id="findByApproveResult" resultType="boolean" parameterType="java.util.Map">
+		SELECT
+		<![CDATA[	COUNT(1) > 0	]]>
+		FROM
+			ams_user_rule_sub sub
+		LEFT JOIN ams_user_rule r ON r.id = sub.user_rule_id
+		WHERE
+			r.user_code = #{userCode,jdbcType=VARCHAR}
+		AND sub.rule_type = #{ruleType,jdbcType=VARCHAR} 
+		<if test="reasonCodeA != null">
+			AND sub.reason_code LIKE CONCAT('%',#{reasonCodeA,jdbcType=VARCHAR},'%')
+		</if>
+		<if test="reasonCodeB != null">
+			AND sub.reason_code LIKE CONCAT('%',#{reasonCodeB,jdbcType=VARCHAR},'%')
+		</if>
+	</select>
+	
+	
+	
+	
+	
+	<!-- 获取规则配置中被收回权限的用户规则列表 -->
+	<select id="getUserRuleList" resultType="com.yuminsoft.ams.system.vo.apply.UserRuleVO" parameterType="java.util.List">
+		SELECT
+			u.id id,
+			us.id subId,
+			u.user_id userId,
+			u.user_code userCode,
+			us.rule_type ruleType,
+			us.reason_num ruleNum,
+			us.reason_id reasonIds,
+			u.last_modified_by updatePerson,
+			u.last_modified_date updateTime
+		FROM
+			ams_user_rule_sub us
+		LEFT JOIN ams_user_rule u ON us.user_rule_id = u.id
+		where 1=1
+		AND u.user_code in
+		<foreach item="item" index="index" collection="list" open="(" separator="," close=")">
+                   #{item}
+        </foreach>
+        order by u.user_code,rule_type
+	</select>
+	
+	<!-- 插入用户被收回权限主表信息 -->
+	<insert id="insertUserRule" parameterType="com.yuminsoft.ams.system.domain.approve.UserRule" useGeneratedKeys="true" keyProperty="id">
+		insert into ams_user_rule 
+		(
+			user_id,
+			user_code,
+			created_by,
+			created_date,
+			last_modified_by,
+			last_modified_date
+		)
+		values 
+		(
+			#{userId,jdbcType=VARCHAR},
+			#{userCode,jdbcType=VARCHAR},
+			#{createdBy,jdbcType=VARCHAR},
+			#{createdDate,jdbcType=TIMESTAMP},
+			#{lastModifiedBy,jdbcType=VARCHAR},
+			#{lastModifiedDate,jdbcType=TIMESTAMP}
+		)
+	</insert>
+	
+	<!-- 批量插入用户收回权限详细信息 -->
+	<insert id="batchInsertUserRuleSub" parameterType="List">
+		<foreach collection="list" item="item" index="index" separator=";">
+		insert into ams_user_rule_sub
+		(
+			user_rule_id,
+			rule_type,
+			reason_num,
+			reason_id,
+			reason_code,
+			create_time,
+			update_time
+		)
+		values
+        (
+        	#{item.userRuleId,  jdbcType=BIGINT},
+        	#{item.ruleType,    jdbcType=VARCHAR},
+        	#{item.reasonNum,    jdbcType=VARCHAR},
+        	#{item.reasonId,    jdbcType=VARCHAR},
+       		#{item.reasonCode,  jdbcType=VARCHAR},
+        	#{item.createTime,  jdbcType=TIMESTAMP},
+        	#{item.updateTime,  jdbcType=TIMESTAMP}
+        )
+	    </foreach>
+	</insert>
+
+	<!-- 更新用户被收回权限主表信息 -->
+	<update id="updateUserRule" parameterType="com.yuminsoft.ams.system.domain.approve.UserRule">
+		update ams_user_rule
+		<set>
+			<if test="lastModifiedBy != null">
+				last_modified_by = #{lastModifiedBy,jdbcType=VARCHAR},
+			</if>
+			<if test="lastModifiedDate != null">
+				last_modified_date = #{lastModifiedDate,jdbcType=TIMESTAMP},
+			</if>
+			<if test="userCode != null">
+				userCode = #{userCode,jdbcType=VARCHAR},
+			</if>
+			<if test="userId != null">
+				user_id = #{userId,jdbcType=VARCHAR},
+			</if>
+		</set>
+		where id = #{id,jdbcType=BIGINT}
+	</update>
+	
+	<!-- 删除某用户被收回的权限 -->
+	<delete id="deleteUserRuleByUserRuleId" parameterType="java.lang.Long">
+		delete from ams_user_rule where id = #{id,jdbcType=BIGINT}
+	</delete>
+	
+	<!-- 删除某用户被收回的权限详细 -->
+	<delete id="deleteUserRuleSubByUserRuleId" parameterType="java.lang.Long">
+		delete from ams_user_rule_sub where user_rule_id = #{id,jdbcType=BIGINT}
+	</delete>
+	
+	<!-- 获取被收回权限的userCodes -->
+	<select id="getTokenBackUsers" resultType="java.lang.String">
+		select
+			user_code
+		from 
+			ams_user_rule
+	</select>
+</mapper>

@@ -1,0 +1,138 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.yuminsoft.ams.system.dao.quality.QualityErrorCodeInfoInfoMapper">
+    <resultMap id="BaseResultMap" type="com.yuminsoft.ams.system.domain.quality.QualityErrorCodeInfo">
+        <id column="id" property="id" jdbcType="DECIMAL"/>
+        <result column="created_by" property="createdBy" jdbcType="VARCHAR"/>
+        <result column="created_date" property="createdDate" jdbcType="TIMESTAMP"/>
+        <result column="last_modified_date" property="lastModifiedDate" jdbcType="TIMESTAMP"/>
+        <result column="last_modified_by" property="lastModifiedBy" jdbcType="VARCHAR"/>
+        <result column="code" property="code" jdbcType="VARCHAR"/>
+        <result column="is_use" property="isUse" jdbcType="DECIMAL"/>
+        <result column="parent_id" property="parentId" jdbcType="DECIMAL"/>
+        <result column="first_id" property="firstId" jdbcType="DECIMAL"/>
+        <result column="second_id" property="secondId" jdbcType="DECIMAL"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+    id, created_by, created_date, last_modified_by, last_modified_date, code, is_use, parent_id, first_id ,second_id
+  </sql>
+    <select id="findAll" resultMap="BaseResultMap" parameterType="com.yuminsoft.ams.system.domain.quality.QualityErrorCodeInfo">
+        select
+        <include refid="Base_Column_List"/>
+        from ams_quality_errorcode_info
+        where 1=1
+        <if test="code != null">
+            AND code = #{code,jdbcType=VARCHAR}
+        </if>
+    </select>
+    <select id="findById" resultMap="BaseResultMap" parameterType="java.lang.Long">
+		select
+		<include refid="Base_Column_List" />
+		from ams_quality_errorcode_info
+		where id = #{id,jdbcType=DECIMAL}
+	</select>
+	<select id="findOne" resultMap="BaseResultMap" parameterType="java.util.Map">
+		select
+			<include refid="Base_Column_List" />
+			from ams_quality_errorcode_info
+			where code = #{code,jdbcType=VARCHAR}
+		 <if test="status != null">
+            AND status != #{status,jdbcType=VARCHAR}
+        </if>
+			
+	</select>
+
+  <delete id="deletes" parameterType="java.lang.String">
+		update ams_quality_errorcode_info set status ='2'
+		where id in
+		<foreach item="item" index="index" collection="array" open="(" separator="," close=")">
+			#{item}
+		</foreach>
+	</delete>
+
+    <insert id="save" parameterType="com.yuminsoft.ams.system.domain.quality.QualityErrorCodeInfo" useGeneratedKeys="true" keyProperty="id">
+    insert into ams_quality_errorcode_info (created_by, created_date, last_modified_by, 
+      last_modified_date, code, is_use, parent_id, first_id ,second_id
+      )
+    values (#{createdBy,jdbcType=VARCHAR}, #{createdDate,jdbcType=TIMESTAMP}, #{lastModifiedBy,jdbcType=VARCHAR}, 
+      #{lastModifiedDate,jdbcType=TIMESTAMP}, #{code,jdbcType=VARCHAR}, #{isUse,jdbcType=DECIMAL}, 
+      #{parentId,jdbcType=DECIMAL},#{firstId,jdbcType=DECIMAL},#{secondId,jdbcType=DECIMAL})
+  </insert>
+  
+    <update id="update" parameterType="com.yuminsoft.ams.system.domain.quality.QualityErrorCodeInfo">
+        update ams_quality_errorcode_info
+        <set>
+            <if test="createdBy != null">
+                created_by = #{createdBy,jdbcType=VARCHAR},
+            </if>
+            <if test="createdDate != null">
+                created_date = #{createdDate,jdbcType=TIMESTAMP},
+            </if>
+            <if test="lastModifiedBy != null">
+                last_modified_by = #{lastModifiedBy,jdbcType=VARCHAR},
+            </if>
+            <if test="lastModifiedDate != null">
+                last_modified_date = #{lastModifiedDate,jdbcType=TIMESTAMP},
+            </if>
+            <if test="code != null">
+                code = #{code,jdbcType=VARCHAR},
+            </if>
+            <if test="isUse != null">
+                is_use = #{isUse,jdbcType=VARCHAR},
+            </if>
+             <if test="parentId != null">
+                parent_id = #{parentId,jdbcType=VARCHAR},
+            </if>
+             <if test="firstId != null">
+                first_id = #{firstId,jdbcType=VARCHAR},
+            </if>
+             <if test="secondId != null">
+                second_id = #{secondId,jdbcType=VARCHAR},
+            </if>
+        </set>
+        where id = #{id,jdbcType=DECIMAL}
+    </update>
+    
+    <!-- 根据loan查询该表记录 -->
+    <select id="queryErrorCodeInfoByLoanNo" parameterType="string" resultType="com.yuminsoft.ams.system.domain.quality.QualityErrorCodeInfo">
+    	select e.id id,e.is_use is_use,e.parent_id parent_id,e.first_id,e.second_id second_id,
+    	l.name parentDesc,i.name firstDesc,s.name secondDesc
+    	from ams_quality_errorcode_info e
+    	inner join ams_quality_check_result r on r.error_info_id=e.id
+    	inner join ams_quality_check_info c on c.id=r.quality_check_id
+    	left join ams_quality_error_list l on l.id=e.parent_id
+    	left join ams_quality_error_list i on i.id=e.first_id
+    	left join ams_quality_error_list s on s.id=e.second_id
+    </select>
+    
+    <!-- 根据所有的parentId一级描述 -->
+    <select id="queryAllParentInfo" resultType="java.util.HashMap">
+    select i.parent_id,l.name name
+    from ams_quality_errorcode_info i,ams_quality_error_list l
+    where l.id=i.parent_id and is_use=0
+    </select>
+    <!-- 根据parentId查询对应的firstId以及描述 -->
+    <select id="queryFirstInfoByParent" parameterType="string" resultType="java.util.HashMap">
+	select i.parent_id,l.name name
+	from ams_quality_errorcode_info
+	i,ams_quality_error_list l
+	where
+	is_use=0
+	and l.id=i.first_id
+	<if test="parentId!=null and parentId!=''">
+		and i.parent_id = #{parentId}
+	</if>
+    </select>
+    <!-- 根据 parentId,firstId查询对应secondId以及描述-->
+    <select id="querySecondInfoByParentFirst" resultType="java.util.HashMap">
+    select i.parent_id,l.name name,i.id id
+	from ams_quality_errorcode_info
+	i,ams_quality_error_list l
+	where
+	is_use=0
+	and l.id=i.second_id
+	and i.parent_id = #{0}
+	and i.first_id = #{1}
+    </select>
+    
+</mapper>

@@ -1,0 +1,737 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.yuminsoft.ams.system.dao.PersonInfoMapper" >
+  <resultMap id="BaseResultMap" type="com.yuminsoft.ams.system.domain.PersonInfo" >
+    <id column="id" property="id" jdbcType="DECIMAL" />
+    <result column="created_by" property="createdBy" jdbcType="VARCHAR" />
+    <result column="created_date" property="createdDate" jdbcType="TIMESTAMP" />
+    <result column="last_modified_by" property="lastModifiedBy" jdbcType="VARCHAR" />
+    <result column="last_modified_date" property="lastModifiedDate" jdbcType="TIMESTAMP" />
+    <result column="age" property="age" jdbcType="INTEGER" />
+    <result column="loan_no" property="loanNo" jdbcType="VARCHAR" />
+    <result column="birthday" property="birthday" jdbcType="TIMESTAMP" />
+    <result column="business_net_work" property="businessNetWork" jdbcType="VARCHAR" />
+    <result column="business_place" property="businessPlace" jdbcType="VARCHAR" />
+    <result column="cellphone" property="cellphone" jdbcType="VARCHAR" />
+    <result column="cellphone_sec" property="cellphoneSec" jdbcType="VARCHAR" />
+    <result column="children_num" property="childrenNum" jdbcType="INTEGER" />
+    <result column="corp_addr_ctry_cd" property="corpAddrCtryCd" jdbcType="VARCHAR" />
+    <result column="corp_address" property="corpAddress" jdbcType="VARCHAR" />
+    <result column="corp_city" property="corpCity" jdbcType="VARCHAR" />
+    <result column="corp_depapment" property="corpDepapment" jdbcType="VARCHAR" />
+    <result column="corp_fax" property="corpFax" jdbcType="VARCHAR" />
+    <result column="corp_name" property="corpName" jdbcType="VARCHAR" />
+    <result column="corp_pay_way" property="corpPayWay" jdbcType="VARCHAR" />
+    <result column="corp_payday" property="corpPayday" jdbcType="VARCHAR" />
+    <result column="corp_phone" property="corpPhone" jdbcType="VARCHAR" />
+    <result column="corp_phone_sec" property="corpPhoneSec" jdbcType="VARCHAR" />
+    <result column="corp_post" property="corpPost" jdbcType="VARCHAR" />
+    <result column="corp_postcode" property="corpPostcode" jdbcType="VARCHAR" />
+    <result column="corp_province" property="corpProvince" jdbcType="VARCHAR" />
+    <result column="corp_stability" property="corpStability" jdbcType="VARCHAR" />
+    <result column="corp_stand_from" property="corpStandFrom" jdbcType="TIMESTAMP" />
+    <result column="corp_structure" property="corpStructure" jdbcType="VARCHAR" />
+    <result column="corp_type" property="corpType" jdbcType="VARCHAR" />
+    <result column="corp_workyears" property="corpWorkyears" jdbcType="INTEGER" />
+    <result column="corp_zone" property="corpZone" jdbcType="VARCHAR" />
+    <result column="corpmem_flag" property="corpmemFlag" jdbcType="VARCHAR" />
+    <result column="corpmem_no" property="corpmemNo" jdbcType="VARCHAR" />
+    <result column="email" property="email" jdbcType="VARCHAR" />
+    <result column="emp_status" property="empStatus" jdbcType="VARCHAR" />
+    <result column="employee_num" property="employeeNum" jdbcType="INTEGER" />
+    <result column="enterprise_rate" property="enterpriseRate" jdbcType="DECIMAL" />
+    <result column="family_avge_venue" property="familyAvgeVenue" jdbcType="DECIMAL" />
+    <result column="family_member" property="familyMember" jdbcType="VARCHAR" />
+    <result column="family_month_pay" property="familyMonthPay" jdbcType="DECIMAL" />
+    <result column="gender" property="gender" jdbcType="VARCHAR" />
+    <result column="graduation_date" property="graduationDate" jdbcType="TIMESTAMP" />
+    <result column="home_addr_ctry_cd" property="homeAddrCtryCd" jdbcType="VARCHAR" />
+    <result column="home_address" property="homeAddress" jdbcType="VARCHAR" />
+    <result column="home_city" property="homeCity" jdbcType="VARCHAR" />
+    <result column="home_phone1" property="homePhone1" jdbcType="VARCHAR" />
+    <result column="home_phone2" property="homePhone2" jdbcType="VARCHAR" />
+    <result column="home_postcode" property="homePostcode" jdbcType="VARCHAR" />
+    <result column="home_stand_from" property="homeStandFrom" jdbcType="TIMESTAMP" />
+    <result column="home_state" property="homeState" jdbcType="VARCHAR" />
+    <result column="home_zone" property="homeZone" jdbcType="VARCHAR" />
+    <result column="house_ownership" property="houseOwnership" jdbcType="VARCHAR" />
+    <result column="house_rent" property="houseRent" jdbcType="DECIMAL" />
+    <result column="house_type" property="houseType" jdbcType="VARCHAR" />
+    <result column="id_issuer_address" property="idIssuerAddress" jdbcType="VARCHAR" />
+    <result column="id_last_date" property="idLastDate" jdbcType="TIMESTAMP" />
+    <result column="id_no" property="idNo" jdbcType="VARCHAR" />
+    <result column="issuer_city" property="issuerCity" jdbcType="VARCHAR" />
+    <result column="issuer_postcode" property="issuerPostcode" jdbcType="VARCHAR" />
+    <result column="issuer_state" property="issuerState" jdbcType="VARCHAR" />
+    <result column="issuer_zone" property="issuerZone" jdbcType="VARCHAR" />
+    <result column="liquid_asset" property="liquidAsset" jdbcType="VARCHAR" />
+    <result column="marital_status" property="maritalStatus" jdbcType="VARCHAR" />
+    <result column="month_amt" property="monthAmt" jdbcType="DECIMAL" />
+    <result column="month_max_repay" property="monthMaxRepay" jdbcType="DECIMAL" />
+    <result column="month_rent" property="monthRent" jdbcType="DECIMAL" />
+    <result column="month_salary" property="monthSalary" jdbcType="DECIMAL" />
+    <result column="name" property="name" jdbcType="VARCHAR" />
+    <result column="nationality" property="nationality" jdbcType="VARCHAR" />
+    <result column="occupation" property="occupation" jdbcType="VARCHAR" />
+    <result column="other_income" property="otherIncome" jdbcType="DECIMAL" />
+    <result column="pr_of_country" property="prOfCountry" jdbcType="VARCHAR" />
+    <result column="pri_enterprise_type" property="priEnterpriseType" jdbcType="VARCHAR" />
+    <result column="private_owners_flag" property="privateOwnersFlag" jdbcType="VARCHAR" />
+    <result column="qq_num" property="qqNum" jdbcType="VARCHAR" />
+    <result column="qualification" property="qualification" jdbcType="VARCHAR" />
+    <result column="register_funds" property="registerFunds" jdbcType="DECIMAL" />
+    <result column="report_id" property="reportId" jdbcType="DECIMAL" />
+    <result column="report_message" property="reportMessage" jdbcType="VARCHAR" />
+    <result column="residency_country_cd" property="residencyCountryCd" jdbcType="VARCHAR" />
+    <result column="setup_date" property="setupDate" jdbcType="TIMESTAMP" />
+    <result column="shares_id_no" property="sharesIdNo" jdbcType="VARCHAR" />
+    <result column="shares_name" property="sharesName" jdbcType="VARCHAR" />
+    <result column="shares_scale" property="sharesScale" jdbcType="DECIMAL" />
+    <result column="title_of_technical" property="titleOfTechnical" jdbcType="VARCHAR" />
+    <result column="total_month_salary" property="totalMonthSalary" jdbcType="DECIMAL" />
+    <result column="wechat_num" property="wechatNum" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, created_by, created_date, last_modified_by, last_modified_date, age, loan_no, 
+    birthday, business_net_work, business_place, cellphone, cellphone_sec, children_num, 
+    corp_addr_ctry_cd, corp_address, corp_city, corp_depapment, corp_fax, corp_name, 
+    corp_pay_way, corp_payday, corp_phone, corp_phone_sec, corp_post, corp_postcode, 
+    corp_province, corp_stability, corp_stand_from, corp_structure, corp_type, corp_workyears, 
+    corp_zone, corpmem_flag, corpmem_no, email, emp_status, employee_num, enterprise_rate, 
+    family_avge_venue, family_member, family_month_pay, gender, graduation_date, home_addr_ctry_cd, 
+    home_address, home_city, home_phone1, home_phone2, home_postcode, home_stand_from, 
+    home_state, home_zone, house_ownership, house_rent, house_type, id_issuer_address, 
+    id_last_date, id_no, issuer_city, issuer_postcode, issuer_state, issuer_zone, liquid_asset, 
+    marital_status, month_amt, month_max_repay, month_rent, month_salary, `name`, nationality, 
+    occupation, other_income, pr_of_country, pri_enterprise_type, private_owners_flag, 
+    qq_num, qualification, register_funds, report_id, report_message, residency_country_cd, 
+    setup_date, shares_id_no, shares_name, shares_scale, title_of_technical, total_month_salary, 
+    wechat_num
+  </sql>
+   <select id="findOne" resultMap="BaseResultMap" parameterType="java.util.Map" >
+    select
+    <include refid="Base_Column_List" />
+    from ams_person_info
+    where 1=1
+    <include refid="amsConditions" />
+  </select>
+  
+  <select id="findById" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select
+    <include refid="Base_Column_List" />
+    from ams_person_info
+    where id = #{id,jdbcType=DECIMAL}
+  </select>
+  
+  <select id="findAll" resultMap="BaseResultMap" parameterType="java.util.Map" >
+    select
+    <include refid="Base_Column_List" />
+    from ams_person_info
+    where 1=1
+    <include refid="amsConditions" />
+  </select>
+  
+  <!-- 查询条件 -->
+  <sql id="amsConditions">
+      <if test="id != null" >
+        AND id = #{id,jdbcType=DECIMAL}
+      </if>
+      <if test="createdBy != null" >
+        AND created_by = #{createdBy,jdbcType=VARCHAR}
+      </if>
+      <if test="createdDate != null" >
+        AND created_date = #{createdDate,jdbcType=TIMESTAMP}
+      </if>
+      <if test="lastModifiedBy != null" >
+        AND last_modified_by = #{lastModifiedBy,jdbcType=VARCHAR}
+      </if>
+      <if test="lastModifiedDate != null" >
+        AND last_modified_date = #{lastModifiedDate,jdbcType=TIMESTAMP}
+      </if>
+      <if test="age != null" >
+        AND age = #{age,jdbcType=INTEGER}
+      </if>
+      <if test="loanNo != null" >
+        AND loan_no = #{loanNo,jdbcType=VARCHAR}
+      </if>
+      <if test="birthday != null" >
+        AND birthday = #{birthday,jdbcType=TIMESTAMP}
+      </if>
+      <if test="businessNetWork != null" >
+        AND business_net_work = #{businessNetWork,jdbcType=VARCHAR}
+      </if>
+      <if test="businessPlace != null" >
+        AND business_place = #{businessPlace,jdbcType=VARCHAR}
+      </if>
+      <if test="cellphone != null" >
+        AND cellphone = #{cellphone,jdbcType=VARCHAR}
+      </if>
+      <if test="cellphoneSec != null" >
+        AND cellphone_sec = #{cellphoneSec,jdbcType=VARCHAR}
+      </if>
+      <if test="childrenNum != null" >
+        AND children_num = #{childrenNum,jdbcType=INTEGER}
+      </if>
+      <if test="corpAddrCtryCd != null" >
+        AND corp_addr_ctry_cd = #{corpAddrCtryCd,jdbcType=VARCHAR}
+      </if>
+      <if test="corpAddress != null" >
+        AND corp_address = #{corpAddress,jdbcType=VARCHAR}
+      </if>
+      <if test="corpCity != null" >
+        AND corp_city = #{corpCity,jdbcType=VARCHAR}
+      </if>
+      <if test="corpDepapment != null" >
+        AND corp_depapment = #{corpDepapment,jdbcType=VARCHAR}
+      </if>
+      <if test="corpFax != null" >
+        AND corp_fax = #{corpFax,jdbcType=VARCHAR}
+      </if>
+      <if test="corpName != null" >
+        AND corp_name = #{corpName,jdbcType=VARCHAR}
+      </if>
+      <if test="corpPayWay != null" >
+        AND corp_pay_way = #{corpPayWay,jdbcType=VARCHAR}
+      </if>
+      <if test="corpPayday != null" >
+        AND corp_payday = #{corpPayday,jdbcType=VARCHAR}
+      </if>
+      <if test="corpPhone != null" >
+        AND corp_phone = #{corpPhone,jdbcType=VARCHAR}
+      </if>
+      <if test="corpPhoneSec != null" >
+        AND corp_phone_sec = #{corpPhoneSec,jdbcType=VARCHAR}
+      </if>
+      <if test="corpPost != null" >
+        AND corp_post = #{corpPost,jdbcType=VARCHAR}
+      </if>
+      <if test="corpPostcode != null" >
+        AND corp_postcode = #{corpPostcode,jdbcType=VARCHAR}
+      </if>
+      <if test="corpProvince != null" >
+        AND corp_province = #{corpProvince,jdbcType=VARCHAR}
+      </if>
+      <if test="corpStability != null" >
+        AND corp_stability = #{corpStability,jdbcType=VARCHAR}
+      </if>
+      <if test="corpStandFrom != null" >
+        AND corp_stand_from = #{corpStandFrom,jdbcType=TIMESTAMP}
+      </if>
+      <if test="corpStructure != null" >
+        AND corp_structure = #{corpStructure,jdbcType=VARCHAR}
+      </if>
+      <if test="corpType != null" >
+        AND corp_type = #{corpType,jdbcType=VARCHAR}
+      </if>
+      <if test="corpWorkyears != null" >
+        AND corp_workyears = #{corpWorkyears,jdbcType=INTEGER}
+      </if>
+      <if test="corpZone != null" >
+        AND corp_zone = #{corpZone,jdbcType=VARCHAR}
+      </if>
+      <if test="corpmemFlag != null" >
+        AND corpmem_flag = #{corpmemFlag,jdbcType=VARCHAR}
+      </if>
+      <if test="corpmemNo != null" >
+        AND corpmem_no = #{corpmemNo,jdbcType=VARCHAR}
+      </if>
+      <if test="email != null" >
+        AND email = #{email,jdbcType=VARCHAR}
+      </if>
+      <if test="empStatus != null" >
+        AND emp_status = #{empStatus,jdbcType=VARCHAR}
+      </if>
+      <if test="employeeNum != null" >
+        AND employee_num = #{employeeNum,jdbcType=INTEGER}
+      </if>
+      <if test="enterpriseRate != null" >
+        AND enterprise_rate = #{enterpriseRate,jdbcType=DECIMAL}
+      </if>
+      <if test="familyAvgeVenue != null" >
+        AND family_avge_venue = #{familyAvgeVenue,jdbcType=DECIMAL}
+      </if>
+      <if test="familyMember != null" >
+        AND family_member = #{familyMember,jdbcType=VARCHAR}
+      </if>
+      <if test="familyMonthPay != null" >
+        AND family_month_pay = #{familyMonthPay,jdbcType=DECIMAL}
+      </if>
+      <if test="gender != null" >
+        AND gender = #{gender,jdbcType=VARCHAR},
+      </if>
+      <if test="graduationDate != null" >
+        AND graduation_date = #{graduationDate,jdbcType=TIMESTAMP}
+      </if>
+      <if test="homeAddrCtryCd != null" >
+        AND home_addr_ctry_cd = #{homeAddrCtryCd,jdbcType=VARCHAR}
+      </if>
+      <if test="homeAddress != null" >
+        AND home_address = #{homeAddress,jdbcType=VARCHAR}
+      </if>
+      <if test="homeCity != null" >
+        AND home_city = #{homeCity,jdbcType=VARCHAR}
+      </if>
+      <if test="homePhone1 != null" >
+        AND home_phone1 = #{homePhone1,jdbcType=VARCHAR}
+      </if>
+      <if test="homePhone2 != null" >
+        AND home_phone2 = #{homePhone2,jdbcType=VARCHAR}
+      </if>
+      <if test="homePostcode != null" >
+        AND home_postcode = #{homePostcode,jdbcType=VARCHAR}
+      </if>
+      <if test="homeStandFrom != null" >
+        AND home_stand_from = #{homeStandFrom,jdbcType=TIMESTAMP}
+      </if>
+      <if test="homeState != null" >
+        AND home_state = #{homeState,jdbcType=VARCHAR}
+      </if>
+      <if test="homeZone != null" >
+        AND home_zone = #{homeZone,jdbcType=VARCHAR}
+      </if>
+      <if test="houseOwnership != null" >
+        AND house_ownership = #{houseOwnership,jdbcType=VARCHAR}
+      </if>
+      <if test="houseRent != null" >
+        AND house_rent = #{houseRent,jdbcType=DECIMAL}
+      </if>
+      <if test="houseType != null" >
+        AND house_type = #{houseType,jdbcType=VARCHAR}
+      </if>
+      <if test="idIssuerAddress != null" >
+        AND id_issuer_address = #{idIssuerAddress,jdbcType=VARCHAR}
+      </if>
+      <if test="idLastDate != null" >
+        AND id_last_date = #{idLastDate,jdbcType=TIMESTAMP}
+      </if>
+      <if test="idNo != null" >
+        AND id_no = #{idNo,jdbcType=VARCHAR}
+      </if>
+      <if test="issuerCity != null" >
+        AND issuer_city = #{issuerCity,jdbcType=VARCHAR}
+      </if>
+      <if test="issuerPostcode != null" >
+        AND issuer_postcode = #{issuerPostcode,jdbcType=VARCHAR}
+      </if>
+      <if test="issuerState != null" >
+        AND issuer_state = #{issuerState,jdbcType=VARCHAR}
+      </if>
+      <if test="issuerZone != null" >
+        AND issuer_zone = #{issuerZone,jdbcType=VARCHAR}
+      </if>
+      <if test="liquidAsset != null" >
+        AND liquid_asset = #{liquidAsset,jdbcType=VARCHAR}
+      </if>
+      <if test="maritalStatus != null" >
+        AND marital_status = #{maritalStatus,jdbcType=VARCHAR}
+      </if>
+      <if test="monthAmt != null" >
+        AND month_amt = #{monthAmt,jdbcType=DECIMAL}
+      </if>
+      <if test="monthMaxRepay != null" >
+        AND month_max_repay = #{monthMaxRepay,jdbcType=DECIMAL}
+      </if>
+      <if test="monthRent != null" >
+        AND month_rent = #{monthRent,jdbcType=DECIMAL}
+      </if>
+      <if test="monthSalary != null" >
+        AND month_salary = #{monthSalary,jdbcType=DECIMAL}
+      </if>
+      <if test="name != null" >
+        AND `name` = #{name,jdbcType=VARCHAR}
+      </if>
+      <if test="nationality != null" >
+        AND nationality = #{nationality,jdbcType=VARCHAR}
+      </if>
+      <if test="occupation != null" >
+        AND occupation = #{occupation,jdbcType=VARCHAR}
+      </if>
+      <if test="otherIncome != null" >
+        AND other_income = #{otherIncome,jdbcType=DECIMAL}
+      </if>
+      <if test="prOfCountry != null" >
+        AND pr_of_country = #{prOfCountry,jdbcType=VARCHAR}
+      </if>
+      <if test="priEnterpriseType != null" >
+        AND pri_enterprise_type = #{priEnterpriseType,jdbcType=VARCHAR}
+      </if>
+      <if test="privateOwnersFlag != null" >
+        AND private_owners_flag = #{privateOwnersFlag,jdbcType=VARCHAR}
+      </if>
+      <if test="qqNum != null" >
+        AND qq_num = #{qqNum,jdbcType=VARCHAR}
+      </if>
+      <if test="qualification != null" >
+        AND qualification = #{qualification,jdbcType=VARCHAR}
+      </if>
+      <if test="registerFunds != null" >
+        AND register_funds = #{registerFunds,jdbcType=DECIMAL}
+      </if>
+      <if test="reportId != null" >
+        AND report_id = #{reportId,jdbcType=DECIMAL}
+      </if>
+      <if test="reportMessage != null" >
+        AND report_message = #{reportMessage,jdbcType=VARCHAR}
+      </if>
+      <if test="residencyCountryCd != null" >
+        AND residency_country_cd = #{residencyCountryCd,jdbcType=VARCHAR}
+      </if>
+      <if test="setupDate != null" >
+        AND setup_date = #{setupDate,jdbcType=TIMESTAMP}
+      </if>
+      <if test="sharesIdNo != null" >
+        AND shares_id_no = #{sharesIdNo,jdbcType=VARCHAR}
+      </if>
+      <if test="sharesName != null" >
+        AND shares_name = #{sharesName,jdbcType=VARCHAR}
+      </if>
+      <if test="sharesScale != null" >
+        AND shares_scale = #{sharesScale,jdbcType=DECIMAL}
+      </if>
+      <if test="titleOfTechnical != null" >
+        AND title_of_technical = #{titleOfTechnical,jdbcType=VARCHAR}
+      </if>
+      <if test="totalMonthSalary != null" >
+        AND total_month_salary = #{totalMonthSalary,jdbcType=DECIMAL}
+      </if>
+      <if test="wechatNum != null" >
+        AND wechat_num = #{wechatNum,jdbcType=VARCHAR}
+      </if>
+  </sql>
+  
+  <delete id="delete" parameterType="java.lang.Long" >
+    delete from ams_person_info
+    where id = #{id,jdbcType=DECIMAL}
+  </delete>
+  <insert id="save" parameterType="com.yuminsoft.ams.system.domain.PersonInfo" useGeneratedKeys="true" keyProperty="id">
+    insert into ams_person_info (created_by, created_date, last_modified_by, 
+      last_modified_date, age, loan_no, 
+      birthday, business_net_work, business_place, 
+      cellphone, cellphone_sec, children_num, 
+      corp_addr_ctry_cd, corp_address, corp_city, 
+      corp_depapment, corp_fax, corp_name, 
+      corp_pay_way, corp_payday, corp_phone, 
+      corp_phone_sec, corp_post, corp_postcode, 
+      corp_province, corp_stability, corp_stand_from, 
+      corp_structure, corp_type, corp_workyears, 
+      corp_zone, corpmem_flag, corpmem_no, 
+      email, emp_status, employee_num, 
+      enterprise_rate, family_avge_venue, family_member, 
+      family_month_pay, gender, graduation_date, 
+      home_addr_ctry_cd, home_address, home_city, 
+      home_phone1, home_phone2, home_postcode, 
+      home_stand_from, home_state, home_zone, 
+      house_ownership, house_rent, house_type, 
+      id_issuer_address, id_last_date, id_no, 
+      issuer_city, issuer_postcode, issuer_state, 
+      issuer_zone, liquid_asset, marital_status, 
+      month_amt, month_max_repay, month_rent, 
+      month_salary, `name`, nationality, 
+      occupation, other_income, pr_of_country, 
+      pri_enterprise_type, private_owners_flag, qq_num, 
+      qualification, register_funds, report_id, 
+      report_message, residency_country_cd, setup_date, 
+      shares_id_no, shares_name, shares_scale, 
+      title_of_technical, total_month_salary, wechat_num
+      )
+    values (#{createdBy,jdbcType=VARCHAR}, #{createdDate,jdbcType=TIMESTAMP}, #{lastModifiedBy,jdbcType=VARCHAR}, 
+      #{lastModifiedDate,jdbcType=TIMESTAMP}, #{age,jdbcType=INTEGER}, #{loanNo,jdbcType=VARCHAR}, 
+      #{birthday,jdbcType=TIMESTAMP}, #{businessNetWork,jdbcType=VARCHAR}, #{businessPlace,jdbcType=VARCHAR}, 
+      #{cellphone,jdbcType=VARCHAR}, #{cellphoneSec,jdbcType=VARCHAR}, #{childrenNum,jdbcType=INTEGER}, 
+      #{corpAddrCtryCd,jdbcType=VARCHAR}, #{corpAddress,jdbcType=VARCHAR}, #{corpCity,jdbcType=VARCHAR}, 
+      #{corpDepapment,jdbcType=VARCHAR}, #{corpFax,jdbcType=VARCHAR}, #{corpName,jdbcType=VARCHAR}, 
+      #{corpPayWay,jdbcType=VARCHAR}, #{corpPayday,jdbcType=VARCHAR}, #{corpPhone,jdbcType=VARCHAR}, 
+      #{corpPhoneSec,jdbcType=VARCHAR}, #{corpPost,jdbcType=VARCHAR}, #{corpPostcode,jdbcType=VARCHAR}, 
+      #{corpProvince,jdbcType=VARCHAR}, #{corpStability,jdbcType=VARCHAR}, #{corpStandFrom,jdbcType=TIMESTAMP}, 
+      #{corpStructure,jdbcType=VARCHAR}, #{corpType,jdbcType=VARCHAR}, #{corpWorkyears,jdbcType=INTEGER}, 
+      #{corpZone,jdbcType=VARCHAR}, #{corpmemFlag,jdbcType=VARCHAR}, #{corpmemNo,jdbcType=VARCHAR}, 
+      #{email,jdbcType=VARCHAR}, #{empStatus,jdbcType=VARCHAR}, #{employeeNum,jdbcType=INTEGER}, 
+      #{enterpriseRate,jdbcType=DECIMAL}, #{familyAvgeVenue,jdbcType=DECIMAL}, #{familyMember,jdbcType=VARCHAR}, 
+      #{familyMonthPay,jdbcType=DECIMAL}, #{gender,jdbcType=VARCHAR}, #{graduationDate,jdbcType=TIMESTAMP}, 
+      #{homeAddrCtryCd,jdbcType=VARCHAR}, #{homeAddress,jdbcType=VARCHAR}, #{homeCity,jdbcType=VARCHAR}, 
+      #{homePhone1,jdbcType=VARCHAR}, #{homePhone2,jdbcType=VARCHAR}, #{homePostcode,jdbcType=VARCHAR}, 
+      #{homeStandFrom,jdbcType=TIMESTAMP}, #{homeState,jdbcType=VARCHAR}, #{homeZone,jdbcType=VARCHAR}, 
+      #{houseOwnership,jdbcType=VARCHAR}, #{houseRent,jdbcType=DECIMAL}, #{houseType,jdbcType=VARCHAR}, 
+      #{idIssuerAddress,jdbcType=VARCHAR}, #{idLastDate,jdbcType=TIMESTAMP}, #{idNo,jdbcType=VARCHAR}, 
+      #{issuerCity,jdbcType=VARCHAR}, #{issuerPostcode,jdbcType=VARCHAR}, #{issuerState,jdbcType=VARCHAR}, 
+      #{issuerZone,jdbcType=VARCHAR}, #{liquidAsset,jdbcType=VARCHAR}, #{maritalStatus,jdbcType=VARCHAR}, 
+      #{monthAmt,jdbcType=DECIMAL}, #{monthMaxRepay,jdbcType=DECIMAL}, #{monthRent,jdbcType=DECIMAL}, 
+      #{monthSalary,jdbcType=DECIMAL}, #{name,jdbcType=VARCHAR}, #{nationality,jdbcType=VARCHAR}, 
+      #{occupation,jdbcType=VARCHAR}, #{otherIncome,jdbcType=DECIMAL}, #{prOfCountry,jdbcType=VARCHAR}, 
+      #{priEnterpriseType,jdbcType=VARCHAR}, #{privateOwnersFlag,jdbcType=VARCHAR}, #{qqNum,jdbcType=VARCHAR}, 
+      #{qualification,jdbcType=VARCHAR}, #{registerFunds,jdbcType=DECIMAL}, #{reportId,jdbcType=DECIMAL}, 
+      #{reportMessage,jdbcType=VARCHAR}, #{residencyCountryCd,jdbcType=VARCHAR}, #{setupDate,jdbcType=TIMESTAMP}, 
+      #{sharesIdNo,jdbcType=VARCHAR}, #{sharesName,jdbcType=VARCHAR}, #{sharesScale,jdbcType=DECIMAL}, 
+      #{titleOfTechnical,jdbcType=VARCHAR}, #{totalMonthSalary,jdbcType=DECIMAL}, #{wechatNum,jdbcType=VARCHAR}
+      )
+  </insert>
+  
+  <update id="update" parameterType="com.yuminsoft.ams.system.domain.PersonInfo" >
+    update ams_person_info
+    <set >
+      <if test="createdBy != null" >
+        created_by = #{createdBy,jdbcType=VARCHAR},
+      </if>
+      <if test="createdDate != null" >
+        created_date = #{createdDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="lastModifiedBy != null" >
+        last_modified_by = #{lastModifiedBy,jdbcType=VARCHAR},
+      </if>
+      <if test="lastModifiedDate != null" >
+        last_modified_date = #{lastModifiedDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="age != null" >
+        age = #{age,jdbcType=INTEGER},
+      </if>
+      <if test="loanNo != null" >
+        loan_no = #{loanNo,jdbcType=VARCHAR},
+      </if>
+      <if test="birthday != null" >
+        birthday = #{birthday,jdbcType=TIMESTAMP},
+      </if>
+      <if test="businessNetWork != null" >
+        business_net_work = #{businessNetWork,jdbcType=VARCHAR},
+      </if>
+      <if test="businessPlace != null" >
+        business_place = #{businessPlace,jdbcType=VARCHAR},
+      </if>
+      <if test="cellphone != null" >
+        cellphone = #{cellphone,jdbcType=VARCHAR},
+      </if>
+      <if test="cellphoneSec != null" >
+        cellphone_sec = #{cellphoneSec,jdbcType=VARCHAR},
+      </if>
+      <if test="childrenNum != null" >
+        children_num = #{childrenNum,jdbcType=INTEGER},
+      </if>
+      <if test="corpAddrCtryCd != null" >
+        corp_addr_ctry_cd = #{corpAddrCtryCd,jdbcType=VARCHAR},
+      </if>
+      <if test="corpAddress != null" >
+        corp_address = #{corpAddress,jdbcType=VARCHAR},
+      </if>
+      <if test="corpCity != null" >
+        corp_city = #{corpCity,jdbcType=VARCHAR},
+      </if>
+      <if test="corpDepapment != null" >
+        corp_depapment = #{corpDepapment,jdbcType=VARCHAR},
+      </if>
+      <if test="corpFax != null" >
+        corp_fax = #{corpFax,jdbcType=VARCHAR},
+      </if>
+      <if test="corpName != null" >
+        corp_name = #{corpName,jdbcType=VARCHAR},
+      </if>
+      <if test="corpPayWay != null" >
+        corp_pay_way = #{corpPayWay,jdbcType=VARCHAR},
+      </if>
+      <if test="corpPayday != null" >
+        corp_payday = #{corpPayday,jdbcType=VARCHAR},
+      </if>
+      <if test="corpPhone != null" >
+        corp_phone = #{corpPhone,jdbcType=VARCHAR},
+      </if>
+      <if test="corpPhoneSec != null" >
+        corp_phone_sec = #{corpPhoneSec,jdbcType=VARCHAR},
+      </if>
+      <if test="corpPost != null" >
+        corp_post = #{corpPost,jdbcType=VARCHAR},
+      </if>
+      <if test="corpPostcode != null" >
+        corp_postcode = #{corpPostcode,jdbcType=VARCHAR},
+      </if>
+      <if test="corpProvince != null" >
+        corp_province = #{corpProvince,jdbcType=VARCHAR},
+      </if>
+      <if test="corpStability != null" >
+        corp_stability = #{corpStability,jdbcType=VARCHAR},
+      </if>
+      <if test="corpStandFrom != null" >
+        corp_stand_from = #{corpStandFrom,jdbcType=TIMESTAMP},
+      </if>
+      <if test="corpStructure != null" >
+        corp_structure = #{corpStructure,jdbcType=VARCHAR},
+      </if>
+      <if test="corpType != null" >
+        corp_type = #{corpType,jdbcType=VARCHAR},
+      </if>
+      <if test="corpWorkyears != null" >
+        corp_workyears = #{corpWorkyears,jdbcType=INTEGER},
+      </if>
+      <if test="corpZone != null" >
+        corp_zone = #{corpZone,jdbcType=VARCHAR},
+      </if>
+      <if test="corpmemFlag != null" >
+        corpmem_flag = #{corpmemFlag,jdbcType=VARCHAR},
+      </if>
+      <if test="corpmemNo != null" >
+        corpmem_no = #{corpmemNo,jdbcType=VARCHAR},
+      </if>
+      <if test="email != null" >
+        email = #{email,jdbcType=VARCHAR},
+      </if>
+      <if test="empStatus != null" >
+        emp_status = #{empStatus,jdbcType=VARCHAR},
+      </if>
+      <if test="employeeNum != null" >
+        employee_num = #{employeeNum,jdbcType=INTEGER},
+      </if>
+      <if test="enterpriseRate != null" >
+        enterprise_rate = #{enterpriseRate,jdbcType=DECIMAL},
+      </if>
+      <if test="familyAvgeVenue != null" >
+        family_avge_venue = #{familyAvgeVenue,jdbcType=DECIMAL},
+      </if>
+      <if test="familyMember != null" >
+        family_member = #{familyMember,jdbcType=VARCHAR},
+      </if>
+      <if test="familyMonthPay != null" >
+        family_month_pay = #{familyMonthPay,jdbcType=DECIMAL},
+      </if>
+      <if test="gender != null" >
+        gender = #{gender,jdbcType=VARCHAR},
+      </if>
+      <if test="graduationDate != null" >
+        graduation_date = #{graduationDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="homeAddrCtryCd != null" >
+        home_addr_ctry_cd = #{homeAddrCtryCd,jdbcType=VARCHAR},
+      </if>
+      <if test="homeAddress != null" >
+        home_address = #{homeAddress,jdbcType=VARCHAR},
+      </if>
+      <if test="homeCity != null" >
+        home_city = #{homeCity,jdbcType=VARCHAR},
+      </if>
+      <if test="homePhone1 != null" >
+        home_phone1 = #{homePhone1,jdbcType=VARCHAR},
+      </if>
+      <if test="homePhone2 != null" >
+        home_phone2 = #{homePhone2,jdbcType=VARCHAR},
+      </if>
+      <if test="homePostcode != null" >
+        home_postcode = #{homePostcode,jdbcType=VARCHAR},
+      </if>
+      <if test="homeStandFrom != null" >
+        home_stand_from = #{homeStandFrom,jdbcType=TIMESTAMP},
+      </if>
+      <if test="homeState != null" >
+        home_state = #{homeState,jdbcType=VARCHAR},
+      </if>
+      <if test="homeZone != null" >
+        home_zone = #{homeZone,jdbcType=VARCHAR},
+      </if>
+      <if test="houseOwnership != null" >
+        house_ownership = #{houseOwnership,jdbcType=VARCHAR},
+      </if>
+      <if test="houseRent != null" >
+        house_rent = #{houseRent,jdbcType=DECIMAL},
+      </if>
+      <if test="houseType != null" >
+        house_type = #{houseType,jdbcType=VARCHAR},
+      </if>
+      <if test="idIssuerAddress != null" >
+        id_issuer_address = #{idIssuerAddress,jdbcType=VARCHAR},
+      </if>
+      <if test="idLastDate != null" >
+        id_last_date = #{idLastDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="idNo != null" >
+        id_no = #{idNo,jdbcType=VARCHAR},
+      </if>
+      <if test="issuerCity != null" >
+        issuer_city = #{issuerCity,jdbcType=VARCHAR},
+      </if>
+      <if test="issuerPostcode != null" >
+        issuer_postcode = #{issuerPostcode,jdbcType=VARCHAR},
+      </if>
+      <if test="issuerState != null" >
+        issuer_state = #{issuerState,jdbcType=VARCHAR},
+      </if>
+      <if test="issuerZone != null" >
+        issuer_zone = #{issuerZone,jdbcType=VARCHAR},
+      </if>
+      <if test="liquidAsset != null" >
+        liquid_asset = #{liquidAsset,jdbcType=VARCHAR},
+      </if>
+      <if test="maritalStatus != null" >
+        marital_status = #{maritalStatus,jdbcType=VARCHAR},
+      </if>
+      <if test="monthAmt != null" >
+        month_amt = #{monthAmt,jdbcType=DECIMAL},
+      </if>
+      <if test="monthMaxRepay != null" >
+        month_max_repay = #{monthMaxRepay,jdbcType=DECIMAL},
+      </if>
+      <if test="monthRent != null" >
+        month_rent = #{monthRent,jdbcType=DECIMAL},
+      </if>
+      <if test="monthSalary != null" >
+        month_salary = #{monthSalary,jdbcType=DECIMAL},
+      </if>
+      <if test="name != null" >
+        `name` = #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="nationality != null" >
+        nationality = #{nationality,jdbcType=VARCHAR},
+      </if>
+      <if test="occupation != null" >
+        occupation = #{occupation,jdbcType=VARCHAR},
+      </if>
+      <if test="otherIncome != null" >
+        other_income = #{otherIncome,jdbcType=DECIMAL},
+      </if>
+      <if test="prOfCountry != null" >
+        pr_of_country = #{prOfCountry,jdbcType=VARCHAR},
+      </if>
+      <if test="priEnterpriseType != null" >
+        pri_enterprise_type = #{priEnterpriseType,jdbcType=VARCHAR},
+      </if>
+      <if test="privateOwnersFlag != null" >
+        private_owners_flag = #{privateOwnersFlag,jdbcType=VARCHAR},
+      </if>
+      <if test="qqNum != null" >
+        qq_num = #{qqNum,jdbcType=VARCHAR},
+      </if>
+      <if test="qualification != null" >
+        qualification = #{qualification,jdbcType=VARCHAR},
+      </if>
+      <if test="registerFunds != null" >
+        register_funds = #{registerFunds,jdbcType=DECIMAL},
+      </if>
+      <if test="reportId != null" >
+        report_id = #{reportId,jdbcType=DECIMAL},
+      </if>
+      <if test="reportMessage != null" >
+        report_message = #{reportMessage,jdbcType=VARCHAR},
+      </if>
+      <if test="residencyCountryCd != null" >
+        residency_country_cd = #{residencyCountryCd,jdbcType=VARCHAR},
+      </if>
+      <if test="setupDate != null" >
+        setup_date = #{setupDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="sharesIdNo != null" >
+        shares_id_no = #{sharesIdNo,jdbcType=VARCHAR},
+      </if>
+      <if test="sharesName != null" >
+        shares_name = #{sharesName,jdbcType=VARCHAR},
+      </if>
+      <if test="sharesScale != null" >
+        shares_scale = #{sharesScale,jdbcType=DECIMAL},
+      </if>
+      <if test="titleOfTechnical != null" >
+        title_of_technical = #{titleOfTechnical,jdbcType=VARCHAR},
+      </if>
+      <if test="totalMonthSalary != null" >
+        total_month_salary = #{totalMonthSalary,jdbcType=DECIMAL},
+      </if>
+      <if test="wechatNum != null" >
+        wechat_num = #{wechatNum,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=DECIMAL}
+  </update>
+  
+</mapper>

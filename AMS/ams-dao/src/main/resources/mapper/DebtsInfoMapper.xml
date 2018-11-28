@@ -1,0 +1,233 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.yuminsoft.ams.system.dao.DebtsInfoMapper">
+	<resultMap id="BaseResultMap" type="com.yuminsoft.ams.system.domain.DebtsInfo">
+		<id column="id" property="id" jdbcType="DECIMAL" />
+		<result column="created_by" property="createdBy" jdbcType="VARCHAR" />
+		<result column="created_date" property="createdDate" jdbcType="TIMESTAMP" />
+		<result column="last_modified_by" property="lastModifiedBy" jdbcType="VARCHAR" />
+		<result column="last_modified_date" property="lastModifiedDate" jdbcType="TIMESTAMP" />
+		<result column="loan_no" property="loanNo" jdbcType="VARCHAR" />
+		<result column="debt_type" property="debtType" jdbcType="VARCHAR" />
+		<result column="credit_debt" property="creditDebt" jdbcType="DECIMAL" />
+		<result column="credit_loan_also_pay" property="creditLoanAlsoPay" jdbcType="INTEGER" />
+		<result column="credit_loan_debt" property="creditLoanDebt" jdbcType="DECIMAL" />
+		<result column="credit_loan_limit" property="creditLoanLimit" jdbcType="DECIMAL" />
+		<result column="credit_loan_term" property="creditLoanTerm" jdbcType="INTEGER" />
+		<result column="credit_total_limit" property="creditTotalLimit" jdbcType="DECIMAL" />
+		<result column="credit_used_limit" property="creditUsedLimit" jdbcType="DECIMAL" />
+		<result column="memo" property="memo" jdbcType="VARCHAR" />
+		<result column="name" property="name" jdbcType="VARCHAR" />
+		<result column="out_debt_total" property="outDebtTotal" jdbcType="DECIMAL" />
+		<result column="out_credit_debt_total" property="outCreditDebtTotal" jdbcType="DECIMAL" />
+		<result column="credit_no" property="creditNo" jdbcType="BIGINT" />
+		<result column="fast_loan_situation" property="fastLoanSituation" jdbcType="VARCHAR" />
+		<result column="month_total_debt" property="monthlyTotalLiabilities" jdbcType="DECIMAL" />
+		<result column="if_black_roster" property="ifBlackRoster" jdbcType="VARCHAR"/>
+	</resultMap>
+
+	<sql id="Base_Column_List">
+		id, created_by, created_date, last_modified_by, last_modified_date, loan_no,debt_type, credit_debt,
+		credit_loan_also_pay, credit_loan_debt, credit_loan_limit, credit_loan_term, credit_total_limit,
+		credit_used_limit, memo, `name`, out_debt_total,out_credit_debt_total,credit_no,fast_loan_situation,month_total_debt,if_black_roster
+	</sql>
+
+	<select id="findOne" resultMap="BaseResultMap" parameterType="java.util.Map">
+		select
+		<include refid="Base_Column_List" />
+		from ams_debts_info
+		where 1=1
+		<include refid="amsConditions" />
+	</select>
+
+	<select id="findOutCreditDebtByLoanNo" resultMap="BaseResultMap" parameterType="java.util.Map">
+		select
+			<include refid="Base_Column_List" />
+		from ams_debts_info
+		where loan_no = #{loanNo, jdbcType=VARCHAR}
+		and credit_debt is not null
+		order by id
+		limit 1
+	</select>
+
+	<select id="findById" resultMap="BaseResultMap" parameterType="java.lang.Long">
+		select
+		<include refid="Base_Column_List" />
+		from ams_debts_info
+		where id = #{id,jdbcType=BIGINT}
+	</select>
+
+	<select id="findByLoanNo" resultMap="BaseResultMap" parameterType="String">
+		select
+			<include refid="Base_Column_List" />
+		from ams_debts_info
+		where loan_no = #{loanNo,jdbcType=VARCHAR}
+	</select>
+
+	<select id="findAll" resultMap="BaseResultMap" parameterType="java.util.Map">
+		select
+		<include refid="Base_Column_List" />
+		from ams_debts_info
+		where 1=1
+		<include refid="amsConditions" />
+	</select>
+
+	<!-- 查询条件 -->
+	<sql id="amsConditions">
+		<if test="id != null">
+			AND id = #{id,jdbcType=DECIMAL}
+		</if>
+		<if test="createdBy != null">
+			AND created_by = #{createdBy,jdbcType=VARCHAR}
+		</if>
+		<if test="createdDate != null">
+			AND created_date = #{createdDate,jdbcType=TIMESTAMP}
+		</if>
+		<if test="lastModifiedBy != null">
+			AND last_modified_by = #{lastModifiedBy,jdbcType=VARCHAR}
+		</if>
+		<if test="lastModifiedDate != null">
+			AND last_modified_date = #{lastModifiedDate,jdbcType=TIMESTAMP}
+		</if>
+		<if test="loanNo != null">
+			AND loan_no = #{loanNo,jdbcType=VARCHAR}
+		</if>
+		<if test="debtType !=null">
+			AND debt_type=#{debtType,jdbcType=VARCHAR}
+		</if>
+		<if test="creditDebt != null">
+			AND credit_debt = #{creditDebt,jdbcType=DECIMAL}
+		</if>
+		<if test="creditLoanAlsoPay != null">
+			AND credit_loan_also_pay = #{creditLoanAlsoPay,jdbcType=INTEGER}
+		</if>
+		<if test="creditLoanDebt != null">
+			AND credit_loan_debt = #{creditLoanDebt,jdbcType=DECIMAL}
+		</if>
+		<if test="creditLoanLimit != null">
+			AND credit_loan_limit = #{creditLoanLimit,jdbcType=DECIMAL}
+		</if>
+		<if test="creditLoanTerm != null">
+			AND credit_loan_term = #{creditLoanTerm,jdbcType=INTEGER}
+		</if>
+		<if test="creditTotalLimit != null">
+			AND credit_total_limit = #{creditTotalLimit,jdbcType=DECIMAL}
+		</if>
+		<if test="creditUsedLimit != null">
+			AND credit_used_limit = #{creditUsedLimit,jdbcType=DECIMAL}
+		</if>
+		<if test="memo != null">
+			AND memo = #{memo,jdbcType=VARCHAR}
+		</if>
+		<if test="name != null">
+			AND `name` = #{name,jdbcType=VARCHAR}
+		</if>
+		<if test="outDebtTotal != null">
+			AND out_debt_total = #{outDebtTotal,jdbcType=DECIMAL}
+		</if>
+		<if test="outCreditDebtTotal != null">
+			AND out_credit_debt_total = #{outCreditDebtTotal,jdbcType=DECIMAL}
+		</if>
+		<if test="monthlyTotalLiabilities != null">
+			AND month_total_debt = #{monthlyTotalLiabilities,jdbcType=DECIMAL}
+		</if>
+		<if test="fastLoanSituation != null">
+			AND fast_loan_situation=#{fastLoanSituation,jdbcType=VARCHAR}
+		</if>
+		<if test="ifBlackRoster != null">
+			AND if_black_roster =#{ifBlackRoster,jdbcType=VARCHAR}
+		</if>
+	</sql>
+
+	<delete id="delete" parameterType="java.lang.Long">
+		delete from ams_debts_info
+		where id = #{id,jdbcType=DECIMAL}
+	</delete>
+
+	<insert id="save" parameterType="com.yuminsoft.ams.system.domain.DebtsInfo" useGeneratedKeys="true" keyProperty="id">
+		insert into ams_debts_info (created_by, created_date,
+		last_modified_by, last_modified_date, loan_no,debt_type,
+		credit_debt, credit_loan_also_pay, credit_loan_debt,
+		credit_loan_limit, credit_loan_term, credit_total_limit,
+		credit_used_limit, memo, `name`,
+		out_debt_total,out_credit_debt_total,credit_no,fast_loan_situation,month_total_debt,if_black_roster)
+		values (#{createdBy,jdbcType=VARCHAR}, #{createdDate,jdbcType=TIMESTAMP},
+		#{lastModifiedBy,jdbcType=VARCHAR}, #{lastModifiedDate,jdbcType=TIMESTAMP}, #{loanNo,jdbcType=VARCHAR},#{debtType,jdbcType=VARCHAR},
+		#{creditDebt,jdbcType=DECIMAL}, #{creditLoanAlsoPay,jdbcType=INTEGER}, #{creditLoanDebt,jdbcType=DECIMAL},
+		#{creditLoanLimit,jdbcType=DECIMAL}, #{creditLoanTerm,jdbcType=INTEGER}, #{creditTotalLimit,jdbcType=DECIMAL},
+		#{creditUsedLimit,jdbcType=DECIMAL}, #{memo,jdbcType=VARCHAR}, #{name,jdbcType=VARCHAR},
+		#{outDebtTotal,jdbcType=DECIMAL},#{outCreditDebtTotal,jdbcType=DECIMAL},#{creditNo,jdbcType=BIGINT},#{fastLoanSituation,jdbcType=VARCHAR},#{monthlyTotalLiabilities,jdbcType=DECIMAL},#{ifBlackRoster,jdbcType=VARCHAR})
+	</insert>
+
+	<update id="update" parameterType="com.yuminsoft.ams.system.domain.DebtsInfo">
+		update ams_debts_info
+		<set>
+			<if test="createdBy != null">
+				created_by = #{createdBy,jdbcType=VARCHAR},
+			</if>
+			<if test="createdDate != null">
+				created_date = #{createdDate,jdbcType=TIMESTAMP},
+			</if>
+			<if test="lastModifiedBy != null">
+				last_modified_by = #{lastModifiedBy,jdbcType=VARCHAR},
+			</if>
+			<if test="lastModifiedDate != null">
+				last_modified_date = #{lastModifiedDate,jdbcType=TIMESTAMP},
+			</if>
+			<if test="loanNo != null">
+				loan_no = #{loanNo,jdbcType=VARCHAR},
+			</if>
+			<if test="debtType != null">
+				debt_type =#{debtType,jdbcType=VARCHAR},
+			</if>
+			<if test="creditDebt != null">
+				credit_debt = #{creditDebt,jdbcType=DECIMAL},
+			</if>
+			<if test="creditLoanAlsoPay != null">
+				credit_loan_also_pay = #{creditLoanAlsoPay,jdbcType=INTEGER},
+			</if>
+			<if test="creditLoanDebt != null">
+				credit_loan_debt = #{creditLoanDebt,jdbcType=DECIMAL},
+			</if>
+			<if test="creditLoanLimit != null">
+				credit_loan_limit = #{creditLoanLimit,jdbcType=DECIMAL},
+			</if>
+			<if test="creditLoanTerm != null">
+				credit_loan_term = #{creditLoanTerm,jdbcType=INTEGER},
+			</if>
+			<if test="creditTotalLimit != null">
+				credit_total_limit = #{creditTotalLimit,jdbcType=DECIMAL},
+			</if>
+			<if test="creditUsedLimit != null">
+				credit_used_limit = #{creditUsedLimit,jdbcType=DECIMAL},
+			</if>
+			<if test="memo != null">
+				memo = #{memo,jdbcType=VARCHAR},
+			</if>
+			<if test="name != null">
+				`name` = #{name,jdbcType=VARCHAR},
+			</if>
+			<if test="outDebtTotal != null">
+				out_debt_total = #{outDebtTotal,jdbcType=DECIMAL},
+			</if>
+			<if test="outCreditDebtTotal != null">
+				out_credit_debt_total = #{outCreditDebtTotal,jdbcType=DECIMAL},
+			</if>
+			<if test="monthlyTotalLiabilities != null">
+				month_total_debt = #{monthlyTotalLiabilities,jdbcType=DECIMAL},
+			</if>
+			<if test="fastLoanSituation != null">
+				fast_loan_situation=#{fastLoanSituation,jdbcType=VARCHAR},
+			</if>
+			<if test="ifBlackRoster != null">
+				if_black_roster = #{ifBlackRoster,jdbcType=VARCHAR},
+			</if>
+		</set>
+		where id = #{id,jdbcType=DECIMAL}
+	</update>
+	<!-- 根据借款编号删除 -->
+	<delete id="deleteDebtsInfoByLoanNo" parameterType="java.lang.String">
+		delete from ams_debts_info where loan_no = #{loanNo,jdbcType=VARCHAR}
+	</delete>
+
+</mapper>

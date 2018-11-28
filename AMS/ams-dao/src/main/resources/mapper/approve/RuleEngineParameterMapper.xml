@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.yuminsoft.ams.system.dao.approve.RuleEngineParameterMapper" >
+<resultMap id="BaseResultMap" type="com.yuminsoft.ams.system.domain.approve.RuleEngineParameter">
+    <id column="id" property="id" jdbcType="BIGINT" />
+    <result column="loan_no" property="loanNo" jdbcType="VARCHAR" />
+    <result column="advice_verify_income" property="adviceVerifyIncome" jdbcType="INTEGER" />
+    <result column="advice_audit_lines" property="adviceAuditLines" jdbcType="INTEGER" />
+    <result column="internal_debt_ratio" property="internalDebtRatio" jdbcType="DECIMAL" />
+    <result column="total_debt_ratio" property="totalDebtRatio" jdbcType="DECIMAL" />
+    <result column="score_card_score" property="scorecardScore" jdbcType="INTEGER" />
+    <result column="scorecard_score_one_point_one" property="scorecardScoreOnePointOne" jdbcType="INTEGER"/>
+    <result column="ccrule_set" property="ccRuleSet" jdbcType="VARCHAR" />
+    <result column="reject_code" property="rejectCode" jdbcType="VARCHAR" />
+    <result column="is_antifraud" property="isAntifraud" jdbcType="VARCHAR" />
+    <result column="score_card_credit_level" property="scorecardCreditLevel" jdbcType="VARCHAR" />
+    <result column="score_card_ranking" property="scorecardRanking" jdbcType="VARCHAR" />
+    <result column="risk_rating" property="riskRating" jdbcType="VARCHAR" />
+    <result column="com_credit_rating" property="comCreditRating" jdbcType="VARCHAR" />
+    <result column="one_months_count" property="oneMonthsCount" jdbcType="INTEGER" />
+    <result column="three_months_count" property="threeMonthsCount" jdbcType="INTEGER" />
+    <result column="if_credit_record" property="ifCreditRecord" jdbcType="VARCHAR" />
+    <result column="engine_type" property="engineType" jdbcType="VARCHAR" />
+    <result column="execute_type" property="executeType" jdbcType="VARCHAR" />
+    <result column="engine_hints" property="engineHints" jdbcType="VARCHAR" />
+    <result column="credit_report_hints" property="creditReportHints" jdbcType="VARCHAR" />
+    <result column="external_credit_hints" property="externalCreditHints" jdbcType="VARCHAR"/>
+    <result column="created_by" property="createdBy" jdbcType="VARCHAR" />
+    <result column="created_date" property="createdDate" jdbcType="TIMESTAMP" />
+    <result column="last_modified_by" property="lastModifiedBy" jdbcType="VARCHAR" />
+    <result column="last_modified_date" property="lastModifiedDate" jdbcType="TIMESTAMP" />
+    <result column="hands_amount" property="handsAmount" jdbcType="DECIMAL"/>
+</resultMap>
+    <sql id="Base_Column_List" >
+        id,loan_no,advice_verify_income,advice_audit_lines,internal_debt_ratio,total_debt_ratio,score_card_score,scorecard_score_one_point_one,ccrule_set,reject_code,
+        is_antifraud,score_card_credit_level,score_card_ranking,risk_rating,com_credit_rating,one_months_count,three_months_count,if_credit_record,engine_type,execute_type,engine_hints,credit_report_hints,external_credit_hints,
+        created_by,created_date,last_modified_by,last_modified_date,hands_amount
+    </sql>
+
+    <!--根据借款编号获取最新的规则引擎值-->
+    <select id="findByLoanNo" parameterType="java.lang.String" resultMap="BaseResultMap">
+        select 
+        <include refid="Base_Column_List" />
+        from ams_rule_engine_parameter
+        where loan_no = #{loanNo,jdbcType=VARCHAR}
+        ORDER BY id DESC LIMIT 1
+    </select>
+
+    <insert id="insert" parameterType="com.yuminsoft.ams.system.domain.approve.RuleEngineParameter" useGeneratedKeys="true" keyProperty="id">
+        INSERT into ams_rule_engine_parameter(
+        loan_no,advice_verify_income,advice_audit_lines,internal_debt_ratio,total_debt_ratio,score_card_score,scorecard_score_one_point_one,ccrule_set,reject_code,
+        is_antifraud,score_card_credit_level,score_card_ranking,risk_rating,com_credit_rating,one_months_count,three_months_count,if_credit_record,engine_type,execute_type,engine_hints,credit_report_hints,external_credit_hints,
+        created_by,created_date,last_modified_by,last_modified_date,hands_amount,estimated_cost
+        )VALUES (
+          #{loanNo,jdbcType=VARCHAR},#{adviceVerifyIncome,jdbcType=INTEGER},#{adviceAuditLines,jdbcType=INTEGER},#{internalDebtRatio,jdbcType=DECIMAL},
+          #{totalDebtRatio,jdbcType=DECIMAL},#{scorecardScore,jdbcType=INTEGER},#{scorecardScoreOnePointOne,jdbcType=INTEGER},#{ccRuleSet,jdbcType=VARCHAR},#{rejectCode,jdbcType=VARCHAR},#{isAntifraud,jdbcType=VARCHAR},
+          #{scorecardCreditLevel,jdbcType=VARCHAR},#{scorecardRanking,jdbcType=VARCHAR},#{riskRating,jdbcType=VARCHAR},#{comCreditRating,jdbcType=VARCHAR},#{oneMonthsCount,jdbcType=INTEGER},
+          #{threeMonthsCount,jdbcType=INTEGER},#{ifCreditRecord,jdbcType=VARCHAR},#{engineType,jdbcType=VARCHAR},#{executeType,jdbcType=VARCHAR},#{engineHints,jdbcType=VARCHAR},#{creditReportHints,jdbcType=VARCHAR},#{externalCreditHints,jdbcType=VARCHAR},
+          #{createdBy,jdbcType=VARCHAR}, #{createdDate,jdbcType=TIMESTAMP}, #{lastModifiedBy,jdbcType=VARCHAR},#{lastModifiedDate,jdbcType=TIMESTAMP}, #{handsAmount,jdbcType=DECIMAL}, #{estimatedCost,jdbcType=DECIMAL}
+        )
+    </insert>
+
+
+    <!--根据借款编号获取最新手动调用的规则引擎值-->
+    <select id="findHandByLoanNo" parameterType="java.lang.String" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List" />
+        from ams_rule_engine_parameter
+        where execute_type !='XSCS06' and execute_type !='XSZS06' and loan_no = #{loanNo,jdbcType=VARCHAR}
+        ORDER BY id DESC LIMIT 1
+    </select>
+</mapper>

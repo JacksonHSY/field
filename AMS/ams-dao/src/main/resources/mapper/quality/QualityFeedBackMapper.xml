@@ -1,0 +1,253 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.yuminsoft.ams.system.dao.quality.QualityFeedBackMapper">
+    <resultMap id="BaseResultMap" type="com.yuminsoft.ams.system.vo.quality.QualityFeedBackVo">
+        <result column="assign_date" property="assignDate" jdbcType="TIMESTAMP"/>
+        <result column="customer_name" property="customerName" jdbcType="VARCHAR" javaType="encrypt"/>
+        <result column="id_no" property="idNo" jdbcType="VARCHAR" javaType="encrypt"/>
+        <result column="customer_type" property="customerType" jdbcType="VARCHAR"/>
+        <result column="source" property="source" jdbcType="VARCHAR"/>
+        <result column="loan_no" property="loanNo" jdbcType="VARCHAR"/>
+        <result column="apply_date" property="applyDate" jdbcType="TIMESTAMP"/>
+        <result column="product_name" property="productName" jdbcType="VARCHAR"/>
+        <result column="rtf_state" property="rtfState" jdbcType="VARCHAR"/>
+        <result column="check_person" property="checkPerson" jdbcType="VARCHAR"/>
+        <result column="check_person_name" property="checkPersonName" jdbcType="VARCHAR"/>
+        <result column="final_person" property="finalPerson" jdbcType="VARCHAR"/>
+        <result column="final_person_name" property="finalPersonName" jdbcType="VARCHAR"/>
+        <result column="approve_date" property="approveDate" jdbcType="TIMESTAMP"/>
+        <result column="check_user" property="checkUser" jdbcType="VARCHAR"/>
+        <result column="end_date" property="endDate" jdbcType="TIMESTAMP"/>
+        <result column="quality_check_id" property="qualityCheckId" jdbcType="DECIMAL"/>
+        <result column="check_error" property="checkError" jdbcType="VARCHAR"/>
+        <result column="error_code" property="errorCode" jdbcType="VARCHAR"/>
+        <result column="id" property="checkResId" jdbcType="DECIMAL"/>
+        <result column="feedback_code" property="feedbackCode" jdbcType="INTEGER"/>
+        <result column="owning_brance_id" property="owningBranceId" jdbcType="VARCHAR"/>
+        <result column="owning_brance" property="owningBrance" jdbcType="VARCHAR"/>
+        <result column="check_result" property="checkResult" jdbcType="VARCHAR"/>
+        <result column="check_view" property="checkView" jdbcType="VARCHAR"/>
+        <result column="status" property="status" jdbcType="INTEGER"/>
+        <result column="type" property="type" jdbcType="VARCHAR"/>
+    </resultMap>
+    <resultMap id="FeedBackResultMap" type="com.yuminsoft.ams.system.domain.quality.QualityFeedBack">
+        <id column="id" property="id" jdbcType="BIGINT"/>
+        <result column="type" property="type" jdbcType="VARCHAR"/>
+        <result column="opinion" property="opinion" jdbcType="VARCHAR"/>
+        <result column="check_res_id" property="checkResId" jdbcType="BIGINT"/>
+        <result column="node_name" property="nodeName" jdbcType="VARCHAR"/>
+        <result column="check_type" property="checkType" jdbcType="VARCHAR"/>
+        <result column="check_error" property="checkError" jdbcType="VARCHAR"/>
+        <result column="error_code" property="errorCode" jdbcType="VARCHAR"/>
+        <result column="created_by" property="createdBy" jdbcType="VARCHAR"/>
+        <result column="created_date" property="createdDate" jdbcType="TIMESTAMP"/>
+        <result column="last_modified_by" property="lastModifiedBy" jdbcType="VARCHAR"/>
+        <result column="last_modified_date" property="lastModifiedDate" jdbcType="TIMESTAMP"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        id,
+        created_by,
+        created_date,
+        last_modified_by,
+        last_modified_date,
+        type,
+        opinion,
+        check_res_id,
+        node_name,
+        check_type,
+        check_error,
+        error_code
+    </sql>
+    <!--保存一条反馈结果-->
+    <insert id="saveFeedBackRecord" parameterType="com.yuminsoft.ams.system.domain.quality.QualityFeedBack"
+            useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO ams_quality_feedback(
+        created_by,
+        created_date,
+        last_modified_by,
+        last_modified_date,
+        type,
+        opinion,
+        check_res_id,
+        node_name,
+        check_type,
+        check_error,
+        error_code
+        )
+        VALUES
+        (
+        #{createdBy,jdbcType=VARCHAR},
+        #{createdDate,jdbcType=TIMESTAMP},
+        #{lastModifiedBy,jdbcType=VARCHAR},
+        #{lastModifiedDate,jdbcType=TIMESTAMP},
+        #{type,jdbcType=VARCHAR},
+        #{opinion,jdbcType=VARCHAR},
+        #{checkResId,jdbcType=BIGINT},
+        #{nodeName,jdbcType=INTEGER},
+        #{checkType,jdbcType=VARCHAR},
+        #{checkError,jdbcType=INTEGER},
+        #{errorCode,jdbcType=INTEGER}
+        )
+    </insert>
+    <!--查询质检反馈历史结果-->
+    <select id="getFeedBackHistoryByCheckResId" resultMap="FeedBackResultMap" parameterType="java.lang.Long">
+        SELECT *
+        FROM ams_quality_feedback
+        WHERE check_res_id =#{checkResId,jdbcType=BIGINT}
+    </select>
+
+    <!--质检反馈情况 待处理列表-->
+    <select id="findToDo" resultMap="BaseResultMap"
+            parameterType="com.yuminsoft.ams.system.vo.quality.QualityFeedBackVo">
+        SELECT DISTINCT
+        a.id quality_check_id,
+        a.assign_date,
+        a.owning_brance_id,
+        a.owning_brance,
+        a.source,
+        a.loan_no,
+        a.check_user,
+        a.end_date,
+        a.check_person,
+        a.check_person_name,
+        a.final_person,
+        a.final_person_name,
+        a.rtf_state,
+        a.apply_date,
+        a.product_name,
+        a.approve_date,
+        a.customer_name,
+        a.id_no,
+        a.customer_type,
+        d.id,
+        d.check_result,
+        d.check_view,
+        d.feedback_code,
+        d.check_error,
+        d.error_code,
+        d.status,
+        e.type
+        FROM ams_quality_check_info a
+        LEFT JOIN ams_quality_check_result d ON a.id = d.quality_check_id
+        LEFT JOIN ams_quality_feedback e ON e.check_res_id=d.id
+        WHERE d.feedback_code = 1
+        AND d.id IN
+        <foreach item="item" index="index" collection="checkResIds" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+        <if test="customerName != null and customerName !='' ">
+            AND a.customer_name = #{customerName,jdbcType=VARCHAR,javaType=encrypt}
+        </if>
+        <if test="idNo != null and idNo !='' ">
+            AND a.id_no = #{idNo,jdbcType=VARCHAR,javaType=encrypt}
+        </if>
+        <if test="checkUser != null and checkUser !='' ">
+            AND a.check_user = #{checkUser,jdbcType=VARCHAR}
+        </if>
+        <if test="owningBranceId != null">
+            AND a.owning_brance_id = #{owningBranceId,jdbcType=VARCHAR}
+        </if>
+        <if test="loanNo != null and customerName !='' ">
+            AND a.loan_no = #{loanNo,jdbcType=VARCHAR}
+        </if>
+        <if test="assignDateStart != null and assignDateStart !='' ">
+            AND a.assign_date <![CDATA[  >= ]]> #{assignDateStart,jdbcType=TIMESTAMP}
+        </if>
+        <if test="assignDateEnd != null and assignDateEnd !='' ">
+            AND a.assign_date <![CDATA[  < ]]> #{assignDateEnd,jdbcType=TIMESTAMP}
+        </if>
+
+    </select>
+
+
+    <!-- 质检反馈情况 已完成列表 -->
+    <select id="findDone" resultMap="BaseResultMap"
+            parameterType="com.yuminsoft.ams.system.vo.quality.QualityFeedBackVo">
+        SELECT
+        a.id quality_check_id,
+        a.assign_date,
+        a.owning_brance_id,
+        a.owning_brance,
+        a.source,
+        a.loan_no,
+        a.check_user,
+        a.end_date,
+        a.check_person,
+        a.check_person_name,
+        a.final_person,
+        a.final_person_name,
+        a.rtf_state,
+        a.apply_date,
+        a.product_name,
+        a.approve_date,
+        a.customer_name,
+        a.id_no,
+        a.customer_type,
+        d.id,
+        d.check_result,
+        d.check_view,
+        d.feedback_code,
+        d.check_error,
+        d.error_code,
+        d.status
+        FROM ams_quality_check_info a
+        LEFT JOIN ams_quality_check_result d ON a.id = d.quality_check_id
+        WHERE feedback_code=2 AND d.last_modified_by=#{loginUser,jdbcType=VARCHAR}
+        <if test="customerName != null and customerName !='' ">
+            AND a.customer_name = #{customerName,jdbcType=VARCHAR,javaType=encrypt}
+        </if>
+        <if test="idNo != null and idNo !='' ">
+            AND a.id_no = #{idNo,jdbcType=VARCHAR,javaType=encrypt}
+        </if>
+        <if test="checkUser != null and checkUser !='' ">
+            AND a.check_user = #{checkUser,jdbcType=VARCHAR}
+        </if>
+        <if test="owningBranceId != null">
+            AND a.owning_brance_id = #{owningBranceId,jdbcType=VARCHAR}
+        </if>
+        <if test="loanNo != null and custName !='' ">
+            AND a.loan_no = #{loanNo,jdbcType=VARCHAR}
+        </if>
+        <if test="endDateStart != null and endDateStart !='' ">
+            AND a.end_date <![CDATA[  >= ]]> #{endDateStart,jdbcType=TIMESTAMP}
+        </if>
+        <if test="endDateEnd != null and endDateEnd !='' ">
+            AND a.end_date <![CDATA[  < ]]> #{endDateEnd,jdbcType=TIMESTAMP}
+        </if>
+        <if test="errorCode != null and errorCode !='' ">
+            AND d.error_code = #{errorCode,jdbcType=VARCHAR}
+        </if>
+    </select>
+
+    <!--修改feedback_code字段标记申请件进入反馈流程-->
+    <update id="markCheckRes">
+        UPDATE ams_quality_check_result
+        SET feedback_code = 1
+        WHERE
+        id IN
+        <foreach item="resList" index="index" collection="list" open="(" separator="," close=")">
+            #{resList}
+        </foreach>
+    </update>
+    <select id="findOne" resultMap="FeedBackResultMap" parameterType="java.util.Map">
+        select
+        <include refid="Base_Column_List"/>
+        from ams_quality_feedback
+        where 1=1
+        <if test="nodeName != null and nodeName !='' ">
+            AND node_name =#{nodeName,jdbcType=VARCHAR}
+        </if>
+        <if test="checkResId != null ">
+            AND check_res_id =#{checkResId,jdbcType=BIGINT}
+        </if>
+    </select>
+
+    <select id="getLatestFeedBackByChekResId" resultMap="FeedBackResultMap" >
+        select
+        <include refid="Base_Column_List"/>
+        from ams_quality_feedback
+        where  check_res_id =#{checkResId,jdbcType=BIGINT}
+        ORDER BY last_modified_date DESC limit 1
+    </select>
+</mapper>

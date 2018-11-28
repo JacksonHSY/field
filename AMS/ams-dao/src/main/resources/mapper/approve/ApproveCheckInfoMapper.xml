@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.yuminsoft.ams.system.dao.approve.ApproveCheckInfoMapper">
+
+    <resultMap id="BaseResultMap" type="com.yuminsoft.ams.system.domain.approve.ApproveCheckInfo">
+        <id column="id" property="id" jdbcType="BIGINT" />
+        <result column="loan_no" property="loanNo" jdbcType="VARCHAR" />
+        <result column="name" property="name" jdbcType="VARCHAR" />
+        <result column="one_months_count" property="oneMonthsCount" jdbcType="INTEGER" />
+        <result column="three_months_count" property="threeMonthsCount" jdbcType="INTEGER" />
+        <result column="weekend_pay" property="weekendPay" jdbcType="INTEGER" />
+        <result column="credit_check_exception" property="creditCheckException" jdbcType="INTEGER" />
+        <result column="court_check_exception" property="courtCheckException" jdbcType="INTEGER" />
+        <result column="internal_check_exception" property="internalCheckException" jdbcType="INTEGER" />
+        <result column="memo" property="memo" jdbcType="VARCHAR" />
+        <result column="created_by" property="createdBy" jdbcType="VARCHAR" />
+        <result column="created_date" property="createdDate" jdbcType="TIMESTAMP" />
+        <result column="last_modified_by" property="lastModifiedBy" jdbcType="VARCHAR" />
+        <result column="last_modified_date" property="lastModifiedDate" jdbcType="TIMESTAMP" />
+    </resultMap>
+
+    <select id="findById" resultMap="BaseResultMap" parameterType="Long">
+        select * from ams_approve_check_info
+        where id = #{id,jdbcType=BIGINT}
+    </select>
+
+    <select id="findByLoanNo" resultMap="BaseResultMap" parameterType="String">
+        select t1.* from ams_approve_check_info t1
+        where t1.loan_no = #{loanNo, jdbcType=VARCHAR}
+        order by id DESC
+        limit 1
+    </select>
+
+    <delete id="delete" parameterType="java.lang.Long">
+        delete from ams_approve_check_info
+        where id = #{id,jdbcType=BIGINT}
+    </delete>
+
+    <insert id="insert" parameterType="com.yuminsoft.ams.system.domain.approve.ApproveCheckInfo" useGeneratedKeys="true" keyProperty="id">
+        insert into ams_approve_check_info (
+            loan_no,
+            name,
+            one_months_count,
+            three_months_count,
+            weekend_pay,
+            credit_check_exception,
+            court_check_exception,
+            internal_check_exception,
+            memo,
+            created_by,
+            created_date,
+            last_modified_by,
+            last_modified_date
+        ) VALUES (
+            #{loanNo, jdbcType=VARCHAR},
+            #{name, jdbcType=VARCHAR},
+            #{oneMonthsCount, jdbcType=INTEGER},
+            #{threeMonthsCount, jdbcType=INTEGER},
+            #{weekendPay, jdbcType=INTEGER},
+            #{creditCheckException, jdbcType=INTEGER},
+            #{courtCheckException, jdbcType=INTEGER},
+            #{internalCheckException, jdbcType=INTEGER},
+            #{memo, jdbcType=VARCHAR},
+            #{createdBy, jdbcType=VARCHAR},
+            #{createdDate, jdbcType=TIMESTAMP},
+            #{lastModifiedBy, jdbcType=VARCHAR},
+            #{lastModifiedDate, jdbcType=TIMESTAMP}
+        )
+    </insert>
+
+    <update id="update" parameterType="com.yuminsoft.ams.system.domain.approve.ApproveCheckInfo">
+        update ams_approve_check_info SET
+            loan_no = #{loanNo, jdbcType=VARCHAR},
+            name = #{name, jdbcType=VARCHAR},
+            one_months_count = #{oneMonthsCount, jdbcType=INTEGER},
+            three_months_count = #{threeMonthsCount, jdbcType=INTEGER},
+            weekend_pay = #{weekendPay, jdbcType=INTEGER},
+            credit_check_exception = #{creditCheckException, jdbcType=INTEGER},
+            court_check_exception = #{courtCheckException, jdbcType=INTEGER},
+            internal_check_exception = #{internalCheckException, jdbcType=INTEGER},
+            memo = #{memo, jdbcType=VARCHAR},
+            created_by = #{createdBy, jdbcType=VARCHAR},
+            created_date = #{createdDate, jdbcType=TIMESTAMP},
+            last_modified_by = #{lastModifiedBy, jdbcType=VARCHAR},
+            last_modified_date = #{lastModifiedDate, jdbcType=TIMESTAMP}
+        WHERE id = #{id,jdbcType=DECIMAL}
+    </update>
+</mapper>

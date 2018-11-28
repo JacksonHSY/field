@@ -1,0 +1,707 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.yuminsoft.ams.system.dao.approve.StaffOrderTaskMapper">
+	<resultMap id="BaseResultMap" type="com.yuminsoft.ams.system.domain.approve.StaffOrderTask">
+		<id column="id" property="id" jdbcType="DECIMAL" />
+		<result column="created_by" property="createdBy" jdbcType="VARCHAR" />
+		<result column="created_date" property="createdDate" jdbcType="TIMESTAMP" />
+		<result column="last_modified_by" property="lastModifiedBy" jdbcType="VARCHAR" />
+		<result column="last_modified_date" property="lastModifiedDate" jdbcType="TIMESTAMP" />
+		<result column="staff_code" property="staffCode" jdbcType="VARCHAR" />
+		<result column="task_def_id" property="taskDefId" jdbcType="VARCHAR" />
+		<result column="parent_org_code" property="parentOrgCode" jdbcType="VARCHAR" />
+		<result column="org_code" property="orgCode" jdbcType="VARCHAR" />
+		<result column="org_path" property="orgPath" jdbcType="VARCHAR" />
+		<result column="curr_activie_task_num" property="currActivieTaskNum" jdbcType="INTEGER" />
+		<result column="curr_priority_num" property="currPriorityNum" jdbcType="INTEGER" />
+		<result column="curr_inactive_task_num" property="currInactiveTaskNum" jdbcType="INTEGER" />
+		<result column="if_accept" property="ifAccept" jdbcType="VARCHAR" />
+		<result column="wait_time" property="waitTime" jdbcType="TIMESTAMP" />
+		<result column="version" property="version" jdbcType="INTEGER" />
+		<result column="final_Audit_Level" property="finalAuditLevel" jdbcType="VARCHAR" />
+		<result column="status" property="status" jdbcType="VARCHAR" />
+		<result column="org_name" property="orgName" jdbcType="VARCHAR" />
+		<result column="parent_org_name" property="parentOrgName" jdbcType="VARCHAR" />
+		<result column="staff_name" property="staffName" jdbcType="VARCHAR" />
+	</resultMap>
+
+	<sql id="Base_Column_List">
+		id,
+		created_by,
+		created_date,
+		last_modified_by,
+		last_modified_date,
+		staff_code,
+		task_def_id,
+		parent_org_code,
+		org_code,
+		org_path,
+		curr_activie_task_num,
+		curr_priority_num,
+		curr_inactive_task_num,
+		if_accept,
+		wait_time,
+		version,
+		final_Audit_Level,
+		status,
+		org_name,
+		parent_org_name,
+		staff_name
+	</sql>
+
+	<select id="findOne" resultMap="BaseResultMap" parameterType="java.util.Map">
+		select
+			<include refid="Base_Column_List" />
+		from ams_staff_order_task
+		where 1=1
+		<include refid="amsConditions" />
+	</select>
+
+	<select id="findById" resultMap="BaseResultMap" parameterType="java.lang.Long">
+		select
+		<include refid="Base_Column_List" />
+		from ams_staff_order_task
+		where id = #{id,jdbcType=DECIMAL}
+	</select>
+
+	<select id="findAll" resultMap="BaseResultMap" parameterType="java.util.Map">
+		select
+		<include refid="Base_Column_List" />
+		from ams_staff_order_task
+		where 1=1
+		<include refid="amsConditions" />
+		order by staff_code
+	</select>
+
+	<!-- 查询条件 -->
+	<sql id="amsConditions">
+		<if test="id != null">
+			AND id = #{id,jdbcType=DECIMAL}
+		</if>
+		<if test="createdBy != null">
+			AND created_by = #{createdBy,jdbcType=VARCHAR}
+		</if>
+		<if test="createdDate != null">
+			AND created_date = #{createdDate,jdbcType=TIMESTAMP}
+		</if>
+		<if test="lastModifiedBy != null">
+			AND last_modified_by = #{lastModifiedBy,jdbcType=VARCHAR}
+		</if>
+		<if test="lastModifiedDate != null">
+			AND last_modified_date = #{lastModifiedDate,jdbcType=TIMESTAMP}
+		</if>
+		<if test="staffCode != null">
+			AND staff_code = #{staffCode,jdbcType=VARCHAR}
+		</if>
+		<if test="taskDefId != null">
+			AND task_def_id = #{taskDefId,jdbcType=VARCHAR}
+		</if>
+		<if test="parentOrgCode != null">
+			AND parent_org_code = #{parentOrgCode,jdbcType=VARCHAR}
+		</if>
+		<if test="orgCode !=null">
+			AND org_code=#{orgCode,jdbcType=VARCHAR}
+		</if>
+		<if test="orgPath !=null">
+			AND org_path=#{orgPath,jdbcType=VARCHAR}
+		</if>
+		<if test="currActivieTaskNum !=null">
+			AND curr_activie_task_num =#{currActivieTaskNum,jdbcType=INTEGER}
+		</if>
+		<if test="currPriorityNum !=null">
+			AND curr_priority_num =#{currPriorityNum,jdbcType=INTEGER}
+		</if>
+		<if test="currInactiveTaskNum !=null">
+			AND curr_inactive_task_num =#{currInactiveTaskNum,jdbcType=INTEGER}
+		</if>
+		<if test="ifAccept !=null">
+			AND if_accept=#{ifAccept,jdbcType=VARCHAR}
+		</if>
+		<if test="waitTime !=null">
+			AND wait_time=#{waitTime,jdbcType=TIMESTAMP}
+		</if>
+		<if test="version !=null">
+			AND version=#{version,jdbcType=INTEGER}
+		</if>
+		<if test="finalAuditLevel !=null">
+			AND final_Audit_Level=#{finalAuditLevel,jdbcType=VARCHAR}
+		</if>
+		<if test="status !=null">
+			AND status=#{status,jdbcType=VARCHAR}
+		</if>
+		<if test="orgName !=null">
+			AND org_name=#{orgName,jdbcType=VARCHAR}
+		</if>
+		<if test="parentOrgName !=null">
+			AND parent_org_name=#{parentOrgName,jdbcType=VARCHAR}
+		</if>
+		<if test="staffName !=null">
+			AND staff_name=#{staffName,jdbcType=VARCHAR}
+		</if>
+	</sql>
+
+	<delete id="delete" parameterType="com.yuminsoft.ams.system.domain.approve.StaffOrderTask">
+		delete from ams_staff_order_task
+		where id = #{id, jdbcType=DECIMAL}
+	</delete>
+
+	<delete id="deleteById" parameterType="java.lang.Long">
+		delete from ams_staff_order_task
+		where id = #{id, jdbcType=DECIMAL}
+	</delete>
+
+	<insert id="insert" parameterType="com.yuminsoft.ams.system.domain.approve.StaffOrderTask" useGeneratedKeys="true" keyProperty="id">
+		insert into ams_staff_order_task (
+			created_by,
+			created_date,
+			last_modified_by,
+			last_modified_date,
+			staff_code,
+			task_def_id,
+			parent_org_code,
+			org_code,
+			org_path,
+			curr_activie_task_num,
+			curr_priority_num,
+			curr_inactive_task_num,
+			if_accept,
+			wait_time,
+			version,
+			final_Audit_Level,
+			status,
+			org_name,
+			parent_org_name,
+			staff_name
+		) values (
+			#{createdBy,jdbcType=VARCHAR},
+			#{createdDate,jdbcType=TIMESTAMP},
+			#{lastModifiedBy,jdbcType=VARCHAR},
+			#{lastModifiedDate,jdbcType=TIMESTAMP},
+			#{staffCode,jdbcType=VARCHAR},
+			#{taskDefId,jdbcType=VARCHAR},
+			#{parentOrgCode,jdbcType=VARCHAR},
+			#{orgCode,jdbcType=VARCHAR},
+			#{orgPath,jdbcType=VARCHAR},
+			#{currActivieTaskNum,jdbcType=INTEGER},
+			#{currPriorityNum,jdbcType=INTEGER},
+			#{currInactiveTaskNum,jdbcType=INTEGER},
+			#{ifAccept,jdbcType=VARCHAR},
+			#{waitTime,jdbcType=TIMESTAMP},
+			#{version,jdbcType=INTEGER},
+			#{finalAuditLevel,jdbcType=VARCHAR},
+			#{status,jdbcType=VARCHAR},
+			#{orgName,jdbcType=VARCHAR},
+			#{parentOrgName,jdbcType=VARCHAR},
+			#{staffName,jdbcType=VARCHAR}
+		)
+	</insert>
+
+	<update id="update" parameterType="com.yuminsoft.ams.system.domain.approve.StaffOrderTask">
+		update ams_staff_order_task
+		<set>
+			<if test="lastModifiedBy != null">
+				last_modified_by = #{lastModifiedBy,jdbcType=VARCHAR},
+			</if>
+			<if test="lastModifiedDate != null">
+				last_modified_date = #{lastModifiedDate,jdbcType=TIMESTAMP},
+			</if>
+			<if test="staffCode != null">
+				staff_code = #{staffCode,jdbcType=VARCHAR},
+			</if>
+			<if test="taskDefId != null">
+				task_def_id = #{taskDefId,jdbcType=VARCHAR},
+			</if>
+			<if test="parentOrgCode != null">
+				parent_org_code = #{parentOrgCode,jdbcType=VARCHAR},
+			</if>
+			<if test="orgCode !=null">
+				org_code=#{orgCode,jdbcType=VARCHAR},
+			</if>
+			<if test="orgPath !=null">
+				org_path=#{orgPath,jdbcType=VARCHAR},
+			</if>
+			<if test="currActivieTaskNum !=null">
+				curr_activie_task_num =#{currActivieTaskNum,jdbcType=INTEGER},
+			</if>
+			<if test="currPriorityNum !=null">
+				curr_priority_num =#{currPriorityNum,jdbcType=INTEGER},
+			</if>
+			<if test="currInactiveTaskNum !=null">
+				curr_inactive_task_num =#{currInactiveTaskNum,jdbcType=INTEGER},
+			</if>
+			<if test="ifAccept !=null">
+				if_accept=#{ifAccept,jdbcType=VARCHAR},
+			</if>
+			<if test="waitTime != null">
+				wait_time=#{waitTime,jdbcType=TIMESTAMP},
+			</if>
+			<if test="finalAuditLevel !=null">
+				final_Audit_Level=#{finalAuditLevel,jdbcType=VARCHAR},
+			</if>
+			<if test="status !=null">
+				status=#{status,jdbcType=VARCHAR},
+			</if>
+			<if test="orgName !=null">
+				org_name=#{orgName,jdbcType=VARCHAR},
+			</if>
+			<if test="parentOrgName !=null">
+				parent_org_name=#{parentOrgName,jdbcType=VARCHAR},
+			</if>
+			<if test="staffName !=null">
+				staff_name=#{staffName,jdbcType=VARCHAR},
+			</if>
+		</set>
+		where id = #{id,jdbcType=DECIMAL}
+		<if test="version !=null">
+			and version=#{version,jdbcType=INTEGER}
+		</if>
+	</update>
+
+	<!-- 修改员工队列数 -->
+	<update id="updateTaskNum" parameterType="com.yuminsoft.ams.system.domain.approve.StaffOrderTask">
+		update ams_staff_order_task set
+			last_modified_by = #{lastModifiedBy,jdbcType=VARCHAR},
+			last_modified_date = #{lastModifiedDate,jdbcType=TIMESTAMP},
+			curr_activie_task_num =#{currActivieTaskNum,jdbcType=INTEGER},
+			curr_priority_num =#{currPriorityNum,jdbcType=INTEGER},
+			curr_inactive_task_num =#{currInactiveTaskNum,jdbcType=INTEGER},
+			wait_time=#{waitTime,jdbcType=TIMESTAMP},
+			version=#{version,jdbcType=INTEGER} + 1
+		where id = #{id,jdbcType=BIGINT} and version=#{version,jdbcType=INTEGER}
+	</update>
+
+	<!-- 查询原初审是否有能力接单(用于优先级分派给原初审) -->
+	<select id="findOriginalApprover" parameterType="java.util.Map" resultMap="BaseResultMap">
+		select
+		t.*
+		from ams_staff_order_task t, ams_staff_order_ability a, ams_staff_order_set s
+		where
+		    t.staff_code = a.staff_code
+		and t.staff_code = s.staff_code
+		and a.com_credit_rating LIKE #{comCreditRating,jdbcType=VARCHAR}
+		and a.`value` != 0
+		and a.product_code=#{productCode,jdbcType=VARCHAR}
+		and a.area_code=#{areaCode,jdbcType=VARCHAR}
+		and t.task_def_id='apply-check'
+		and t.if_accept ='Y'
+		and t.status ='0'
+		and t.staff_code=#{staffCode,jdbcType=VARCHAR}
+	</select>
+
+	<!-- 查询初审待派单员工信息(优先队列规则) -->
+	<select id="findPriorityTaskOrder" parameterType="java.util.Map" resultMap="BaseResultMap">
+		select
+		t.*
+		from ams_staff_order_task t, ams_staff_order_ability a, ams_staff_order_set s
+		where
+		     t.staff_code = a.staff_code
+		and t.staff_code = s.staff_code
+		and a.com_credit_rating LIKE #{comCreditRating,jdbcType=VARCHAR}
+		and t.task_def_id='apply-check'
+		and t.if_accept ='Y'
+		and t.status ='0'
+		and a.product_code=#{productCode,jdbcType=VARCHAR}
+		and a.area_code=#{areaCode,jdbcType=VARCHAR}
+		and a.`value` != 0
+		/*and t.task_def_id=s.task_def_id*/
+		ORDER BY t.curr_priority_num ASC,a.`value` DESC LIMIT 1
+	</select>
+
+	<!-- 初审复议派单查询原初审是否可以接单且未超过正常队列上线 -->
+	<select id="findReconsiderActiviesTask" parameterType="java.util.Map" resultMap="BaseResultMap">
+		select
+		t.*
+		from ams_staff_order_task t, ams_staff_order_ability a, ams_staff_order_set s
+		where
+		    t.staff_code = a.staff_code
+		and t.staff_code = s.staff_code
+		and a.com_credit_rating LIKE #{comCreditRating,jdbcType=VARCHAR}
+		and a.product_code=#{productCode,jdbcType=VARCHAR}
+		and a.area_code=#{areaCode,jdbcType=VARCHAR}
+		and a.`value` != 0
+		and (t.curr_activie_task_num/s.normal_queue_max)  <![CDATA[ < ]]>1
+		and t.task_def_id='apply-check'
+		and t.if_accept ='Y'
+		and t.status ='0'
+		and t.staff_code=#{staffCode,jdbcType=VARCHAR}
+
+	</select>
+
+	<!-- 查询初审待派单员工信息(正常队列规则) -->
+	<select id="findActiviesTaskOrder" parameterType="java.util.Map" resultMap="BaseResultMap">
+		select
+		t.*
+		from ams_staff_order_task t, ams_staff_order_ability a, ams_staff_order_set s
+		where t.task_def_id='apply-check'
+		and a.com_credit_rating LIKE #{comCreditRating,jdbcType=VARCHAR}
+		and t.if_accept ='Y'
+		and t.status ='0'
+		and t.staff_code = a.staff_code
+		and t.staff_code = s.staff_code
+		and a.product_code=#{productCode,jdbcType=VARCHAR}
+		and a.area_code=#{areaCode,jdbcType=VARCHAR}
+		and a.`value` != 0
+		and (t.curr_activie_task_num/s.normal_queue_max)  <![CDATA[ < ]]>1
+		ORDER BY a.`value` DESC, (t.curr_activie_task_num/s.normal_queue_max) ASC, t.curr_activie_task_num ASC, t.wait_time ASC LIMIT 1
+	</select>
+
+	<!-- 判断初审挂起队列是否达到上限 -->
+	<select id="findAurrInactiveTaskNum" parameterType="java.util.Map" resultMap="BaseResultMap">
+		select
+		t.*
+		from ams_staff_order_task t, ams_staff_order_set s
+		where t.task_def_id='apply-check'
+		/*and t.task_def_id=s.task_def_id*/
+		and t.staff_code = s.staff_code
+		and t.curr_inactive_task_num <![CDATA[ < ]]> s.hang_queue_max 
+		and t.staff_code=#{staffCode,jdbcType=VARCHAR}
+	</select>
+
+	<!-- 查询终审员(优先队列规则) -->
+	<select id="findPriorityStaffForFinal" parameterType="java.util.Map" resultMap="BaseResultMap">
+		select
+			<include refid="Base_Column_List" />
+		from (
+			select t.*, (curr_activie_task_num + curr_inactive_task_num + curr_priority_num) as total_task_num
+			from ams_staff_order_task t
+			where t.task_def_id= 'applyinfo-finalaudit'
+			and   t.if_accept = 'Y'
+			and   t.status = '0'
+			and   t.final_Audit_Level = #{finalAuditLevel,jdbcType=VARCHAR}
+			<if test="rtfNodeStatusList != null">
+			and not exists (
+				SELECT 1 FROM ams_apply_history his
+				WHERE his.check_person = t.staff_code
+				AND his.rtf_node_state in
+				<foreach collection="rtfNodeStatusList" index="index" item="item" open="(" separator="," close=")">
+					#{item}
+				</foreach>
+				AND his.loan_no = #{loanNo,jdbcType=VARCHAR}
+			)
+			and not exists (
+				SELECT 1 FROM ams_apply_history his
+				WHERE his.final_person = t.staff_code
+				AND his.rtf_node_state in
+				<foreach collection="rtfNodeStatusList" index="index" item="item" open="(" separator="," close=")">
+					#{item}
+				</foreach>
+				AND his.loan_no = #{loanNo,jdbcType=VARCHAR}
+			)
+			and not exists (
+				SELECT 1 FROM ams_apply_history his
+				WHERE his.approval_person = t.staff_code
+				AND his.rtf_node_state in
+				<foreach collection="rtfNodeStatusList" index="index" item="item" open="(" separator="," close=")">
+					#{item}
+				</foreach>
+				AND his.loan_no = #{loanNo,jdbcType=VARCHAR}
+			)
+			</if>
+		) base
+		order by base.total_task_num asc, base.wait_time asc
+		limit 1
+	</select>
+
+	<!-- 查询终审员(正常队列规则) -->
+	<select id="findActivityStaffForFinal" parameterType="java.util.Map" resultMap="BaseResultMap">
+		select t.* from ams_staff_order_task t, ams_staff_order_set s
+		where t.task_def_id = s.task_def_id
+		and t.staff_code = s.staff_code
+		<if test="staffCode!= null">
+		and t.staff_code=#{staffCode, jdbcType=VARCHAR}
+		</if>
+		and t.task_def_id= 'applyinfo-finalaudit'
+		and t.if_accept = 'Y'
+		and t.status = '0'
+		and t.final_Audit_Level = #{finalAuditLevel,jdbcType=VARCHAR}
+		and (t.curr_activie_task_num/s.normal_queue_max)  <![CDATA[ < ]]> 1
+		<if test="rtfNodeStatusList != null">
+		and not exists (
+			SELECT 1 FROM ams_apply_history his
+			WHERE his.check_person = t.staff_code
+			AND his.rtf_node_state in
+			<foreach collection="rtfNodeStatusList" index="index" item="item" open="(" separator="," close=")">
+				#{item}
+			</foreach>
+			AND his.loan_no = #{loanNo,jdbcType=VARCHAR}
+		)
+		and not exists (
+			SELECT 1 FROM ams_apply_history his
+			WHERE his.final_person = t.staff_code
+			AND his.rtf_node_state in
+			<foreach collection="rtfNodeStatusList" index="index" item="item" open="(" separator="," close=")">
+				#{item}
+			</foreach>
+			AND his.loan_no = #{loanNo,jdbcType=VARCHAR}
+		)
+		and not exists (
+			SELECT 1 FROM ams_apply_history his
+			WHERE his.approval_person = t.staff_code
+			AND his.rtf_node_state in
+			<foreach collection="rtfNodeStatusList" index="index" item="item" open="(" separator="," close=")">
+				#{item}
+			</foreach>
+			AND his.loan_no = #{loanNo,jdbcType=VARCHAR}
+		)
+		</if>
+		order by t.curr_activie_task_num asc, t.wait_time asc
+		limit 1
+	</select>
+
+	<!-- 查询终审待派单员工信息(原协审人员接单) -->
+	<select id="findApprovalStaff" parameterType="java.util.Map" resultMap="BaseResultMap">
+		select
+			<include refid="Base_Column_List" />
+		from ams_staff_order_task asot
+		WHERE asot.if_accept = 'Y'
+		AND asot.`status` = '0'
+		AND asot.task_def_id = 'applyinfo-finalaudit'
+		AND asot.final_Audit_Level = 'L4'
+		AND asot.staff_code = #{approvalPerson,jdbcType=VARCHAR} ;
+	</select>
+
+	<!-- 查询人员接单配置是否开启 -->
+	<select id="findByCodes" resultMap="BaseResultMap">
+		select
+			<include refid="Base_Column_List" />
+		from ams_staff_order_task WHERE staff_code = #{userCode} and task_def_id = #{approveType}
+	</select>
+
+	<!-- 根据级别查出大于等于该级别的终审人员 -->
+	<select id="findStaffCodesByLevel" resultMap="BaseResultMap">
+		SELECT
+			<include refid="Base_Column_List" />
+		FROM ams_staff_order_task
+		WHERE task_def_id = 'applyinfo-finalaudit'
+		AND final_Audit_Level <![CDATA[ >= ]]> #{level,jdbcType=VARCHAR}
+		AND status = '0'
+		order by staff_code
+	</select>
+
+	<!-- 查询终审员信息 -->
+	<select id="findByStaffCode" parameterType="java.util.Map" resultMap="BaseResultMap">
+		select
+		<include refid="Base_Column_List" />
+		from ams_staff_order_task
+		WHERE task_def_id = #{taskDefId,jdbcType=VARCHAR}
+		AND staff_code NOT IN
+		<foreach collection="userList" index="index" item="item" open="(" separator="," close=")">
+			#{item}
+		</foreach>
+	</select>
+
+	<!-- 查询当前终审员工挂起队列是否超过终审挂起队列上限 -->
+	<select id="checkInactiveTask" parameterType="java.util.Map" resultType="java.lang.String">
+		SELECT 1 FROM ams_staff_order_task a, ams_staff_order_set b
+		WHERE a.staff_code = b.staff_code
+		and a.task_def_id = b.task_def_id
+		AND a.task_def_id = 'applyinfo-finalaudit'
+		and a.staff_code = #{staffCode, jdbcType=VARCHAR}
+		AND (a.curr_inactive_task_num/hang_queue_max) <![CDATA[<]]> 1
+	</select>
+
+	<!-- 根据员工code和审核类型查出接单能力列表 -->
+	<select id="findByStaffCodeListAndApprovalType" parameterType="java.util.Map" resultMap="BaseResultMap">
+		SELECT
+			<include refid="Base_Column_List" />
+		FROM
+		(
+			(
+				SELECT
+					<include refid="Base_Column_List" />
+				FROM
+					ams_staff_order_task
+				WHERE
+					`status` = '0'
+                AND staff_code IN
+				<choose>  
+		            <when test="finalUserList != null and finalUserList.size() > 0">  
+						<foreach collection="finalUserList" index="index" item="item" open="(" separator="," close=")">
+							#{item}
+						</foreach>
+		            </when>  
+		            <when test="finalUserList == null or finalUserList.size() == 0">  
+		                ('') 
+		            </when>  
+		        </choose>
+				AND task_def_id = 'applyinfo-finalaudit'
+				<if test="staffCode !=null">
+					AND staff_code=#{staffCode,jdbcType=VARCHAR}
+				</if>
+				<if test="staffName !=null">
+					AND staff_name=#{staffName,jdbcType=VARCHAR}
+				</if>
+			) 
+			UNION ALL
+			(
+				SELECT
+					<include refid="Base_Column_List" />
+				FROM
+					ams_staff_order_task
+				WHERE
+					`status` = '0'
+				AND staff_code IN 
+				<choose>  
+		            <when test="firstUserList != null and firstUserList.size() > 0">  
+						<foreach collection="firstUserList" index="index" item="item" open="(" separator="," close=")">
+							#{item}
+						</foreach>
+		            </when>  
+		            <when test="firstUserList == null or firstUserList.size() == 0">  
+		                ('') 
+		            </when>  
+		        </choose>
+				AND  task_def_id ='apply-check'
+				<if test="staffCode !=null">
+					AND staff_code=#{staffCode,jdbcType=VARCHAR}
+				</if>
+				<if test="staffName !=null">
+					AND staff_name=#{staffName,jdbcType=VARCHAR}
+				</if>
+			) 
+		) a
+		ORDER BY ${sort}
+
+	</select>
+
+	<!-- 根据给定的员工code列表查出比其中级别最高的还高(或者相等)的终审人员列表 -->
+	<select id="findListAboveStaffCodes" resultMap="BaseResultMap">
+		SELECT
+			<include refid="Base_Column_List" />
+		FROM
+			ams_staff_order_task
+		WHERE
+			status = '0'
+		AND
+			final_Audit_Level <![CDATA[ >= ]]> (
+				SELECT
+					MAX(final_Audit_Level)
+				FROM
+					ams_staff_order_task
+				WHERE
+					status = '0'
+				AND 
+					task_def_id = 'applyinfo-finalaudit'
+					<if test="list != null and list.size() > 0">
+						AND staff_code IN
+						<foreach collection="list" index="index" item="item" open="(" separator="," close=")">
+							#{item}
+						</foreach>
+					</if>
+			)
+	</select>
+	
+	<!-- 根据给定的员工code列表查出其中最高的终审级别 -->
+	<select id="findMaxLevelByStaffCodes" resultType="java.lang.String">
+			SELECT
+				MAX(final_Audit_Level)
+			FROM
+				ams_staff_order_task
+			WHERE
+				task_def_id = 'applyinfo-finalaudit'
+				<if test="array != null and array.length > 0">
+					AND staff_code IN
+					<foreach collection="array" index="index" item="item" open="(" separator="," close=")">
+						#{item}
+					</foreach>
+				</if>
+	</select>
+	
+	<!-- 批量插入员工接单任务表 -->
+	<insert id="batchInsert" parameterType="List">
+		INSERT INTO ams_staff_order_task
+		(
+			created_by,
+			created_date,
+			last_modified_by,
+			last_modified_date,
+			staff_code,
+			task_def_id,
+			parent_org_code,
+			org_code,
+			org_path,
+			curr_activie_task_num,
+			curr_priority_num,
+			curr_inactive_task_num,
+			if_accept,
+			wait_time,
+			version,
+			final_Audit_Level,
+			status,
+			org_name,
+			parent_org_name,
+			staff_name
+		)
+		VALUES
+		<foreach collection="list" item="item" index="index" separator=",">
+        (
+        	#{item.createdBy,			jdbcType=VARCHAR},
+			#{item.createdDate,			jdbcType=TIMESTAMP},
+			#{item.lastModifiedBy,		jdbcType=VARCHAR},
+			#{item.lastModifiedDate,	jdbcType=TIMESTAMP},
+			#{item.staffCode,			jdbcType=VARCHAR},
+			#{item.taskDefId,			jdbcType=VARCHAR},
+			#{item.parentOrgCode,		jdbcType=VARCHAR},
+			#{item.orgCode,				jdbcType=VARCHAR},
+			#{item.orgPath,				jdbcType=VARCHAR},
+			#{item.currActivieTaskNum,	jdbcType=INTEGER},
+			#{item.currPriorityNum,		jdbcType=INTEGER},
+			#{item.currInactiveTaskNum,	jdbcType=INTEGER},
+			#{item.ifAccept,			jdbcType=VARCHAR},
+			#{item.waitTime,			jdbcType=TIMESTAMP},
+			#{item.version,				jdbcType=INTEGER},
+			#{item.finalAuditLevel,		jdbcType=VARCHAR},
+			#{item.status,				jdbcType=VARCHAR},
+			#{item.orgName,				jdbcType=VARCHAR},
+			#{item.parentOrgName,		jdbcType=VARCHAR},
+			#{item.staffName,			jdbcType=VARCHAR}
+        )
+	    </foreach>
+	</insert>
+	
+	<!-- 批量更新员工接单任务表 -->
+	<update id="batchUpdate" parameterType="List">
+		<foreach collection="list" item="item" index="index" open="" close="" separator=";">
+			UPDATE ams_staff_order_task
+		     <set>
+				last_modified_by       	=#{item.lastModifiedBy,		jdbcType=VARCHAR},
+				last_modified_date     	=#{item.lastModifiedDate,	jdbcType=TIMESTAMP},
+				staff_code             	=#{item.staffCode,			jdbcType=VARCHAR},
+				task_def_id            	=#{item.taskDefId,			jdbcType=VARCHAR},
+				parent_org_code        	=#{item.parentOrgCode,		jdbcType=VARCHAR},
+				org_code               	=#{item.orgCode,			jdbcType=VARCHAR},
+				org_path               	=#{item.orgPath,			jdbcType=VARCHAR},
+				curr_activie_task_num  	=#{item.currActivieTaskNum,	jdbcType=INTEGER},
+				curr_priority_num      	=#{item.currPriorityNum,	jdbcType=INTEGER},
+				curr_inactive_task_num 	=#{item.currInactiveTaskNum,jdbcType=INTEGER},
+				if_accept              	=#{item.ifAccept,			jdbcType=VARCHAR},
+				wait_time              	=#{item.waitTime,			jdbcType=TIMESTAMP},
+				version                	=#{item.version,			jdbcType=INTEGER},
+				final_Audit_Level      	=#{item.finalAuditLevel,	jdbcType=VARCHAR},
+				status                 	=#{item.status,				jdbcType=VARCHAR},
+				org_name               	=#{item.orgName,			jdbcType=VARCHAR},
+				parent_org_name        	=#{item.parentOrgName,		jdbcType=VARCHAR},
+				staff_name				=#{item.staffName,			jdbcType=VARCHAR}
+		     </set>  
+		       where id = #{item.id,jdbcType=BIGINT}
+		</foreach>
+	</update>
+	
+	<!-- 批量删除员工接单任务表 -->
+	<delete id="batchDelete" parameterType="List">
+        DELETE FROM ams_staff_order_task WHERE id IN
+        <foreach item="item" collection="list" open="(" separator="," close=")">
+            #{item.id,jdbcType=BIGINT}
+        </foreach>
+    </delete>
+    
+    <!-- 批量禁用员工 -->
+	<delete id="batchForbidden" parameterType="List">
+        UPDATE ams_staff_order_task SET status = '1' WHERE id IN
+        <foreach item="item" collection="list" open="(" separator="," close=")">
+            #{item.id,jdbcType=BIGINT}
+        </foreach>
+    </delete>
+    
+</mapper>
+ 

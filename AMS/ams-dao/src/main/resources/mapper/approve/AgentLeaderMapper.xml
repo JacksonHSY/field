@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.yuminsoft.ams.system.dao.approve.AgenLeaderMapper">
+	<resultMap id="BaseResultMap" type="com.yuminsoft.ams.system.domain.approve.AgenLeader">
+		<id column="id" property="id" jdbcType="DECIMAL" />
+		<result column="created_by" property="createdBy" jdbcType="VARCHAR" />
+		<result column="created_date" property="createdDate" jdbcType="TIMESTAMP" />
+		<result column="last_modified_by" property="lastModifiedBy" jdbcType="VARCHAR" />
+		<result column="last_modified_date" property="lastModifiedDate" jdbcType="TIMESTAMP" />
+		<result column="userCode" property="userCode" jdbcType="VARCHAR" />
+		<result column="proxyUser" property="proxyUser" jdbcType="VARCHAR" />
+		
+	</resultMap>
+	<sql id="Base_Column_List">
+		id, created_by, created_date, last_modified_by, last_modified_date,
+		 userCode, proxyUser, status
+	</sql>
+
+	<select id="findOne" resultMap="BaseResultMap" parameterType="java.util.Map">
+		select
+		<include refid="Base_Column_List" />
+		from ams_agent_leader
+		where 1=1
+		<include refid="amsConditions" />
+	</select>
+
+	<select id="findById" resultMap="BaseResultMap" parameterType="java.lang.Long">
+		select
+		<include refid="Base_Column_List" />
+		from ams_agent_leader
+		where id = #{id,jdbcType=DECIMAL}
+	</select>
+
+	<select id="findAll" resultMap="BaseResultMap" parameterType="java.util.Map">
+		select
+		<include refid="Base_Column_List" />
+		from ams_agent_leader
+		where 1=1 and status = '1'
+		<include refid="amsConditions" />
+	</select>
+
+
+	<select id="findByUserCode" resultMap="BaseResultMap" parameterType="java.util.Map">
+		select
+		<include refid="Base_Column_List" />
+		from ams_agent_leader
+		where 1=1 and status = '1'
+		AND userCode = #{userCode,jdbcType=VARCHAR}
+	</select>
+
+	<!-- 查询条件 -->
+	<sql id="amsConditions">
+		<if test="id != null">
+			AND id = #{id,jdbcType=DECIMAL}
+		</if>
+		<if test="createdBy != null">
+			AND created_by = #{createdBy,jdbcType=VARCHAR}
+		</if>
+		<if test="createdDate != null">
+			AND created_date = #{createdDate,jdbcType=TIMESTAMP}
+		</if>
+		<if test="lastModifiedBy != null">
+			AND last_modified_by = #{lastModifiedBy,jdbcType=VARCHAR}
+		</if>
+		<if test="lastModifiedDate != null">
+			AND last_modified_date = #{lastModifiedDate,jdbcType=TIMESTAMP}
+		</if>
+		<if test="userCode != null">
+			AND userCode = #{userCode,jdbcType=VARCHAR}
+		</if>
+		<if test="proxyUser != null">
+			AND proxyUser = #{proxyUser,jdbcType=VARCHAR}
+		</if>
+		<if test="status != null">
+			AND status = #{status,jdbcType=VARCHAR}
+		</if>
+	</sql>
+
+	<delete id="delete" parameterType="java.lang.Long">
+		delete from ams_agent_leader
+		where id = #{id,jdbcType=DECIMAL}
+	</delete>
+
+	<insert id="save" parameterType="com.yuminsoft.ams.system.domain.approve.AgenLeader" useGeneratedKeys="true" keyProperty="id">
+		insert into ams_agent_leader (created_by, created_date,
+		last_modified_by, last_modified_date, 
+		userCode, proxyUser
+		)
+		values (#{createdBy,jdbcType=VARCHAR}, #{createdDate,jdbcType=TIMESTAMP},
+		#{lastModifiedBy,jdbcType=VARCHAR}, #{lastModifiedDate,jdbcType=TIMESTAMP},
+		#{userCode,jdbcType=VARCHAR},#{proxyUser,jdbcType=VARCHAR}
+		)
+	</insert>
+
+	<update id="update" parameterType="com.yuminsoft.ams.system.domain.approve.AgenLeader">
+		update ams_agent_leader
+		<set>
+			<!-- <if test="createdBy != null">
+				created_by = #{createdBy,jdbcType=VARCHAR},
+			</if>
+			<if test="createdDate != null">
+				created_date = #{createdDate,jdbcType=TIMESTAMP},
+			</if> -->
+			<if test="lastModifiedBy != null">
+				last_modified_by = #{lastModifiedBy,jdbcType=VARCHAR},
+			</if>
+			<if test="lastModifiedDate != null">
+				last_modified_date = #{lastModifiedDate,jdbcType=TIMESTAMP},
+			</if>
+			<if test="status != null">
+				status = #{status,jdbcType=VARCHAR},
+			</if>
+			<if test="proxyUser != null and proxyUser != '-1'">
+				proxyUser = #{proxyUser,jdbcType=VARCHAR},
+			</if>
+			
+		</set>
+		where userCode = #{userCode,jdbcType=VARCHAR}
+	</update>
+	
+
+</mapper>

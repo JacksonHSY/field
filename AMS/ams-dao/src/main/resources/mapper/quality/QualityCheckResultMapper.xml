@@ -1,0 +1,240 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.yuminsoft.ams.system.dao.quality.QualityCheckResMapper">
+    <resultMap id="BaseResultMap" type="com.yuminsoft.ams.system.domain.quality.QualityCheckResult">
+        <id column="id" property="id" jdbcType="DECIMAL"/>
+        <result column="created_by" property="createdBy" jdbcType="VARCHAR"/>
+        <result column="created_date" property="createdDate" jdbcType="TIMESTAMP"/>
+        <result column="last_modified_by" property="lastModifiedBy" jdbcType="VARCHAR"/>
+        <result column="last_modified_date" property="lastModifiedDate" jdbcType="TIMESTAMP"/>
+        <result column="check_error" property="checkError" jdbcType="VARCHAR"/>
+        <result column="check_result" property="checkResult" jdbcType="VARCHAR"/>
+        <result column="check_view" property="checkView" jdbcType="VARCHAR"/>
+        <result column="error_code" property="errorCode" jdbcType="VARCHAR"/>
+        <result column="approval_leader" property="approvalLeader" jdbcType="VARCHAR"/>
+        <result column="quality_check_id" property="qualityCheckId" jdbcType="DECIMAL"/>
+        <result column="feedback_code" property="feedbackCode" jdbcType="INTEGER"/>
+        <result column="check_user" property="checkUser" jdbcType="VARCHAR"/>
+        <result column="check_person" property="checkPerson" jdbcType="VARCHAR"/>
+        <result column="final_person" property="finalPerson" jdbcType="VARCHAR"/>
+        <result column="approve_person" property="approvePerson" jdbcType="VARCHAR"/>
+        <result column="status" property="status" jdbcType="VARCHAR"/>
+        <result column="check_part" property="checkPart" jdbcType="VARCHAR"/>
+        <result column="recheck_person" property="recheckPerson" jdbcType="VARCHAR"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+    id, created_by, created_date, last_modified_by, last_modified_date, check_error, 
+    check_result, check_view, error_code, approval_leader,quality_check_id,feedback_code,approve_person,status,check_part,recheck_person
+  </sql>
+  
+  <select id="getQualityCheckOpinion" resultMap="BaseResultMap" parameterType="java.lang.Long">
+        select
+        <include refid="Base_Column_List"/>
+        from ams_quality_check_result
+        where quality_check_id = #{qualityCheckId,jdbcType=DECIMAL}
+    </select>
+
+    <select id="findOne" resultMap="BaseResultMap" parameterType="java.util.Map">
+        select
+        <include refid="Base_Column_List"/>
+        from ams_quality_check_result
+        where 1=1
+        <include refid="amsConditions"/>
+    </select>
+
+    <select id="findById" resultMap="BaseResultMap" parameterType="java.lang.Long">
+        select
+        <include refid="Base_Column_List"/>
+        from ams_quality_check_result
+        where id = #{id,jdbcType=DECIMAL}
+    </select>
+
+    <!-- <select id="findAll" resultMap="BaseResultMap" parameterType="java.util.Map">
+        select
+        <include refid="Base_Column_List"/>
+        from ams_quality_check_result t
+        left join ams_approval_history p on t.approve_history_id=p.id 
+        where 1=1
+        <include refid="amsConditions"/>
+        ORDER BY p.created_date ASC 
+    </select> -->
+    
+    <select id="findAll" resultMap="BaseResultMap" parameterType="java.util.Map">
+        select
+        <include refid="Base_Column_List"/>
+        from ams_quality_check_result t
+        where 1=1
+        <include refid="amsConditions"/>
+        ORDER BY t.created_date ASC 
+    </select>
+
+    <!-- 查询条件 -->
+    <sql id="amsConditions">
+        <if test="id != null">
+            AND id = #{id,jdbcType=DECIMAL}
+        </if>
+        <if test="createdBy != null">
+            AND created_by = #{createdBy,jdbcType=VARCHAR}
+        </if>
+        <if test="createdDate != null">
+            AND created_date = #{createdDate,jdbcType=TIMESTAMP}
+        </if>
+        <if test="lastModifiedBy != null">
+            AND last_modified_by = #{lastModifiedBy,jdbcType=VARCHAR}
+        </if>
+        <if test="lastModifiedDate != null">
+            AND last_modified_date = #{lastModifiedDate,jdbcType=TIMESTAMP}
+        </if>
+        <if test="checkError != null">
+            AND check_error = #{checkError,jdbcType=VARCHAR}
+        </if>
+        <if test="checkResult != null">
+            AND check_result = #{checkResult,jdbcType=VARCHAR}
+        </if>
+        <if test="checkView != null">
+            AND check_view = #{checkView,jdbcType=VARCHAR}
+        </if>
+        <if test="errorCode != null">
+            AND error_code = #{errorCode,jdbcType=VARCHAR}
+        </if>
+        <if test="approvalLeader != null">
+            AND approval_leader = #{approvalLeader,jdbcType=VARCHAR}
+        </if>
+        <if test="qualityCheckId != null">
+            AND quality_check_id = #{qualityCheckId,jdbcType=DECIMAL}
+        </if>
+        <if test="feedbackCode != null">
+            AND feedback_code = #{feedbackCode,jdbcType=INTEGER}
+        </if>
+        <if test="approvePerson != null">
+            AND approve_person = #{approvePerson,jdbcType=VARCHAR}
+        </if>
+        <if test="status != null">
+            AND status = #{status,jdbcType=VARCHAR}
+        </if>
+        <if test="checkPart != null">
+            AND check_part = #{checkPart,jdbcType=VARCHAR}
+        </if>
+        <if test="recheckPerson != null">
+            AND recheck_person = #{recheckPerson,jdbcType=VARCHAR}
+        </if>
+    </sql>
+
+    <delete id="delete" parameterType="java.lang.Long">
+    delete from ams_quality_check_result
+    where id = #{id,jdbcType=DECIMAL}
+  </delete>
+
+    <insert id="save" parameterType="com.yuminsoft.ams.system.domain.quality.QualityCheckResult" useGeneratedKeys="true"
+            keyProperty="id">
+    insert into ams_quality_check_result (created_by, created_date, last_modified_by, 
+      last_modified_date, check_error, check_result, 
+      check_view, error_code, approval_leader,quality_check_id,approve_person,status,check_part,recheck_person
+      )
+    values (#{createdBy,jdbcType=VARCHAR}, #{createdDate,jdbcType=TIMESTAMP}, #{lastModifiedBy,jdbcType=VARCHAR}, 
+      #{lastModifiedDate,jdbcType=TIMESTAMP}, #{checkError,jdbcType=VARCHAR}, #{checkResult,jdbcType=VARCHAR}, 
+      #{checkView,jdbcType=VARCHAR}, #{errorCode,jdbcType=VARCHAR}, #{approvalLeader,jdbcType=VARCHAR},
+      #{qualityCheckId,jdbcType=DECIMAL},#{approvePerson,jdbcType=VARCHAR},#{status,jdbcType=VARCHAR},
+      #{checkPart,jdbcType=VARCHAR},#{recheckPerson,jdbcType=VARCHAR}
+      )
+  </insert>
+
+    <update id="update" parameterType="com.yuminsoft.ams.system.domain.quality.QualityCheckResult">
+        update ams_quality_check_result set
+             created_by = #{createdBy,jdbcType=VARCHAR},
+             created_date = #{createdDate,jdbcType=TIMESTAMP},
+             last_modified_by = #{lastModifiedBy,jdbcType=VARCHAR},
+             last_modified_date = #{lastModifiedDate,jdbcType=TIMESTAMP},
+             check_error = #{checkError,jdbcType=VARCHAR},
+             check_result = #{checkResult,jdbcType=VARCHAR},
+             check_view = #{checkView,jdbcType=VARCHAR},
+             error_code = #{errorCode,jdbcType=VARCHAR},
+             approval_leader = #{approvalLeader,jdbcType=VARCHAR},
+             quality_check_id = #{qualityCheckId,jdbcType=DECIMAL},
+             feedback_code = #{feedbackCode,jdbcType=INTEGER},
+             approve_person = #{approvePerson,jdbcType=VARCHAR},
+             status = #{status,jdbcType=VARCHAR},
+             check_part = #{checkPart,jdbcType=VARCHAR},
+             recheck_person = #{recheckPerson,jdbcType=VARCHAR}
+        where id = #{id,jdbcType=DECIMAL}
+    </update>
+
+    <select id="getQualityHistoryById" resultMap="BaseResultMap" parameterType="java.lang.Long">
+        SELECT
+        i.check_person,
+        i.final_person,
+        i.check_user,
+        r.id,
+        r.check_result,
+        r.check_error,
+        r.error_code,
+        r.check_view,
+        r.quality_check_id,
+        r.approval_leader,
+        r.recheck_person
+        FROM
+        ams_quality_check_info i,
+        ams_quality_check_result r
+        WHERE
+        r.quality_check_id = i.id
+        AND i.id = #{quality_check_id,jdbcType=DECIMAL}
+        ORDER BY r.last_modified_date DESC
+    </select>
+
+
+    <select id="getResIds" resultType="java.lang.Long" parameterType="java.lang.Long">
+        SELECT
+        id
+        FROM
+        ams_quality_check_result
+        WHERE
+        quality_check_id = #{id,jdbcType=DECIMAL}
+    </select>
+
+    <select id="getInProcessInfo" resultMap="BaseResultMap" parameterType="java.util.Map">
+        SELECT
+        r.id,
+        r.check_result,
+        r.check_error,
+        r.status,
+        i.check_user,
+        i.check_person,
+        i.final_person
+        FROM
+        ams_quality_check_result r
+        LEFT JOIN ams_quality_check_info i ON r.quality_check_id = i.id
+        WHERE r.status=0 AND r.feedback_code = 0
+        <if test="checkResults != null">
+            AND r.check_result in
+            <foreach collection="checkResults" item="item" index="index" open="(" close=")" separator=",">
+                #{item}
+            </foreach>
+        </if>
+        <if test="startDate != null">
+            AND i.last_modified_date <![CDATA[  >= ]]> #{startDate,jdbcType=TIMESTAMP}
+        </if>
+        <if test="endDate != null">
+            AND i.last_modified_date <![CDATA[  < ]]> #{endDate,jdbcType=TIMESTAMP}
+        </if>
+    </select>
+
+    <!-- 获取申请复核等待的申请件（本人及辖下） -->
+    <select id="findQualityRecheckWait" resultMap="BaseResultMap" parameterType="list">
+        select
+          <include refid="Base_Column_List"/>
+        from ams_quality_check_result t1
+        where t1.status = 'quality_recheck_wait'
+        and exists (
+          select 1 from ams_quality_check_info t2
+          where t2.id = t1.quality_check_id
+          <if test="list != null">
+            and t2.check_user in
+            <foreach collection="list" item="item" index="index" open="(" close=")" separator=",">
+                #{item}
+            </foreach>
+          </if>
+        )
+    </select>
+
+</mapper>

@@ -1,0 +1,429 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+    <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+    <mapper namespace="com.yuminsoft.ams.system.dao.CreditMapper" >
+  <resultMap id="BaseResultMap" type="com.yuminsoft.ams.system.domain.Credit" >
+    <id column="id" property="id" jdbcType="DECIMAL" />
+    <result column="created_by" property="createdBy" jdbcType="VARCHAR" />
+    <result column="created_date" property="createdDate" jdbcType="TIMESTAMP" />
+    <result column="last_modified_by" property="lastModifiedBy" jdbcType="VARCHAR" />
+    <result column="last_modified_date" property="lastModifiedDate" jdbcType="TIMESTAMP" />
+    <result column="loan_no" property="loanNo" jdbcType="VARCHAR" />
+    <result column="credit_accounts" property="creditAccounts" jdbcType="INTEGER" />
+    <result column="credit_corp_phone" property="creditCorpPhone" jdbcType="VARCHAR" />
+    <result column="credit_first_month" property="creditFirstMonth" jdbcType="TIMESTAMP" />
+    <result column="credit_home_phone" property="creditHomePhone" jdbcType="VARCHAR" />
+    <result column="credit_over_accounts" property="creditOverAccounts" jdbcType="INTEGER" />
+    <result column="credit_over_lmonth" property="creditOverLmonth" jdbcType="INTEGER" />
+    <result column="credit_over_ltotal" property="creditOverLtotal" jdbcType="DECIMAL" />
+    <result column="credit_over_months" property="creditOverMonths" jdbcType="INTEGER" />
+    <result column="credit_phone" property="creditPhone" jdbcType="VARCHAR" />
+    <result column="dissent_lable_num" property="dissentLableNum" jdbcType="INTEGER" />
+    <result column="ensure_amount" property="ensureAmount" jdbcType="DECIMAL" />
+    <result column="ensure_count" property="ensureCount" jdbcType="INTEGER" />
+    <result column="ensure_remainder" property="ensureRemainder" jdbcType="DECIMAL" />
+    <result column="exist_account" property="existAccount" jdbcType="INTEGER" />
+    <result column="exist_corp_org" property="existCorpOrg" jdbcType="INTEGER" />
+    <result column="existams_credit_total" property="existCreditTotal" jdbcType="DECIMAL" />
+    <result column="exist_max_amount" property="existMaxAmount" jdbcType="DECIMAL" />
+    <result column="exist_mean_amount" property="existMeanAmount" jdbcType="DECIMAL" />
+    <result column="exist_org_num" property="existOrgNum" jdbcType="INTEGER" />
+    <result column="exist_used_amount" property="existUsedAmount" jdbcType="DECIMAL" />
+    <result column="house_loan_num" property="houseLoanNum" jdbcType="INTEGER" />
+    <result column="isneedwritecreditover" property="isneedwritecreditover" jdbcType="VARCHAR" />
+    <result column="isneedwritecredittips" property="isneedwritecredittips" jdbcType="VARCHAR" />
+    <result column="isneedwriteensuremes" property="isneedwriteensuremes" jdbcType="VARCHAR" />
+    <result column="isneedwriteexistcredit" property="isneedwriteexistcredit" jdbcType="VARCHAR" />
+    <result column="isneedwriteloanover" property="isneedwriteloanover" jdbcType="VARCHAR" />
+    <result column="isneedwriteloanoverinfo" property="isneedwriteloanoverinfo" jdbcType="VARCHAR" />
+    <result column="loan_first_month" property="loanFirstMonth" jdbcType="TIMESTAMP" />
+    <result column="loan_over_count" property="loanOverCount" jdbcType="INTEGER" />
+    <result column="loan_over_lmonths" property="loanOverLmonths" jdbcType="INTEGER" />
+    <result column="loan_over_ltotal" property="loanOverLtotal" jdbcType="DECIMAL" />
+    <result column="loan_over_month" property="loanOverMonth" jdbcType="INTEGER" />
+    <result column="loaning_contract_total" property="loaningContractTotal" jdbcType="DECIMAL" />
+    <result column="loaning_corp_org" property="loaningCorpOrg" jdbcType="INTEGER" />
+    <result column="loaning_mean_pay" property="loaningMeanPay" jdbcType="DECIMAL" />
+    <result column="loaning_num" property="loaningNum" jdbcType="INTEGER" />
+    <result column="loaning_org_nums" property="loaningOrgNums" jdbcType="INTEGER" />
+    <result column="loaning_remain_sum" property="loaningRemainSum" jdbcType="DECIMAL" />
+    <result column="orther_loan_num" property="ortherLoanNum" jdbcType="INTEGER" />
+    <result column="self_state_booklist" property="selfStateBooklist" jdbcType="VARCHAR" />
+    <result column="semiams_credit_accounts" property="semiCreditAccounts" jdbcType="INTEGER" />
+    <result column="semiams_credit_first_month" property="semiCreditFirstMonth" jdbcType="TIMESTAMP" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, created_by, created_date, last_modified_by, last_modified_date, loan_no, credit_accounts, 
+    credit_corp_phone, credit_first_month, credit_home_phone, credit_over_accounts, credit_over_lmonth, 
+    credit_over_ltotal, credit_over_months, credit_phone, dissent_lable_num, ensure_amount, 
+    ensure_count, ensure_remainder, exist_account, exist_corp_org, existams_credit_total, 
+    exist_max_amount, exist_mean_amount, exist_org_num, exist_used_amount, house_loan_num, 
+    isneedwritecreditover, isneedwritecredittips, isneedwriteensuremes, isneedwriteexistcredit, 
+    isneedwriteloanover, isneedwriteloanoverinfo, loan_first_month, loan_over_count, 
+    loan_over_lmonths, loan_over_ltotal, loan_over_month, loaning_contract_total, loaning_corp_org, 
+    loaning_mean_pay, loaning_num, loaning_org_nums, loaning_remain_sum, orther_loan_num, 
+    self_state_booklist, semiams_credit_accounts, semiams_credit_first_month
+  </sql>
+  <select id="findOne" resultMap="BaseResultMap" parameterType="java.util.Map" >
+    select
+    <include refid="Base_Column_List" />
+    from ams_credit
+    where 1=1
+    <include refid="amsConditions" />
+  </select>
+  
+  <select id="findById" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select
+    <include refid="Base_Column_List" />
+    from ams_credit
+    where id = #{id,jdbcType=DECIMAL}
+  </select>
+  
+  <select id="findAll" resultMap="BaseResultMap" parameterType="java.util.Map" >
+    select
+    <include refid="Base_Column_List" />
+    from ams_credit
+    where 1=1
+    <include refid="amsConditions" />
+  </select>
+  
+  <!-- 查询条件 -->
+  <sql id="amsConditions">
+      <if test="id != null" >
+        AND id = #{id,jdbcType=DECIMAL}
+      </if>
+      <if test="createdBy != null" >
+        AND created_by = #{createdBy,jdbcType=VARCHAR}
+      </if>
+      <if test="createdDate != null" >
+        AND created_date = #{createdDate,jdbcType=TIMESTAMP}
+      </if>
+      <if test="lastModifiedBy != null" >
+        AND last_modified_by = #{lastModifiedBy,jdbcType=VARCHAR}
+      </if>
+      <if test="lastModifiedDate != null" >
+        AND last_modified_date = #{lastModifiedDate,jdbcType=TIMESTAMP}
+      </if>
+      <if test="loanNo != null" >
+        AND loan_no = #{loanNo,jdbcType=VARCHAR}
+      </if>
+      <if test="creditAccounts != null" >
+        AND credit_accounts = #{creditAccounts,jdbcType=INTEGER}
+      </if>
+      <if test="creditCorpPhone != null" >
+        AND credit_corp_phone = #{creditCorpPhone,jdbcType=VARCHAR}
+      </if>
+      <if test="creditFirstMonth != null" >
+        AND credit_first_month = #{creditFirstMonth,jdbcType=TIMESTAMP}
+      </if>
+      <if test="creditHomePhone != null" >
+        AND credit_home_phone = #{creditHomePhone,jdbcType=VARCHAR}
+      </if>
+      <if test="creditOverAccounts != null" >
+        AND credit_over_accounts = #{creditOverAccounts,jdbcType=INTEGER}
+      </if>
+      <if test="creditOverLmonth != null" >
+        AND credit_over_lmonth = #{creditOverLmonth,jdbcType=INTEGER}
+      </if>
+      <if test="creditOverLtotal != null" >
+        AND credit_over_ltotal = #{creditOverLtotal,jdbcType=DECIMAL}
+      </if>
+      <if test="creditOverMonths != null" >
+        AND credit_over_months = #{creditOverMonths,jdbcType=INTEGER}
+      </if>
+      <if test="creditPhone != null" >
+        AND credit_phone = #{creditPhone,jdbcType=VARCHAR}
+      </if>
+      <if test="dissentLableNum != null" >
+        AND dissent_lable_num = #{dissentLableNum,jdbcType=INTEGER}
+      </if>
+      <if test="ensureAmount != null" >
+        AND ensure_amount = #{ensureAmount,jdbcType=DECIMAL}
+      </if>
+      <if test="ensureCount != null" >
+        AND ensure_count = #{ensureCount,jdbcType=INTEGER}
+      </if>
+      <if test="ensureRemainder != null" >
+        AND ensure_remainder = #{ensureRemainder,jdbcType=DECIMAL}
+      </if>
+      <if test="existAccount != null" >
+        AND exist_account = #{existAccount,jdbcType=INTEGER}
+      </if>
+      <if test="existCorpOrg != null" >
+        AND exist_corp_org = #{existCorpOrg,jdbcType=INTEGER}
+      </if>
+      <if test="existCreditTotal != null" >
+        AND existams_credit_total = #{existCreditTotal,jdbcType=DECIMAL}
+      </if>
+      <if test="existMaxAmount != null" >
+        AND exist_max_amount = #{existMaxAmount,jdbcType=DECIMAL}
+      </if>
+      <if test="existMeanAmount != null" >
+        AND exist_mean_amount = #{existMeanAmount,jdbcType=DECIMAL}
+      </if>
+      <if test="existOrgNum != null" >
+        AND exist_org_num = #{existOrgNum,jdbcType=INTEGER}
+      </if>
+      <if test="existUsedAmount != null" >
+        AND exist_used_amount = #{existUsedAmount,jdbcType=DECIMAL}
+      </if>
+      <if test="houseLoanNum != null" >
+        AND house_loan_num = #{houseLoanNum,jdbcType=INTEGER}
+      </if>
+      <if test="isneedwritecreditover != null" >
+        AND isneedwritecreditover = #{isneedwritecreditover,jdbcType=VARCHAR}
+      </if>
+      <if test="isneedwritecredittips != null" >
+        AND isneedwritecredittips = #{isneedwritecredittips,jdbcType=VARCHAR}
+      </if>
+      <if test="isneedwriteensuremes != null" >
+        AND isneedwriteensuremes = #{isneedwriteensuremes,jdbcType=VARCHAR}
+      </if>
+      <if test="isneedwriteexistcredit != null" >
+        AND isneedwriteexistcredit = #{isneedwriteexistcredit,jdbcType=VARCHAR}
+      </if>
+      <if test="isneedwriteloanover != null" >
+        AND isneedwriteloanover = #{isneedwriteloanover,jdbcType=VARCHAR}
+      </if>
+      <if test="isneedwriteloanoverinfo != null" >
+        AND isneedwriteloanoverinfo = #{isneedwriteloanoverinfo,jdbcType=VARCHAR}
+      </if>
+      <if test="loanFirstMonth != null" >
+        AND loan_first_month = #{loanFirstMonth,jdbcType=TIMESTAMP}
+      </if>
+      <if test="loanOverCount != null" >
+        AND loan_over_count = #{loanOverCount,jdbcType=INTEGER}
+      </if>
+      <if test="loanOverLmonths != null" >
+        AND loan_over_lmonths = #{loanOverLmonths,jdbcType=INTEGER}
+      </if>
+      <if test="loanOverLtotal != null" >
+        AND loan_over_ltotal = #{loanOverLtotal,jdbcType=DECIMAL}
+      </if>
+      <if test="loanOverMonth != null" >
+        AND loan_over_month = #{loanOverMonth,jdbcType=INTEGER}
+      </if>
+      <if test="loaningContractTotal != null" >
+        AND loaning_contract_total = #{loaningContractTotal,jdbcType=DECIMAL}
+      </if>
+      <if test="loaningCorpOrg != null" >
+        AND loaning_corp_org = #{loaningCorpOrg,jdbcType=INTEGER}
+      </if>
+      <if test="loaningMeanPay != null" >
+        AND loaning_mean_pay = #{loaningMeanPay,jdbcType=DECIMAL}
+      </if>
+      <if test="loaningNum != null" >
+        AND loaning_num = #{loaningNum,jdbcType=INTEGER}
+      </if>
+      <if test="loaningOrgNums != null" >
+        AND loaning_org_nums = #{loaningOrgNums,jdbcType=INTEGER}
+      </if>
+      <if test="loaningRemainSum != null" >
+        AND loaning_remain_sum = #{loaningRemainSum,jdbcType=DECIMAL}
+      </if>
+      <if test="ortherLoanNum != null" >
+        AND orther_loan_num = #{ortherLoanNum,jdbcType=INTEGER}
+      </if>
+      <if test="selfStateBooklist != null" >
+        AND self_state_booklist = #{selfStateBooklist,jdbcType=VARCHAR}
+      </if>
+      <if test="semiCreditAccounts != null" >
+        AND semiams_credit_accounts = #{semiCreditAccounts,jdbcType=INTEGER}
+      </if>
+      <if test="semiCreditFirstMonth != null" >
+        AND semiams_credit_first_month = #{semiCreditFirstMonth,jdbcType=TIMESTAMP}
+      </if>
+  </sql>
+  
+  <delete id="delete" parameterType="java.lang.Long" >
+    delete from ams_credit
+    where id = #{id,jdbcType=DECIMAL}
+  </delete>
+  
+  <insert id="save" parameterType="com.yuminsoft.ams.system.domain.Credit" useGeneratedKeys="true" keyProperty="id" >
+    insert into ams_credit (created_by, created_date, last_modified_by, 
+      last_modified_date, loan_no, credit_accounts, 
+      credit_corp_phone, credit_first_month, credit_home_phone, 
+      credit_over_accounts, credit_over_lmonth, credit_over_ltotal, 
+      credit_over_months, credit_phone, dissent_lable_num, 
+      ensure_amount, ensure_count, ensure_remainder, 
+      exist_account, exist_corp_org, existams_credit_total, 
+      exist_max_amount, exist_mean_amount, exist_org_num, 
+      exist_used_amount, house_loan_num, isneedwritecreditover, 
+      isneedwritecredittips, isneedwriteensuremes, 
+      isneedwriteexistcredit, isneedwriteloanover, 
+      isneedwriteloanoverinfo, loan_first_month, 
+      loan_over_count, loan_over_lmonths, loan_over_ltotal, 
+      loan_over_month, loaning_contract_total, loaning_corp_org, 
+      loaning_mean_pay, loaning_num, loaning_org_nums, 
+      loaning_remain_sum, orther_loan_num, self_state_booklist, 
+      semiams_credit_accounts, semiams_credit_first_month
+      )
+    values (#{createdBy,jdbcType=VARCHAR}, #{createdDate,jdbcType=TIMESTAMP}, #{lastModifiedBy,jdbcType=VARCHAR}, 
+      #{lastModifiedDate,jdbcType=TIMESTAMP}, #{loanNo,jdbcType=VARCHAR}, #{creditAccounts,jdbcType=INTEGER}, 
+      #{creditCorpPhone,jdbcType=VARCHAR}, #{creditFirstMonth,jdbcType=TIMESTAMP}, #{creditHomePhone,jdbcType=VARCHAR}, 
+      #{creditOverAccounts,jdbcType=INTEGER}, #{creditOverLmonth,jdbcType=INTEGER}, #{creditOverLtotal,jdbcType=DECIMAL}, 
+      #{creditOverMonths,jdbcType=INTEGER}, #{creditPhone,jdbcType=VARCHAR}, #{dissentLableNum,jdbcType=INTEGER}, 
+      #{ensureAmount,jdbcType=DECIMAL}, #{ensureCount,jdbcType=INTEGER}, #{ensureRemainder,jdbcType=DECIMAL}, 
+      #{existAccount,jdbcType=INTEGER}, #{existCorpOrg,jdbcType=INTEGER}, #{existCreditTotal,jdbcType=DECIMAL}, 
+      #{existMaxAmount,jdbcType=DECIMAL}, #{existMeanAmount,jdbcType=DECIMAL}, #{existOrgNum,jdbcType=INTEGER}, 
+      #{existUsedAmount,jdbcType=DECIMAL}, #{houseLoanNum,jdbcType=INTEGER}, #{isneedwritecreditover,jdbcType=VARCHAR}, 
+      #{isneedwritecredittips,jdbcType=VARCHAR}, #{isneedwriteensuremes,jdbcType=VARCHAR}, 
+      #{isneedwriteexistcredit,jdbcType=VARCHAR}, #{isneedwriteloanover,jdbcType=VARCHAR}, 
+      #{isneedwriteloanoverinfo,jdbcType=VARCHAR}, #{loanFirstMonth,jdbcType=TIMESTAMP}, 
+      #{loanOverCount,jdbcType=INTEGER}, #{loanOverLmonths,jdbcType=INTEGER}, #{loanOverLtotal,jdbcType=DECIMAL}, 
+      #{loanOverMonth,jdbcType=INTEGER}, #{loaningContractTotal,jdbcType=DECIMAL}, #{loaningCorpOrg,jdbcType=INTEGER}, 
+      #{loaningMeanPay,jdbcType=DECIMAL}, #{loaningNum,jdbcType=INTEGER}, #{loaningOrgNums,jdbcType=INTEGER}, 
+      #{loaningRemainSum,jdbcType=DECIMAL}, #{ortherLoanNum,jdbcType=INTEGER}, #{selfStateBooklist,jdbcType=VARCHAR}, 
+      #{semiCreditAccounts,jdbcType=INTEGER}, #{semiCreditFirstMonth,jdbcType=TIMESTAMP}
+      )
+  </insert>
+ 
+  <update id="update" parameterType="com.yuminsoft.ams.system.domain.Credit" >
+    update ams_credit
+    <set >
+      <if test="createdBy != null" >
+        created_by = #{createdBy,jdbcType=VARCHAR},
+      </if>
+      <if test="createdDate != null" >
+        created_date = #{createdDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="lastModifiedBy != null" >
+        last_modified_by = #{lastModifiedBy,jdbcType=VARCHAR},
+      </if>
+      <if test="lastModifiedDate != null" >
+        last_modified_date = #{lastModifiedDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="loanNo != null" >
+        loan_no = #{loanNo,jdbcType=VARCHAR},
+      </if>
+      <if test="creditAccounts != null" >
+        credit_accounts = #{creditAccounts,jdbcType=INTEGER},
+      </if>
+      <if test="creditCorpPhone != null" >
+        credit_corp_phone = #{creditCorpPhone,jdbcType=VARCHAR},
+      </if>
+      <if test="creditFirstMonth != null" >
+        credit_first_month = #{creditFirstMonth,jdbcType=TIMESTAMP},
+      </if>
+      <if test="creditHomePhone != null" >
+        credit_home_phone = #{creditHomePhone,jdbcType=VARCHAR},
+      </if>
+      <if test="creditOverAccounts != null" >
+        credit_over_accounts = #{creditOverAccounts,jdbcType=INTEGER},
+      </if>
+      <if test="creditOverLmonth != null" >
+        credit_over_lmonth = #{creditOverLmonth,jdbcType=INTEGER},
+      </if>
+      <if test="creditOverLtotal != null" >
+        credit_over_ltotal = #{creditOverLtotal,jdbcType=DECIMAL},
+      </if>
+      <if test="creditOverMonths != null" >
+        credit_over_months = #{creditOverMonths,jdbcType=INTEGER},
+      </if>
+      <if test="creditPhone != null" >
+        credit_phone = #{creditPhone,jdbcType=VARCHAR},
+      </if>
+      <if test="dissentLableNum != null" >
+        dissent_lable_num = #{dissentLableNum,jdbcType=INTEGER},
+      </if>
+      <if test="ensureAmount != null" >
+        ensure_amount = #{ensureAmount,jdbcType=DECIMAL},
+      </if>
+      <if test="ensureCount != null" >
+        ensure_count = #{ensureCount,jdbcType=INTEGER},
+      </if>
+      <if test="ensureRemainder != null" >
+        ensure_remainder = #{ensureRemainder,jdbcType=DECIMAL},
+      </if>
+      <if test="existAccount != null" >
+        exist_account = #{existAccount,jdbcType=INTEGER},
+      </if>
+      <if test="existCorpOrg != null" >
+        exist_corp_org = #{existCorpOrg,jdbcType=INTEGER},
+      </if>
+      <if test="existCreditTotal != null" >
+        existams_credit_total = #{existCreditTotal,jdbcType=DECIMAL},
+      </if>
+      <if test="existMaxAmount != null" >
+        exist_max_amount = #{existMaxAmount,jdbcType=DECIMAL},
+      </if>
+      <if test="existMeanAmount != null" >
+        exist_mean_amount = #{existMeanAmount,jdbcType=DECIMAL},
+      </if>
+      <if test="existOrgNum != null" >
+        exist_org_num = #{existOrgNum,jdbcType=INTEGER},
+      </if>
+      <if test="existUsedAmount != null" >
+        exist_used_amount = #{existUsedAmount,jdbcType=DECIMAL},
+      </if>
+      <if test="houseLoanNum != null" >
+        house_loan_num = #{houseLoanNum,jdbcType=INTEGER},
+      </if>
+      <if test="isneedwritecreditover != null" >
+        isneedwritecreditover = #{isneedwritecreditover,jdbcType=VARCHAR},
+      </if>
+      <if test="isneedwritecredittips != null" >
+        isneedwritecredittips = #{isneedwritecredittips,jdbcType=VARCHAR},
+      </if>
+      <if test="isneedwriteensuremes != null" >
+        isneedwriteensuremes = #{isneedwriteensuremes,jdbcType=VARCHAR},
+      </if>
+      <if test="isneedwriteexistcredit != null" >
+        isneedwriteexistcredit = #{isneedwriteexistcredit,jdbcType=VARCHAR},
+      </if>
+      <if test="isneedwriteloanover != null" >
+        isneedwriteloanover = #{isneedwriteloanover,jdbcType=VARCHAR},
+      </if>
+      <if test="isneedwriteloanoverinfo != null" >
+        isneedwriteloanoverinfo = #{isneedwriteloanoverinfo,jdbcType=VARCHAR},
+      </if>
+      <if test="loanFirstMonth != null" >
+        loan_first_month = #{loanFirstMonth,jdbcType=TIMESTAMP},
+      </if>
+      <if test="loanOverCount != null" >
+        loan_over_count = #{loanOverCount,jdbcType=INTEGER},
+      </if>
+      <if test="loanOverLmonths != null" >
+        loan_over_lmonths = #{loanOverLmonths,jdbcType=INTEGER},
+      </if>
+      <if test="loanOverLtotal != null" >
+        loan_over_ltotal = #{loanOverLtotal,jdbcType=DECIMAL},
+      </if>
+      <if test="loanOverMonth != null" >
+        loan_over_month = #{loanOverMonth,jdbcType=INTEGER},
+      </if>
+      <if test="loaningContractTotal != null" >
+        loaning_contract_total = #{loaningContractTotal,jdbcType=DECIMAL},
+      </if>
+      <if test="loaningCorpOrg != null" >
+        loaning_corp_org = #{loaningCorpOrg,jdbcType=INTEGER},
+      </if>
+      <if test="loaningMeanPay != null" >
+        loaning_mean_pay = #{loaningMeanPay,jdbcType=DECIMAL},
+      </if>
+      <if test="loaningNum != null" >
+        loaning_num = #{loaningNum,jdbcType=INTEGER},
+      </if>
+      <if test="loaningOrgNums != null" >
+        loaning_org_nums = #{loaningOrgNums,jdbcType=INTEGER},
+      </if>
+      <if test="loaningRemainSum != null" >
+        loaning_remain_sum = #{loaningRemainSum,jdbcType=DECIMAL},
+      </if>
+      <if test="ortherLoanNum != null" >
+        orther_loan_num = #{ortherLoanNum,jdbcType=INTEGER},
+      </if>
+      <if test="selfStateBooklist != null" >
+        self_state_booklist = #{selfStateBooklist,jdbcType=VARCHAR},
+      </if>
+      <if test="semiCreditAccounts != null" >
+        semiams_credit_accounts = #{semiCreditAccounts,jdbcType=INTEGER},
+      </if>
+      <if test="semiCreditFirstMonth != null" >
+        semiams_credit_first_month = #{semiCreditFirstMonth,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where id = #{id,jdbcType=DECIMAL}
+  </update>
+  
+</mapper>

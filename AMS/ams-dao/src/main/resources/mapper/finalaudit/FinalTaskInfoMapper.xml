@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.yuminsoft.ams.system.dao.finalaudit.FinalTaskInfoMapper" >
+  <resultMap id="BaseResultMap" type="com.yuminsoft.ams.system.domain.finalaudit.FinalTaskInfo" >
+    <id column="id" property="id" jdbcType="DECIMAL" />
+    <result column="app_no" property="appno" jdbcType="VARCHAR" />
+    <result column="group_Id" property="groupId" jdbcType="VARCHAR" />
+    <result column="rtf_state" property="rtfstate" jdbcType="VARCHAR" />
+    <result column="if_urgent" property="ifurgent" jdbcType="DECIMAL" />
+    <result column="if_pri" property="ifpri" jdbcType="VARCHAR" />
+    <result column="acc_Lmt" property="accLmt" jdbcType="DECIMAL" />
+    <result column="final_person" property="finalperson" jdbcType="VARCHAR" />
+    <result column="approval_person" property="approvalperson" jdbcType="VARCHAR" />
+    <result column="check_date" property="checkdate" jdbcType="DATE" />
+    <result column="final_date" property="finaldate" jdbcType="DATE" />
+  </resultMap>
+  
+  <sql id="Base_Column_List" >
+    id, app_no, group_Id, rtf_state, if_urgent, if_pri, acc_Lmt, final_person, 
+    approval_person, check_date, final_date
+  </sql>
+  
+  <select id="findOne" resultMap="BaseResultMap" parameterType="java.util.Map" >
+    select
+    <include refid="Base_Column_List" />
+    from ams_final_task_info
+    where 1=1
+    <include refid="amsConditions" />
+  </select>
+  
+  <select id="findById" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select
+    <include refid="Base_Column_List" />
+    from ams_final_task_info
+    where id = #{id,jdbcType=DECIMAL}
+  </select>
+  
+  <select id="findAll" resultMap="BaseResultMap" parameterType="java.util.Map" >
+    select
+    <include refid="Base_Column_List" />
+    from ams_final_task_info
+    where 1=1
+    <include refid="amsConditions" />
+  </select>
+  
+  <!-- 查询条件 -->
+  <sql id="amsConditions">
+      <if test="id != null" >
+        AND id = #{id,jdbcType=DECIMAL}
+      </if>
+      <if test="appNo != null" >
+        AND app_no = #{appNo,jdbcType=VARCHAR}
+      </if>
+      <if test="groupId != null" >
+        AND group_Id like #{CONCAT('%', #groupId#, '%'),jdbcType=VARCHAR}
+      </if>
+      <if test="rtfState != null" >
+        AND rtf_state = #{rtfState,jdbcType=VARCHAR}
+      </if>
+      <if test="ifUrgent != null" >
+        AND if_urgent = #{ifUrgent,jdbcType=DECIMAL}
+      </if>
+      <if test="ifPri != null" >
+        AND if_pri = #{ifPri,jdbcType=VARCHAR}
+      </if>
+      <if test="accLmt != null" >
+        AND acc_Lmt = #{accLmt,jdbcType=DECIMAL}
+      </if>
+      <if test="finalPerson != null" >
+        AND final_person = #{finalPerson,jdbcType=VARCHAR}
+      </if>
+      <if test="approvalPerson != null" >
+        AND approval_person = #{approvalPerson,jdbcType=VARCHAR}
+      </if>
+	  <if test="checkDate != null" >
+        AND check_date = #{checkDate,jdbcType=DATE}
+      </if>
+      <if test="finalDate != null" >
+        AND final_date = #{finalDate,jdbcType=DATE}
+      </if>      
+    </sql>
+    
+  <delete id="delete" parameterType="java.lang.Long" >
+    delete from ams_final_task_info
+    where id = #{id,jdbcType=DECIMAL}
+  </delete>
+  
+  <insert id="save" parameterType="com.yuminsoft.ams.system.domain.finalaudit.FinalTaskInfo" useGeneratedKeys="true" keyProperty="id" >
+    insert into ams_final_task_info (id, app_no, group_Id, rtf_state, if_urgent, if_pri, acc_Lmt, final_person, 
+    approval_person, check_date, final_date)
+    values (#{appNo,jdbcType=VARCHAR}, #{groupId,jdbcType=VARCHAR}, #{rtfState,jdbcType=VARCHAR}, #{ifUrgent,jdbcType=DECIMAL}, 
+      #{accLmt,jdbcType=DECIMAL}, #{finalPerson,jdbcType=VARCHAR}, #{approvalPerson,jdbcType=VARCHAR}, 
+      #{checkDate,jdbcType=DATE}, #{finalDate,jdbcType=DATE})
+  </insert>
+  
+  <update id="update" parameterType="com.yuminsoft.ams.system.domain.finalaudit.FinalTaskInfo" >
+    update ams_final_task_info
+    <set >
+      <if test="id != null" >
+        AND id = #{id,jdbcType=DECIMAL}
+      </if>
+      <if test="appNo != null" >
+        AND app_no = #{appNo,jdbcType=VARCHAR}
+      </if>
+      <if test="groupId != null" >
+        AND group_Id like #{CONCAT('%', #groupId#, '%'),jdbcType=VARCHAR}
+      </if>
+      <if test="rtfState != null" >
+        AND rtf_state = #{rtfState,jdbcType=VARCHAR}
+      </if>
+      <if test="ifUrgent != null" >
+        AND if_urgent = #{ifUrgent,jdbcType=DECIMAL}
+      </if>
+      <if test="ifPri != null" >
+        AND if_pri = #{ifPri,jdbcType=VARCHAR}
+      </if>
+      <if test="accLmt != null" >
+        AND acc_Lmt = #{accLmt,jdbcType=DECIMAL}
+      </if>
+      <if test="finalPerson != null" >
+        AND final_person = #{finalPerson,jdbcType=VARCHAR}
+      </if>
+      <if test="approvalPerson != null" >
+        AND approval_person = #{approvalPerson,jdbcType=VARCHAR}
+      </if>
+      <if test="checkDate != null" >
+        AND check_date = #{checkDate,jdbcType=DATE}
+      </if>
+      <if test="finalDate != null" >
+        AND final_date = #{finalDate,jdbcType=DATE}
+      </if>  
+    </set>
+    where id = #{id,jdbcType=DECIMAL}
+  </update>
+  
+</mapper>

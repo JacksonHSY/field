@@ -1,0 +1,696 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.yuminsoft.ams.system.dao.ApplyMainMapper" >
+  <resultMap id="BaseResultMap" type="com.yuminsoft.ams.system.domain.ApplyMain" >
+    <id column="id" property="id" jdbcType="DECIMAL" />
+    <result column="created_by" property="createdBy" jdbcType="VARCHAR" />
+    <result column="created_date" property="createdDate" jdbcType="TIMESTAMP" />
+    <result column="last_modified_by" property="lastModifiedBy" jdbcType="VARCHAR" />
+    <result column="last_modified_date" property="lastModifiedDate" jdbcType="TIMESTAMP" />
+    <result column="acc_date" property="accDate" jdbcType="TIMESTAMP" />
+    <result column="acc_lmt" property="accLmt" jdbcType="DECIMAL" />
+    <result column="acc_term" property="accTerm" jdbcType="INTEGER" />
+    <result column="amout_income" property="amoutIncome" jdbcType="DECIMAL" />
+    <result column="app_apply_date" property="appApplyDate" jdbcType="TIMESTAMP" />
+    <result column="app_input_flag" property="appInputFlag" jdbcType="VARCHAR" />
+    <result column="app_loan_plan" property="appLoanPlan" jdbcType="VARCHAR" />
+    <result column="loan_no" property="loanNo" jdbcType="VARCHAR" />
+    <result column="app_org_name" property="appOrgName" jdbcType="VARCHAR" />
+    <result column="apply_bank_branch" property="applyBankBranch" jdbcType="VARCHAR" />
+    <result column="apply_bank_card_no" property="applyBankCardNo" jdbcType="VARCHAR" />
+    <result column="apply_bank_name" property="applyBankName" jdbcType="VARCHAR" />
+    <result column="apply_input_flag" property="applyInputFlag" jdbcType="VARCHAR" />
+    <result column="apply_lmt" property="applyLmt" jdbcType="DECIMAL" />
+    <result column="apply_rate" property="applyRate" jdbcType="DECIMAL" />
+    <result column="apply_term" property="applyTerm" jdbcType="VARCHAR" />
+    <result column="apply_type" property="applyType" jdbcType="VARCHAR" />
+    <result column="approval_person" property="approvalPerson" jdbcType="VARCHAR" />
+    <result column="bank_phone" property="bankPhone" jdbcType="VARCHAR" />
+    <result column="branch_manager" property="branchManager" jdbcType="VARCHAR" />
+    <result column="check_allot_date" property="checkAllotDate" jdbcType="TIMESTAMP" />
+    <result column="check_person" property="checkPerson" jdbcType="VARCHAR" />
+    <result column="client_type" property="clientType" jdbcType="VARCHAR" />
+    <result column="contract_branch" property="contractBranch" jdbcType="VARCHAR" />
+    <result column="contract_lmt" property="contractLmt" jdbcType="DECIMAL" />
+    <result column="contract_num" property="contractNum" jdbcType="VARCHAR" />
+    <result column="contract_source" property="contractSource" jdbcType="VARCHAR" />
+    <result column="contract_trem" property="contractTrem" jdbcType="INTEGER" />
+    <result column="credit_application" property="creditApplication" jdbcType="VARCHAR" />
+    <result column="director" property="director" jdbcType="VARCHAR" />
+    <result column="ensure_amt_amount" property="ensureAmtAmount" jdbcType="DECIMAL" />
+    <result column="final_allot_date" property="finalAllotDate" jdbcType="TIMESTAMP" />
+    <result column="final_person" property="finalPerson" jdbcType="VARCHAR" />
+    <result column="final_role" property="finalRole" jdbcType="VARCHAR" />
+    <result column="group_for_director" property="groupForDirector" jdbcType="VARCHAR" />
+    <result column="if_credit_record" property="ifCreditRecord" jdbcType="VARCHAR" />
+    <result column="if_end" property="ifEnd" jdbcType="VARCHAR" />
+    <result column="if_grey" property="ifGrey" jdbcType="VARCHAR" />
+    <result column="if_loan_again" property="ifLoanAgain" jdbcType="VARCHAR" />
+    <result column="if_old_or_new_logo" property="ifOldOrNewLogo" jdbcType="VARCHAR" />
+    <result column="if_patch_bolt" property="ifPatchBolt" jdbcType="VARCHAR" />
+    <result column="if_pri" property="ifPri" jdbcType="VARCHAR" />
+    <result column="if_refuse" property="ifRefuse" jdbcType="VARCHAR" />
+    <result column="if_suspect_cheat" property="ifSuspectCheat" jdbcType="VARCHAR" />
+    <result column="if_urgent" property="ifUrgent" jdbcType="INTEGER" />
+    <result column="init_product_cd" property="initProductCd" jdbcType="VARCHAR" />
+    <result column="isrollback" property="isrollback" jdbcType="VARCHAR" />
+    <result column="loan_branch" property="loanBranch" jdbcType="VARCHAR" />
+    <result column="loan_date" property="loanDate" jdbcType="TIMESTAMP" />
+    <result column="loan_id" property="loanId" jdbcType="VARCHAR" />
+    <result column="lock_target" property="lockTarget" jdbcType="VARCHAR" />
+    <result column="manage_branch" property="manageBranch" jdbcType="VARCHAR" />
+    <result column="manage_update_date" property="manageUpdateDate" jdbcType="TIMESTAMP" />
+    <result column="owning_branch" property="owningBranch" jdbcType="VARCHAR" />
+    <result column="owning_branch_attribute" property="owningBranchAttribute" jdbcType="VARCHAR" />
+    <result column="point_result" property="pointResult" jdbcType="INTEGER" />
+    <result column="priority" property="priority" jdbcType="VARCHAR" />
+    <result column="pro_name" property="proName" jdbcType="VARCHAR" />
+    <result column="pro_num" property="proNum" jdbcType="VARCHAR" />
+    <result column="product_cd" property="productCd" jdbcType="VARCHAR" />
+    <result column="push_date" property="pushDate" jdbcType="TIMESTAMP" />
+    <result column="reason_shuxin" property="reasonShuxin" jdbcType="VARCHAR" />
+    <result column="refuse_code" property="refuseCode" jdbcType="VARCHAR" />
+    <result column="regular_state" property="regularState" jdbcType="VARCHAR" />
+    <result column="remark" property="remark" jdbcType="VARCHAR" />
+    <result column="repay_date" property="repayDate" jdbcType="INTEGER" />
+    <result column="rtf_state" property="rtfState" jdbcType="VARCHAR" />
+    <result column="sign_date" property="signDate" jdbcType="TIMESTAMP" />
+    <result column="special_org" property="specialOrg" jdbcType="VARCHAR" />
+    <result column="special_plan" property="specialPlan" jdbcType="VARCHAR" />
+    <result column="status" property="status" jdbcType="VARCHAR" />
+    <result column="sug_lmt" property="sugLmt" jdbcType="DECIMAL" />
+    <result column="sys_acc_lmt" property="sysAccLmt" jdbcType="DECIMAL" />
+    <result column="sys_acc_trem" property="sysAccTrem" jdbcType="INTEGER" />
+    <result column="sys_check_lmt" property="sysCheckLmt" jdbcType="DECIMAL" />
+    <result column="third_id" property="thirdId" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, created_by, created_date, last_modified_by, last_modified_date, acc_date, acc_lmt, 
+    acc_term, amout_income, app_apply_date, app_input_flag, app_loan_plan, loan_no, app_org_name, 
+    apply_bank_branch, apply_bank_card_no, apply_bank_name, apply_input_flag, apply_lmt, 
+    apply_rate, apply_term, apply_type, approval_person, bank_phone, branch_manager, 
+    check_allot_date, check_person, client_type, contract_branch, contract_lmt, contract_num, 
+    contract_source, contract_trem, credit_application, director, ensure_amt_amount, 
+    final_allot_date, final_person, final_role, group_for_director, if_credit_record, 
+    if_end, if_grey, if_loan_again, if_old_or_new_logo, if_patch_bolt, if_pri, if_refuse, 
+    if_suspect_cheat, if_urgent, init_product_cd, isrollback, loan_branch, loan_date, 
+    loan_id, lock_target, manage_branch, manage_update_date, owning_branch, owning_branch_attribute, 
+    point_result, priority, pro_name, pro_num, product_cd, push_date, reason_shuxin, 
+    refuse_code, regular_state, remark, repay_date, rtf_state, sign_date, special_org, 
+    special_plan, `status`, sug_lmt, sys_acc_lmt, sys_acc_trem, sys_check_lmt, third_id
+  </sql>
+  
+  <select id="findOne" resultMap="BaseResultMap" parameterType="java.util.Map" >
+    select
+    <include refid="Base_Column_List" />
+    from ams_apply_main
+    where 1=1
+    <include refid="amsConditions" />
+  </select>
+  
+  <select id="findById" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select
+    <include refid="Base_Column_List" />
+    from ams_apply_main
+    where id = #{id,jdbcType=DECIMAL}
+  </select>
+  
+  <select id="findAll" resultMap="BaseResultMap" parameterType="java.util.Map" >
+    select
+    <include refid="Base_Column_List" />
+    from ams_apply_main
+    where 1=1
+    <include refid="amsConditions" />
+  </select>
+  
+  <!-- 查询条件 -->
+  <sql id="amsConditions">
+      <if test="id != null" >
+        AND id = #{id,jdbcType=DECIMAL}
+      </if>
+      <if test="createdBy != null" >
+        AND created_by = #{createdBy,jdbcType=VARCHAR}
+      </if>
+      <if test="createdDate != null" >
+        AND created_date = #{createdDate,jdbcType=TIMESTAMP}
+      </if>
+      <if test="lastModifiedBy != null" >
+        AND last_modified_by = #{lastModifiedBy,jdbcType=VARCHAR}
+      </if>
+      <if test="lastModifiedDate != null" >
+        AND last_modified_date = #{lastModifiedDate,jdbcType=TIMESTAMP}
+      </if>
+      <if test="accDate != null" >
+        AND acc_date = #{accDate,jdbcType=TIMESTAMP}
+      </if>
+      <if test="accLmt != null" >
+        AND acc_lmt = #{accLmt,jdbcType=DECIMAL}
+      </if>
+      <if test="accTerm != null" >
+        AND acc_term = #{accTerm,jdbcType=INTEGER}
+      </if>
+      <if test="amoutIncome != null" >
+        AND amout_income = #{amoutIncome,jdbcType=DECIMAL}
+      </if>
+      <if test="appApplyDate != null" >
+        AND app_apply_date = #{appApplyDate,jdbcType=TIMESTAMP}
+      </if>
+      <if test="appInputFlag != null" >
+        AND app_input_flag = #{appInputFlag,jdbcType=VARCHAR}
+      </if>
+      <if test="appLoanPlan != null" >
+        AND app_loan_plan = #{appLoanPlan,jdbcType=VARCHAR}
+      </if>
+      <if test="loanNo != null" >
+        AND loan_no = #{loanNo,jdbcType=VARCHAR}
+      </if>
+      <if test="appOrgName != null" >
+        AND app_org_name = #{appOrgName,jdbcType=VARCHAR}
+      </if>
+      <if test="applyBankBranch != null" >
+        AND apply_bank_branch = #{applyBankBranch,jdbcType=VARCHAR}
+      </if>
+      <if test="applyBankCardNo != null" >
+        AND apply_bank_card_no = #{applyBankCardNo,jdbcType=VARCHAR}
+      </if>
+      <if test="applyBankName != null" >
+        AND apply_bank_name = #{applyBankName,jdbcType=VARCHAR}
+      </if>
+      <if test="applyInputFlag != null" >
+        AND apply_input_flag = #{applyInputFlag,jdbcType=VARCHAR}
+      </if>
+      <if test="applyLmt != null" >
+        AND apply_lmt = #{applyLmt,jdbcType=DECIMAL}
+      </if>
+      <if test="applyRate != null" >
+        AND apply_rate = #{applyRate,jdbcType=DECIMAL}
+      </if>
+      <if test="applyTerm != null" >
+        AND apply_term = #{applyTerm,jdbcType=VARCHAR}
+      </if>
+      <if test="applyType != null" >
+        AND apply_type = #{applyType,jdbcType=VARCHAR}
+      </if>
+      <if test="approvalPerson != null" >
+        AND approval_person = #{approvalPerson,jdbcType=VARCHAR}
+      </if>
+      <if test="bankPhone != null" >
+        AND bank_phone = #{bankPhone,jdbcType=VARCHAR}
+      </if>
+      <if test="branchManager != null" >
+        AND branch_manager = #{branchManager,jdbcType=VARCHAR}
+      </if>
+      <if test="checkAllotDate != null" >
+        AND check_allot_date = #{checkAllotDate,jdbcType=TIMESTAMP}
+      </if>
+      <if test="checkPerson != null" >
+        AND check_person = #{checkPerson,jdbcType=VARCHAR}
+      </if>
+      <if test="clientType != null" >
+        AND client_type = #{clientType,jdbcType=VARCHAR}
+      </if>
+      <if test="contractBranch != null" >
+        AND contract_branch = #{contractBranch,jdbcType=VARCHAR}
+      </if>
+      <if test="contractLmt != null" >
+        AND contract_lmt = #{contractLmt,jdbcType=DECIMAL}
+      </if>
+      <if test="contractNum != null" >
+        AND contract_num = #{contractNum,jdbcType=VARCHAR}
+      </if>
+      <if test="contractSource != null" >
+        AND contract_source = #{contractSource,jdbcType=VARCHAR}
+      </if>
+      <if test="contractTrem != null" >
+        AND contract_trem = #{contractTrem,jdbcType=INTEGER}
+      </if>
+      <if test="creditApplication != null" >
+        AND credit_application = #{creditApplication,jdbcType=VARCHAR}
+      </if>
+      <if test="director != null" >
+        AND director = #{director,jdbcType=VARCHAR}
+      </if>
+      <if test="ensureAmtAmount != null" >
+        AND ensure_amt_amount = #{ensureAmtAmount,jdbcType=DECIMAL}
+      </if>
+      <if test="finalAllotDate != null" >
+        AND final_allot_date = #{finalAllotDate,jdbcType=TIMESTAMP}
+      </if>
+      <if test="finalPerson != null" >
+        AND final_person = #{finalPerson,jdbcType=VARCHAR}
+      </if>
+      <if test="finalRole != null" >
+        AND final_role = #{finalRole,jdbcType=VARCHAR}
+      </if>
+      <if test="groupForDirector != null" >
+        AND group_for_director = #{groupForDirector,jdbcType=VARCHAR}
+      </if>
+      <if test="ifCreditRecord != null" >
+        AND if_credit_record = #{ifCreditRecord,jdbcType=VARCHAR}
+      </if>
+      <if test="ifEnd != null" >
+        AND if_end = #{ifEnd,jdbcType=VARCHAR}
+      </if>
+      <if test="ifGrey != null" >
+        AND if_grey = #{ifGrey,jdbcType=VARCHAR}
+      </if>
+      <if test="ifLoanAgain != null" >
+        AND if_loan_again = #{ifLoanAgain,jdbcType=VARCHAR}
+      </if>
+      <if test="ifOldOrNewLogo != null" >
+        AND if_old_or_new_logo = #{ifOldOrNewLogo,jdbcType=VARCHAR}
+      </if>
+      <if test="ifPatchBolt != null" >
+        AND if_patch_bolt = #{ifPatchBolt,jdbcType=VARCHAR}
+      </if>
+      <if test="ifPri != null" >
+        AND if_pri = #{ifPri,jdbcType=VARCHAR}
+      </if>
+      <if test="ifRefuse != null" >
+        AND if_refuse = #{ifRefuse,jdbcType=VARCHAR}
+      </if>
+      <if test="ifSuspectCheat != null" >
+        AND if_suspect_cheat = #{ifSuspectCheat,jdbcType=VARCHAR}
+      </if>
+      <if test="ifUrgent != null" >
+        AND if_urgent = #{ifUrgent,jdbcType=INTEGER}
+      </if>
+      <if test="initProductCd != null" >
+        AND init_product_cd = #{initProductCd,jdbcType=VARCHAR}
+      </if>
+      <if test="isrollback != null" >
+        AND isrollback = #{isrollback,jdbcType=VARCHAR}
+      </if>
+      <if test="loanBranch != null" >
+        AND loan_branch = #{loanBranch,jdbcType=VARCHAR}
+      </if>
+      <if test="loanDate != null" >
+        AND loan_date = #{loanDate,jdbcType=TIMESTAMP}
+      </if>
+      <if test="loanId != null" >
+        AND loan_id = #{loanId,jdbcType=VARCHAR}
+      </if>
+      <if test="lockTarget != null" >
+        AND lock_target = #{lockTarget,jdbcType=VARCHAR}
+      </if>
+      <if test="manageBranch != null" >
+        AND manage_branch = #{manageBranch,jdbcType=VARCHAR}
+      </if>
+      <if test="manageUpdateDate != null" >
+        AND manage_update_date = #{manageUpdateDate,jdbcType=TIMESTAMP}
+      </if>
+      <if test="owningBranch != null" >
+        AND owning_branch = #{owningBranch,jdbcType=VARCHAR}
+      </if>
+      <if test="owningBranchAttribute != null" >
+        AND owning_branch_attribute = #{owningBranchAttribute,jdbcType=VARCHAR}
+      </if>
+      <if test="pointResult != null" >
+        AND point_result = #{pointResult,jdbcType=INTEGER}
+      </if>
+      <if test="priority != null" >
+        AND priority = #{priority,jdbcType=VARCHAR}
+      </if>
+      <if test="proName != null" >
+        AND pro_name = #{proName,jdbcType=VARCHAR}
+      </if>
+      <if test="proNum != null" >
+        AND pro_num = #{proNum,jdbcType=VARCHAR}
+      </if>
+      <if test="productCd != null" >
+        AND product_cd = #{productCd,jdbcType=VARCHAR}
+      </if>
+      <if test="pushDate != null" >
+        AND push_date = #{pushDate,jdbcType=TIMESTAMP}
+      </if>
+      <if test="reasonShuxin != null" >
+        AND reason_shuxin = #{reasonShuxin,jdbcType=VARCHAR}
+      </if>
+      <if test="refuseCode != null" >
+        AND refuse_code = #{refuseCode,jdbcType=VARCHAR}
+      </if>
+      <if test="regularState != null" >
+        AND regular_state = #{regularState,jdbcType=VARCHAR}
+      </if>
+      <if test="remark != null" >
+        AND remark = #{remark,jdbcType=VARCHAR}
+      </if>
+      <if test="repayDate != null" >
+        AND repay_date = #{repayDate,jdbcType=INTEGER}
+      </if>
+      <if test="rtfState != null" >
+        AND rtf_state = #{rtfState,jdbcType=VARCHAR}
+      </if>
+      <if test="signDate != null" >
+        AND sign_date = #{signDate,jdbcType=TIMESTAMP}
+      </if>
+      <if test="specialOrg != null" >
+        AND special_org = #{specialOrg,jdbcType=VARCHAR}
+      </if>
+      <if test="specialPlan != null" >
+        AND special_plan = #{specialPlan,jdbcType=VARCHAR}
+      </if>
+      <if test="status != null" >
+        AND `status` = #{status,jdbcType=VARCHAR}
+      </if>
+      <if test="sugLmt != null" >
+        AND sug_lmt = #{sugLmt,jdbcType=DECIMAL}
+      </if>
+      <if test="sysAccLmt != null" >
+        AND sys_acc_lmt = #{sysAccLmt,jdbcType=DECIMAL}
+      </if>
+      <if test="sysAccTrem != null" >
+       AND sys_acc_trem = #{sysAccTrem,jdbcType=INTEGER}
+      </if>
+      <if test="sysCheckLmt != null" >
+        AND sys_check_lmt = #{sysCheckLmt,jdbcType=DECIMAL}
+      </if>
+      <if test="thirdId != null" >
+        AND third_id = #{thirdId,jdbcType=VARCHAR}
+      </if>
+  </sql>
+  
+  <delete id="delete" parameterType="java.lang.Long" >
+    delete from ams_apply_main
+    where id = #{id,jdbcType=DECIMAL}
+  </delete>
+  
+  <insert id="save" parameterType="com.yuminsoft.ams.system.domain.ApplyMain" useGeneratedKeys="true" keyProperty="id">
+    insert into ams_apply_main (created_by, created_date, 
+      last_modified_by, last_modified_date, acc_date, 
+      acc_lmt, acc_term, amout_income, 
+      app_apply_date, app_input_flag, app_loan_plan, 
+      loan_no, app_org_name, apply_bank_branch, 
+      apply_bank_card_no, apply_bank_name, apply_input_flag, 
+      apply_lmt, apply_rate, apply_term, 
+      apply_type, approval_person, bank_phone, 
+      branch_manager, check_allot_date, check_person, 
+      client_type, contract_branch, contract_lmt, 
+      contract_num, contract_source, contract_trem, 
+      credit_application, director, ensure_amt_amount, 
+      final_allot_date, final_person, final_role, 
+      group_for_director, if_credit_record, if_end, 
+      if_grey, if_loan_again, if_old_or_new_logo, 
+      if_patch_bolt, if_pri, if_refuse, 
+      if_suspect_cheat, if_urgent, init_product_cd, 
+      isrollback, loan_branch, loan_date, 
+      loan_id, lock_target, manage_branch, 
+      manage_update_date, owning_branch, owning_branch_attribute, 
+      point_result, priority, pro_name, 
+      pro_num, product_cd, push_date, 
+      reason_shuxin, refuse_code, regular_state, 
+      remark, repay_date, rtf_state, 
+      sign_date, special_org, special_plan, 
+      `status`, sug_lmt, sys_acc_lmt, 
+      sys_acc_trem, sys_check_lmt, third_id
+      )
+    values (#{createdBy,jdbcType=VARCHAR}, #{createdDate,jdbcType=TIMESTAMP}, 
+      #{lastModifiedBy,jdbcType=VARCHAR}, #{lastModifiedDate,jdbcType=TIMESTAMP}, #{accDate,jdbcType=TIMESTAMP}, 
+      #{accLmt,jdbcType=DECIMAL}, #{accTerm,jdbcType=INTEGER}, #{amoutIncome,jdbcType=DECIMAL}, 
+      #{appApplyDate,jdbcType=TIMESTAMP}, #{appInputFlag,jdbcType=VARCHAR}, #{appLoanPlan,jdbcType=VARCHAR}, 
+      #{loanNo,jdbcType=VARCHAR}, #{appOrgName,jdbcType=VARCHAR}, #{applyBankBranch,jdbcType=VARCHAR}, 
+      #{applyBankCardNo,jdbcType=VARCHAR}, #{applyBankName,jdbcType=VARCHAR}, #{applyInputFlag,jdbcType=VARCHAR}, 
+      #{applyLmt,jdbcType=DECIMAL}, #{applyRate,jdbcType=DECIMAL}, #{applyTerm,jdbcType=VARCHAR}, 
+      #{applyType,jdbcType=VARCHAR}, #{approvalPerson,jdbcType=VARCHAR}, #{bankPhone,jdbcType=VARCHAR}, 
+      #{branchManager,jdbcType=VARCHAR}, #{checkAllotDate,jdbcType=TIMESTAMP}, #{checkPerson,jdbcType=VARCHAR}, 
+      #{clientType,jdbcType=VARCHAR}, #{contractBranch,jdbcType=VARCHAR}, #{contractLmt,jdbcType=DECIMAL}, 
+      #{contractNum,jdbcType=VARCHAR}, #{contractSource,jdbcType=VARCHAR}, #{contractTrem,jdbcType=INTEGER}, 
+      #{creditApplication,jdbcType=VARCHAR}, #{director,jdbcType=VARCHAR}, #{ensureAmtAmount,jdbcType=DECIMAL}, 
+      #{finalAllotDate,jdbcType=TIMESTAMP}, #{finalPerson,jdbcType=VARCHAR}, #{finalRole,jdbcType=VARCHAR}, 
+      #{groupForDirector,jdbcType=VARCHAR}, #{ifCreditRecord,jdbcType=VARCHAR}, #{ifEnd,jdbcType=VARCHAR}, 
+      #{ifGrey,jdbcType=VARCHAR}, #{ifLoanAgain,jdbcType=VARCHAR}, #{ifOldOrNewLogo,jdbcType=VARCHAR}, 
+      #{ifPatchBolt,jdbcType=VARCHAR}, #{ifPri,jdbcType=VARCHAR}, #{ifRefuse,jdbcType=VARCHAR}, 
+      #{ifSuspectCheat,jdbcType=VARCHAR}, #{ifUrgent,jdbcType=INTEGER}, #{initProductCd,jdbcType=VARCHAR}, 
+      #{isrollback,jdbcType=VARCHAR}, #{loanBranch,jdbcType=VARCHAR}, #{loanDate,jdbcType=TIMESTAMP}, 
+      #{loanId,jdbcType=VARCHAR}, #{lockTarget,jdbcType=VARCHAR}, #{manageBranch,jdbcType=VARCHAR}, 
+      #{manageUpdateDate,jdbcType=TIMESTAMP}, #{owningBranch,jdbcType=VARCHAR}, #{owningBranchAttribute,jdbcType=VARCHAR}, 
+      #{pointResult,jdbcType=INTEGER}, #{priority,jdbcType=VARCHAR}, #{proName,jdbcType=VARCHAR}, 
+      #{proNum,jdbcType=VARCHAR}, #{productCd,jdbcType=VARCHAR}, #{pushDate,jdbcType=TIMESTAMP}, 
+      #{reasonShuxin,jdbcType=VARCHAR}, #{refuseCode,jdbcType=VARCHAR}, #{regularState,jdbcType=VARCHAR}, 
+      #{remark,jdbcType=VARCHAR}, #{repayDate,jdbcType=INTEGER}, #{rtfState,jdbcType=VARCHAR}, 
+      #{signDate,jdbcType=TIMESTAMP}, #{specialOrg,jdbcType=VARCHAR}, #{specialPlan,jdbcType=VARCHAR}, 
+      #{status,jdbcType=VARCHAR}, #{sugLmt,jdbcType=DECIMAL}, #{sysAccLmt,jdbcType=DECIMAL}, 
+      #{sysAccTrem,jdbcType=INTEGER}, #{sysCheckLmt,jdbcType=DECIMAL}, #{thirdId,jdbcType=VARCHAR}
+      )
+  </insert>
+  
+  <update id="update" parameterType="com.yuminsoft.ams.system.domain.ApplyMain" >
+    update ams_apply_main
+    <set >
+      <if test="createdBy != null" >
+        created_by = #{createdBy,jdbcType=VARCHAR},
+      </if>
+      <if test="createdDate != null" >
+        created_date = #{createdDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="lastModifiedBy != null" >
+        last_modified_by = #{lastModifiedBy,jdbcType=VARCHAR},
+      </if>
+      <if test="lastModifiedDate != null" >
+        last_modified_date = #{lastModifiedDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="accDate != null" >
+        acc_date = #{accDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="accLmt != null" >
+        acc_lmt = #{accLmt,jdbcType=DECIMAL},
+      </if>
+      <if test="accTerm != null" >
+        acc_term = #{accTerm,jdbcType=INTEGER},
+      </if>
+      <if test="amoutIncome != null" >
+        amout_income = #{amoutIncome,jdbcType=DECIMAL},
+      </if>
+      <if test="appApplyDate != null" >
+        app_apply_date = #{appApplyDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="appInputFlag != null" >
+        app_input_flag = #{appInputFlag,jdbcType=VARCHAR},
+      </if>
+      <if test="appLoanPlan != null" >
+        app_loan_plan = #{appLoanPlan,jdbcType=VARCHAR},
+      </if>
+      <if test="loanNo != null" >
+        loan_no = #{loanNo,jdbcType=VARCHAR},
+      </if>
+      <if test="appOrgName != null" >
+        app_org_name = #{appOrgName,jdbcType=VARCHAR},
+      </if>
+      <if test="applyBankBranch != null" >
+        apply_bank_branch = #{applyBankBranch,jdbcType=VARCHAR},
+      </if>
+      <if test="applyBankCardNo != null" >
+        apply_bank_card_no = #{applyBankCardNo,jdbcType=VARCHAR},
+      </if>
+      <if test="applyBankName != null" >
+        apply_bank_name = #{applyBankName,jdbcType=VARCHAR},
+      </if>
+      <if test="applyInputFlag != null" >
+        apply_input_flag = #{applyInputFlag,jdbcType=VARCHAR},
+      </if>
+      <if test="applyLmt != null" >
+        apply_lmt = #{applyLmt,jdbcType=DECIMAL},
+      </if>
+      <if test="applyRate != null" >
+        apply_rate = #{applyRate,jdbcType=DECIMAL},
+      </if>
+      <if test="applyTerm != null" >
+        apply_term = #{applyTerm,jdbcType=VARCHAR},
+      </if>
+      <if test="applyType != null" >
+        apply_type = #{applyType,jdbcType=VARCHAR},
+      </if>
+      <if test="approvalPerson != null" >
+        approval_person = #{approvalPerson,jdbcType=VARCHAR},
+      </if>
+      <if test="bankPhone != null" >
+        bank_phone = #{bankPhone,jdbcType=VARCHAR},
+      </if>
+      <if test="branchManager != null" >
+        branch_manager = #{branchManager,jdbcType=VARCHAR},
+      </if>
+      <if test="checkAllotDate != null" >
+        check_allot_date = #{checkAllotDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="checkPerson != null" >
+        check_person = #{checkPerson,jdbcType=VARCHAR},
+      </if>
+      <if test="clientType != null" >
+        client_type = #{clientType,jdbcType=VARCHAR},
+      </if>
+      <if test="contractBranch != null" >
+        contract_branch = #{contractBranch,jdbcType=VARCHAR},
+      </if>
+      <if test="contractLmt != null" >
+        contract_lmt = #{contractLmt,jdbcType=DECIMAL},
+      </if>
+      <if test="contractNum != null" >
+        contract_num = #{contractNum,jdbcType=VARCHAR},
+      </if>
+      <if test="contractSource != null" >
+        contract_source = #{contractSource,jdbcType=VARCHAR},
+      </if>
+      <if test="contractTrem != null" >
+        contract_trem = #{contractTrem,jdbcType=INTEGER},
+      </if>
+      <if test="creditApplication != null" >
+        credit_application = #{creditApplication,jdbcType=VARCHAR},
+      </if>
+      <if test="director != null" >
+        director = #{director,jdbcType=VARCHAR},
+      </if>
+      <if test="ensureAmtAmount != null" >
+        ensure_amt_amount = #{ensureAmtAmount,jdbcType=DECIMAL},
+      </if>
+      <if test="finalAllotDate != null" >
+        final_allot_date = #{finalAllotDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="finalPerson != null" >
+        final_person = #{finalPerson,jdbcType=VARCHAR},
+      </if>
+      <if test="finalRole != null" >
+        final_role = #{finalRole,jdbcType=VARCHAR},
+      </if>
+      <if test="groupForDirector != null" >
+        group_for_director = #{groupForDirector,jdbcType=VARCHAR},
+      </if>
+      <if test="ifCreditRecord != null" >
+        if_credit_record = #{ifCreditRecord,jdbcType=VARCHAR},
+      </if>
+      <if test="ifEnd != null" >
+        if_end = #{ifEnd,jdbcType=VARCHAR},
+      </if>
+      <if test="ifGrey != null" >
+        if_grey = #{ifGrey,jdbcType=VARCHAR},
+      </if>
+      <if test="ifLoanAgain != null" >
+        if_loan_again = #{ifLoanAgain,jdbcType=VARCHAR},
+      </if>
+      <if test="ifOldOrNewLogo != null" >
+        if_old_or_new_logo = #{ifOldOrNewLogo,jdbcType=VARCHAR},
+      </if>
+      <if test="ifPatchBolt != null" >
+        if_patch_bolt = #{ifPatchBolt,jdbcType=VARCHAR},
+      </if>
+      <if test="ifPri != null" >
+        if_pri = #{ifPri,jdbcType=VARCHAR},
+      </if>
+      <if test="ifRefuse != null" >
+        if_refuse = #{ifRefuse,jdbcType=VARCHAR},
+      </if>
+      <if test="ifSuspectCheat != null" >
+        if_suspect_cheat = #{ifSuspectCheat,jdbcType=VARCHAR},
+      </if>
+      <if test="ifUrgent != null" >
+        if_urgent = #{ifUrgent,jdbcType=INTEGER},
+      </if>
+      <if test="initProductCd != null" >
+        init_product_cd = #{initProductCd,jdbcType=VARCHAR},
+      </if>
+      <if test="isrollback != null" >
+        isrollback = #{isrollback,jdbcType=VARCHAR},
+      </if>
+      <if test="loanBranch != null" >
+        loan_branch = #{loanBranch,jdbcType=VARCHAR},
+      </if>
+      <if test="loanDate != null" >
+        loan_date = #{loanDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="loanId != null" >
+        loan_id = #{loanId,jdbcType=VARCHAR},
+      </if>
+      <if test="lockTarget != null" >
+        lock_target = #{lockTarget,jdbcType=VARCHAR},
+      </if>
+      <if test="manageBranch != null" >
+        manage_branch = #{manageBranch,jdbcType=VARCHAR},
+      </if>
+      <if test="manageUpdateDate != null" >
+        manage_update_date = #{manageUpdateDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="owningBranch != null" >
+        owning_branch = #{owningBranch,jdbcType=VARCHAR},
+      </if>
+      <if test="owningBranchAttribute != null" >
+        owning_branch_attribute = #{owningBranchAttribute,jdbcType=VARCHAR},
+      </if>
+      <if test="pointResult != null" >
+        point_result = #{pointResult,jdbcType=INTEGER},
+      </if>
+      <if test="priority != null" >
+        priority = #{priority,jdbcType=VARCHAR},
+      </if>
+      <if test="proName != null" >
+        pro_name = #{proName,jdbcType=VARCHAR},
+      </if>
+      <if test="proNum != null" >
+        pro_num = #{proNum,jdbcType=VARCHAR},
+      </if>
+      <if test="productCd != null" >
+        product_cd = #{productCd,jdbcType=VARCHAR},
+      </if>
+      <if test="pushDate != null" >
+        push_date = #{pushDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="reasonShuxin != null" >
+        reason_shuxin = #{reasonShuxin,jdbcType=VARCHAR},
+      </if>
+      <if test="refuseCode != null" >
+        refuse_code = #{refuseCode,jdbcType=VARCHAR},
+      </if>
+      <if test="regularState != null" >
+        regular_state = #{regularState,jdbcType=VARCHAR},
+      </if>
+      <if test="remark != null" >
+        remark = #{remark,jdbcType=VARCHAR},
+      </if>
+      <if test="repayDate != null" >
+        repay_date = #{repayDate,jdbcType=INTEGER},
+      </if>
+      <if test="rtfState != null" >
+        rtf_state = #{rtfState,jdbcType=VARCHAR},
+      </if>
+      <if test="signDate != null" >
+        sign_date = #{signDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="specialOrg != null" >
+        special_org = #{specialOrg,jdbcType=VARCHAR},
+      </if>
+      <if test="specialPlan != null" >
+        special_plan = #{specialPlan,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null" >
+        `status` = #{status,jdbcType=VARCHAR},
+      </if>
+      <if test="sugLmt != null" >
+        sug_lmt = #{sugLmt,jdbcType=DECIMAL},
+      </if>
+      <if test="sysAccLmt != null" >
+        sys_acc_lmt = #{sysAccLmt,jdbcType=DECIMAL},
+      </if>
+      <if test="sysAccTrem != null" >
+        sys_acc_trem = #{sysAccTrem,jdbcType=INTEGER},
+      </if>
+      <if test="sysCheckLmt != null" >
+        sys_check_lmt = #{sysCheckLmt,jdbcType=DECIMAL},
+      </if>
+      <if test="thirdId != null" >
+        third_id = #{thirdId,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=DECIMAL}
+  </update>
+  
+  <update id="updateByLoanNo" parameterType="com.yuminsoft.ams.system.domain.ApplyMain" >
+    update ams_apply_main
+    <trim prefix="SET" suffixOverrides=",">  
+      <if test="checkPerson != null and checkPerson !=''" >
+         check_person = #{checkPerson,jdbcType=VARCHAR},
+      </if>
+      <if test="finalPerson != null and finalPerson !=''" >
+         final_person = #{finalPerson,jdbcType=VARCHAR},
+      </if>
+     </trim> 
+    where loan_no = #{loanNo,jdbcType=VARCHAR}
+  </update>
+</mapper>

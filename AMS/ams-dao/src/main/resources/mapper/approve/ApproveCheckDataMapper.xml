@@ -1,0 +1,326 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.yuminsoft.ams.system.dao.approve.ApproveCheckDataMapper">
+
+	<resultMap id="BaseResultMap" type="com.yuminsoft.ams.system.domain.approve.ApproveCheckData">
+		<id column="id" property="id" jdbcType="DECIMAL" />
+		<result column="created_by" property="createdBy" jdbcType="VARCHAR" />
+		<result column="created_date" property="createdDate" jdbcType="TIMESTAMP" />
+		<result column="last_modified_by" property="lastModifiedBy" jdbcType="VARCHAR" />
+		<result column="last_modified_date" property="lastModifiedDate" jdbcType="TIMESTAMP" />
+		<result column="loan_no" property="loanNo" jdbcType="VARCHAR" />
+		<result column="memo" property="memo" jdbcType="VARCHAR" />
+		<result column="name" property="name" jdbcType="VARCHAR" />
+		<result column="one_months_count" property="oneMonthsCount" jdbcType="INTEGER" />
+		<result column="other_check_mes" property="otherCheckMes" jdbcType="VARCHAR" />
+		<result column="credit_check_exception" property="creditCheckException" jdbcType="VARCHAR" />
+		<result column="weekend_pay" property="weekendPay" jdbcType="VARCHAR" />
+		<result column="person_month_average" property="personMonthAverage" jdbcType="DECIMAL" />
+		<result column="personal_water1" property="personalWater1" jdbcType="DECIMAL" />
+		<result column="personal_water2" property="personalWater2" jdbcType="DECIMAL" />
+		<result column="personal_water3" property="personalWater3" jdbcType="DECIMAL" />
+		<result column="personal_water_total" property="personalWaterTotal" jdbcType="DECIMAL" />
+		<result column="public_month_average" property="publicMonthAverage" jdbcType="DECIMAL" />
+		<result column="public_water1" property="publicWater1" jdbcType="DECIMAL" />
+		<result column="public_water2" property="publicWater2" jdbcType="DECIMAL" />
+		<result column="public_water3" property="publicWater3" jdbcType="DECIMAL" />
+		<result column="public_water_total" property="publicWaterTotal" jdbcType="DECIMAL" />
+		<result column="three_months_count" property="threeMonthsCount" jdbcType="INTEGER" />
+		<result column="water_income_total" property="waterIncomeTotal" jdbcType="DECIMAL" />
+	</resultMap>
+
+	<sql id="Base_Column_List">
+		`id`,
+		`created_by`,
+		`created_date`,
+		`last_modified_by`,
+		`last_modified_date`,
+		`loan_no`,
+		`memo`,
+		`name`,
+		`one_months_count`,
+		`other_check_mes`,
+		`credit_check_exception`,
+		`weekend_pay`,
+		`person_month_average`,
+		`personal_water1`,
+		`personal_water2`,
+		`personal_water3`,
+		`personal_water_total`,
+		`public_month_average`,
+		`public_water1`,
+		`public_water2`,
+		`public_water3`,
+		`public_water_total`,
+		`three_months_count`,
+		`water_income_total`
+	</sql>
+
+	<select id="findOne" resultMap="BaseResultMap" parameterType="java.util.Map">
+		select
+		<include refid="Base_Column_List" />
+		from ams_approve_check_data
+		where 1=1
+		<include refid="amsConditions" />
+	</select>
+
+	<select id="findById" resultMap="BaseResultMap" parameterType="java.lang.Long">
+		select
+		<include refid="Base_Column_List" />
+		from ams_approve_check_data
+		where id = #{id,jdbcType=DECIMAL}
+	</select>
+
+	<select id="findAll" resultMap="BaseResultMap" parameterType="java.util.Map">
+		select
+		<include refid="Base_Column_List" />
+		from ams_approve_check_data
+		where 1=1
+		<include refid="amsConditions" />
+	</select>
+
+	<!-- 查询所有需要迁移的借款编号 -->
+	<select id="findMigratedLoanNo" resultType="String">
+		select distinct loan_no from ams_approve_check_data t1
+		where not exists (
+			select 1 from ams_approve_check_info tt1
+			where tt1.loan_no = t1.loan_no
+		)
+		order by t1.loan_no
+		limit #{start,jdbcType=INTEGER},#{limit,jdbcType=INTEGER}
+	</select>
+
+	<!-- 查询条件 -->
+	<sql id="amsConditions">
+		<if test="id != null">
+			AND id = #{id,jdbcType=DECIMAL}
+		</if>
+		<if test="createdBy != null">
+			AND created_by = #{createdBy,jdbcType=VARCHAR}
+		</if>
+		<if test="createdDate != null">
+			AND created_date = #{createdDate,jdbcType=TIMESTAMP}
+		</if>
+		<if test="lastModifiedBy != null">
+			AND last_modified_by = #{lastModifiedBy,jdbcType=VARCHAR}
+		</if>
+		<if test="lastModifiedDate != null">
+			AND last_modified_date = #{lastModifiedDate,jdbcType=TIMESTAMP}
+		</if>
+		<if test="loanNo != null">
+			AND loan_no = #{loanNo,jdbcType=VARCHAR}
+		</if>
+		<if test="memo != null">
+			AND memo = #{memo,jdbcType=VARCHAR}
+		</if>
+		<if test="name != null">
+			AND `name` = #{name,jdbcType=VARCHAR}
+		</if>
+		<if test="oneMonthsCount != null">
+			AND one_months_count = #{oneMonthsCount,jdbcType=INTEGER}
+		</if>
+		<if test="otherCheckMes != null">
+			AND other_check_mes = #{otherCheckMes,jdbcType=VARCHAR}
+		</if>
+		<if test="creditCheckException != null">
+			AND credit_check_exception = #{creditCheckException,jdbcType=VARCHAR}
+		</if>
+		<if test="weekendPay != null">
+			AND weekend_pay =#{weekendPay,jdbcType=VARCHAR}
+		</if>
+		<if test="personMonthAverage != null">
+			AND person_month_average = #{personMonthAverage,jdbcType=DECIMAL}
+		</if>
+		<if test="personalWater1 != null">
+			AND personal_water1 = #{personalWater1,jdbcType=DECIMAL}
+		</if>
+		<if test="personalWater2 != null">
+			AND personal_water2 = #{personalWater2,jdbcType=DECIMAL}
+		</if>
+		<if test="personalWater3 != null">
+			AND personal_water3 = #{personalWater3,jdbcType=DECIMAL}
+		</if>
+		<if test="personalWaterTotal != null">
+			AND personal_water_total = #{personalWaterTotal,jdbcType=DECIMAL}
+		</if>
+		<if test="publicMonthAverage != null">
+			AND public_month_average = #{publicMonthAverage,jdbcType=DECIMAL}
+		</if>
+		<if test="publicWater1 != null">
+			AND public_water1 = #{publicWater1,jdbcType=DECIMAL}
+		</if>
+		<if test="publicWater2 != null">
+			AND public_water2 = #{publicWater2,jdbcType=DECIMAL}
+		</if>
+		<if test="publicWater3 != null">
+			AND public_water3 = #{publicWater3,jdbcType=DECIMAL}
+		</if>
+		<if test="publicWaterTotal != null">
+			AND public_water_total = #{publicWaterTotal,jdbcType=DECIMAL}
+		</if>
+		<if test="threeMonthsCount != null">
+			AND three_months_count = #{threeMonthsCount,jdbcType=INTEGER}
+		</if>
+		<if test="waterIncomeTotal != null">
+			AND water_income_total = #{waterIncomeTotal,jdbcType=DECIMAL}
+		</if>
+	</sql>
+
+	<delete id="delete" parameterType="java.lang.Long">
+		delete from ams_approve_check_data where id = #{id,jdbcType=DECIMAL}
+	</delete>
+
+	<insert id="save" parameterType="com.yuminsoft.ams.system.domain.approve.ApproveCheckData" useGeneratedKeys="true" keyProperty="id">
+		insert into ams_approve_check_data (
+			`created_by`,
+			`created_date`,
+			`last_modified_by`,
+			`last_modified_date`,
+			`loan_no`,
+			`memo`,
+			`name`,
+			`one_months_count`,
+			`other_check_mes`,
+			`credit_check_exception`,
+			`weekend_pay`,
+			`person_month_average`,
+			`personal_water1`,
+			`personal_water2`,
+			`personal_water3`,
+			`personal_water_total`,
+			`public_month_average`,
+			`public_water1`,
+			`public_water2`,
+			`public_water3`,
+			`public_water_total`,
+			`three_months_count`,
+			`water_income_total`
+		) values (
+			#{createdBy,jdbcType=VARCHAR},
+			#{createdDate,jdbcType=TIMESTAMP},
+			#{lastModifiedBy,jdbcType=VARCHAR},
+			#{lastModifiedDate,jdbcType=TIMESTAMP},
+			#{loanNo,jdbcType=VARCHAR},
+			#{memo,jdbcType=VARCHAR},
+			#{name,jdbcType=VARCHAR},
+			#{oneMonthsCount,jdbcType=INTEGER},
+			#{otherCheckMes,jdbcType=VARCHAR},
+			#{creditCheckException,jdbcType=VARCHAR},
+			#{weekendPay,jdbcType=VARCHAR},
+			#{personMonthAverage,jdbcType=DECIMAL},
+			#{personalWater1,jdbcType=DECIMAL},
+			#{personalWater2,jdbcType=DECIMAL},
+			#{personalWater3,jdbcType=DECIMAL},
+			#{personalWaterTotal,jdbcType=DECIMAL},
+			#{publicMonthAverage,jdbcType=DECIMAL},
+			#{publicWater1,jdbcType=DECIMAL},
+			#{publicWater2,jdbcType=DECIMAL},
+			#{publicWater3,jdbcType=DECIMAL},
+			#{publicWaterTotal,jdbcType=DECIMAL},
+			#{threeMonthsCount,jdbcType=INTEGER},
+			#{waterIncomeTotal,jdbcType=DECIMAL}
+		)
+	</insert>
+
+	<update id="update" parameterType="com.yuminsoft.ams.system.domain.approve.ApproveCheckData">
+		update ams_approve_check_data
+		<set>
+			<if test="createdBy != null">
+				created_by = #{createdBy,jdbcType=VARCHAR},
+			</if>
+			<if test="createdDate != null">
+				created_date = #{createdDate,jdbcType=TIMESTAMP},
+			</if>
+			<if test="lastModifiedBy != null">
+				last_modified_by = #{lastModifiedBy,jdbcType=VARCHAR},
+			</if>
+			<if test="lastModifiedDate != null">
+				last_modified_date = #{lastModifiedDate,jdbcType=TIMESTAMP},
+			</if>
+			<if test="loanNo != null">
+				loan_no = #{loanNo,jdbcType=VARCHAR},
+			</if>
+			<if test="memo != null">
+				memo = #{memo,jdbcType=VARCHAR},
+			</if>
+			<if test="name != null">
+				`name` = #{name,jdbcType=VARCHAR},
+			</if>
+			<if test="oneMonthsCount != null">
+				one_months_count = #{oneMonthsCount,jdbcType=INTEGER},
+			</if>
+			<if test="otherCheckMes != null">
+				other_check_mes = #{otherCheckMes,jdbcType=VARCHAR},
+			</if>
+			<if test="creditCheckException != null">
+				credit_check_exception =#{creditCheckException,jdbcType=VARCHAR},
+			</if>
+			<if test="weekendPay">
+				weekend_pay =#{weekendPay,jdbcType=VARCHAR},
+			</if>
+			<if test="personMonthAverage != null">
+				person_month_average = #{personMonthAverage,jdbcType=DECIMAL},
+			</if>
+			<if test="personalWater1 != null">
+				personal_water1 = #{personalWater1,jdbcType=DECIMAL},
+			</if>
+			<if test="personalWater2 != null">
+				personal_water2 = #{personalWater2,jdbcType=DECIMAL},
+			</if>
+			<if test="personalWater3 != null">
+				personal_water3 = #{personalWater3,jdbcType=DECIMAL},
+			</if>
+			<if test="personalWaterTotal != null">
+				personal_water_total = #{personalWaterTotal,jdbcType=DECIMAL},
+			</if>
+			<if test="publicMonthAverage != null">
+				public_month_average = #{publicMonthAverage,jdbcType=DECIMAL},
+			</if>
+			<if test="publicWater1 != null">
+				public_water1 = #{publicWater1,jdbcType=DECIMAL},
+			</if>
+			<if test="publicWater2 != null">
+				public_water2 = #{publicWater2,jdbcType=DECIMAL},
+			</if>
+			<if test="publicWater3 != null">
+				public_water3 = #{publicWater3,jdbcType=DECIMAL},
+			</if>
+			<if test="publicWaterTotal != null">
+				public_water_total = #{publicWaterTotal,jdbcType=DECIMAL},
+			</if>
+			<if test="threeMonthsCount != null">
+				three_months_count = #{threeMonthsCount,jdbcType=INTEGER},
+			</if>
+			<if test="waterIncomeTotal != null">
+				water_income_total = #{waterIncomeTotal,jdbcType=DECIMAL},
+			</if>
+		</set>
+		where id = #{id,jdbcType=DECIMAL}
+	</update>
+
+	<!-- 根据借款编号删除 -->
+	<delete id="deleteApproveCheckDataByLoanNo" parameterType="java.lang.String">
+		delete from ams_approve_check_data where loan_no = #{loanNo,jdbcType=VARCHAR}
+	</delete>
+
+	<!-- 查询个人流水 -->
+	<select id="findPersonalRecord" resultMap="BaseResultMap" parameterType="java.util.Map">
+		select
+		<include refid="Base_Column_List" />
+		from ams_approve_check_data
+		where 1=1
+		<include refid="amsConditions" />
+		and personal_water1 is not null
+	</select>
+
+	<!-- 查询对公流水 -->
+	<select id="findPublicRecord" resultMap="BaseResultMap" parameterType="java.util.Map">
+		select
+		<include refid="Base_Column_List" />
+		from ams_approve_check_data
+		where 1=1
+		<include refid="amsConditions" />
+		<!-- and public_water1 is not null -->
+	</select>
+
+</mapper>

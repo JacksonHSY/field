@@ -1,0 +1,107 @@
+.header {
+	font-size: 14px;
+	height: 45px;
+	background-color: #444444;
+	border-bottom: 1px solid #dddddd;
+}
+.header * {
+	font-size: 14px;
+}
+.logo1 {
+    background:url(../images/logo.png) top left;
+    background-size:cover;
+    overflow:hidden;
+    height: 32px;
+    width:271px;
+    float:left;
+    margin-left:5px;
+    margin-right:10px;
+}
+
+.logo2 {
+	font-size: 18px;
+	margin-top: 5px;
+	float: left;
+}
+
+.header .l-btn-text {
+	color: white;
+}
+
+.header .panel {
+	padding: 4px 20px 0px 0px;
+}
+
+.fa {
+	font-size: 16px;
+}
+
+.header .l-btn-text {
+	font-size: 14px;
+}
+
+.header:after {
+	content: "";
+	display: block;
+	clear: both;
+}
+
+#theme .menu-line {
+	border: none;
+}
+
+#theme .menu-item .menu-text {
+	padding-left: 15px;
+}
+
+.default {
+	background-image: url(../images/login_bg.jpg);
+	background-repeat: repeat-x;
+	background-color: #1d8bd8;
+	background-position: top center;
+	overflow: hidden;
+}
+
+#switch .content {
+	font-size: 18px;
+	padding-top: 30px;
+	padding-left: 50px;
+}
+
+#switch .content select {
+	font-size: 15px;
+}
+
+#switch .window .window-header {
+	padding: 10px 4px;
+}
+
+#switch .window-shadow {
+	width: 396px;
+}
+
+.circleNumber {
+	font-size: 450%;
+	color: green;
+	font-weight: 600;
+}
+
+.index_img {
+	background-image: url(../images/bg_index.jpg);
+	background-position: left center;
+	background-repeat: no-repeat;
+}
+
+.index_img_btn {
+	width: 150px;
+	position: absolute;
+	top: 235px;
+	left: 50%;
+	margin-left: -75px;
+	text-align: center;
+	cursor: pointer;
+}
+
+.ms-controller{
+	visibility: hidden
+}

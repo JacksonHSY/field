@@ -1,0 +1,227 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.yuminsoft.ams.system.dao.quality.QualitySetInfoMapper" >
+  <resultMap id="BaseResultMap" type="com.yuminsoft.ams.system.domain.quality.QualitySetInfo" >
+    <id column="id" property="id" jdbcType="DECIMAL" />
+    <result column="created_by" property="createdBy" jdbcType="VARCHAR" />
+    <result column="created_date" property="createdDate" jdbcType="TIMESTAMP" />
+    <result column="last_modified_by" property="lastModifiedBy" jdbcType="VARCHAR" />
+    <result column="last_modified_date" property="lastModifiedDate" jdbcType="TIMESTAMP" />
+    <result column="start_date" property="startDate" jdbcType="TIMESTAMP" />
+    <result column="end_date" property="endDate" jdbcType="TIMESTAMP" />
+    <result column="pass_rate" property="passRate" jdbcType="VARCHAR" />
+    <result column="reject_rate" property="rejectRate" jdbcType="VARCHAR" />
+    <result column="is_regular" property="isRegular" jdbcType="VARCHAR" />
+  </resultMap>
+  
+  <sql id="Base_Column_List" >
+    id, created_by, created_date, last_modified_by, last_modified_date, start_date,end_date,pass_rate,reject_rate,is_regular
+  </sql>
+  
+  <select id="findOne" resultMap="BaseResultMap" parameterType="java.util.Map" >
+    select
+    <include refid="Base_Column_List" />
+    from ams_quality_set_info
+    where 1=1
+    <include refid="amsConditions" />
+  </select>
+  
+  <select id="getLast" resultMap="BaseResultMap" parameterType="java.util.Map" >
+    select
+    <include refid="Base_Column_List" />
+    from ams_quality_set_info
+    where 1=1
+    <if test="date !=null and date !=''">
+    AND date_format(end_date,'%Y-%m-%d') = #{date,jdbcType=VARCHAR}
+    </if>
+    <if test="startDate !=null and startDate !=''">
+    AND date_format(start_date,'%Y-%m-%d') = #{startDate,jdbcType=VARCHAR}
+    </if>
+    ORDER by id DESC LIMIT 1
+  </select>
+  
+  <select id="findById" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select
+    <include refid="Base_Column_List" />
+    from ams_quality_set_info
+    where id = #{id,jdbcType=DECIMAL}
+  </select>
+  
+  <select id="findAll" resultMap="BaseResultMap" parameterType="java.util.Map" >
+    select
+    <include refid="Base_Column_List" />
+    from ams_quality_set_info
+    where 1=1
+     <if test="startDate != null" >
+        AND start_date = #{startDate,jdbcType=TIMESTAMP}
+      </if>
+      <if test="endDate != null" >
+        AND end_date = #{endDate,jdbcType=TIMESTAMP}
+      </if>
+      <if test="passRate != null" >
+        AND pass_rate = #{passRate,jdbcType=VARCHAR}
+      </if>
+      <if test="rejectRate != null" >
+        AND reject_rate = #{rejectRate,jdbcType=VARCHAR}
+      </if>
+      <if test="isRegular != null" >
+          AND is_regular = #{isRegular,jdbcType=VARCHAR}
+      </if>
+       order by id desc limit 1
+  </select>
+  
+  <select id="findByDate" resultMap="BaseResultMap" parameterType="java.util.Map" >
+    select
+    <include refid="Base_Column_List" />
+    from ams_quality_set_info
+    where 1=1
+    <if test="date != null" >
+       AND start_date <![CDATA[<=]]> #{date}
+       AND end_date <![CDATA[>=]]> #{date}
+    </if>
+    <if test="isRegular != null" >
+        AND is_regular = #{isRegular,jdbcType=VARCHAR}
+    </if>
+    order by id desc limit 1
+  </select>
+  <select id="findNearlyDate" resultMap="BaseResultMap" parameterType="java.util.Map" >
+    select
+      <include refid="Base_Column_List" />
+    from ams_quality_set_info
+    where end_date = #{endDate,jdbcType=TIMESTAMP}
+    ORDER BY id DESC LIMIT 1
+  </select>
+    <!--查询上一周期-->
+    <select id="findLastDate" resultMap="BaseResultMap" parameterType="java.util.Map">
+        select
+          <include refid="Base_Column_List" />
+        from ams_quality_set_info
+        where is_regular = #{isRegular,jdbcType=VARCHAR}
+        AND end_date= #{endDate,jdbcType=TIMESTAMP}
+        order by id
+        LIMIT 1
+    </select>
+  <select id="find" resultMap="BaseResultMap" parameterType="com.yuminsoft.ams.system.domain.quality.QualitySetInfo">
+    select
+    <include refid="Base_Column_List" />
+    from ams_quality_set_info
+    where 1=1
+    AND is_regular = #{isRegular,jdbcType=VARCHAR}
+    ORDER BY id DESC LIMIT 2
+  </select>
+   <select id="findHand" resultMap="BaseResultMap" parameterType="com.yuminsoft.ams.system.domain.quality.QualitySetInfo">
+    select
+    <include refid="Base_Column_List" />
+    from ams_quality_set_info
+    where 1=1
+    AND is_regular = #{isRegular,jdbcType=VARCHAR}
+    ORDER BY created_date DESC LIMIT 1
+  </select>
+
+  <!-- 查询条件 -->
+  <sql id="amsConditions">
+      <if test="id != null" >
+        AND id = #{id,jdbcType=DECIMAL}
+      </if>
+      <if test="createdBy != null" >
+        AND created_by = #{createdBy,jdbcType=VARCHAR}
+      </if>
+      <if test="createdDate != null" >
+        AND created_date = #{createdDate,jdbcType=TIMESTAMP}
+      </if>
+      <if test="lastModifiedBy != null" >
+        AND last_modified_by = #{lastModifiedBy,jdbcType=VARCHAR}
+      </if>
+      <if test="lastModifiedDate != null" >
+        AND last_modified_date = #{lastModifiedDate,jdbcType=TIMESTAMP}
+      </if>
+      <if test="startDate != null" >
+        AND start_date = #{startDate,jdbcType=TIMESTAMP}
+      </if>
+      <if test="endDate != null" >
+        AND end_date = #{endDate,jdbcType=TIMESTAMP}
+      </if>
+      <if test="passRate != null" >
+        AND pass_rate = #{passRate,jdbcType=VARCHAR}
+      </if>
+      <if test="rejectRate != null" >
+        AND reject_rate = #{rejectRate,jdbcType=VARCHAR}
+      </if>
+      <if test="isRegular != null" >
+        AND is_regular = #{isRegular,jdbcType=VARCHAR}
+      </if>
+    </sql>
+  
+  <delete id="delete" parameterType="java.lang.Long" >
+    delete from ams_quality_set_info
+    where id = #{id,jdbcType=DECIMAL}
+  </delete>
+  
+  <insert id="save" parameterType="com.yuminsoft.ams.system.domain.quality.QualitySetInfo" useGeneratedKeys="true" keyProperty="id" >
+    insert into ams_quality_set_info (created_by, created_date, last_modified_by, 
+      last_modified_date, start_date,end_date,pass_rate,reject_rate,is_regular)
+    values (#{createdBy,jdbcType=VARCHAR}, #{createdDate,jdbcType=TIMESTAMP}, #{lastModifiedBy,jdbcType=VARCHAR}, 
+      #{lastModifiedDate,jdbcType=TIMESTAMP}, #{startDate,jdbcType=TIMESTAMP}, #{endDate,jdbcType=TIMESTAMP},
+      #{passRate,jdbcType=VARCHAR},#{rejectRate,jdbcType=VARCHAR},
+      #{isRegular,jdbcType=VARCHAR})
+  </insert>
+ 
+  <update id="update" parameterType="com.yuminsoft.ams.system.domain.quality.QualitySetInfo" >
+    update ams_quality_set_info
+    <set >
+      <if test="createdBy != null" >
+        created_by = #{createdBy,jdbcType=VARCHAR},
+      </if>
+      <if test="createdDate != null" >
+        created_date = #{createdDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="lastModifiedBy != null" >
+        last_modified_by = #{lastModifiedBy,jdbcType=VARCHAR},
+      </if>
+      <if test="lastModifiedDate != null" >
+        last_modified_date = #{lastModifiedDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="startDate != null" >
+        start_date = #{startDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="endDate != null" >
+        end_date = #{endDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="passRate != null" >
+        pass_rate = #{passRate,jdbcType=VARCHAR},
+      </if>
+      <if test="rejectRate != null" >
+        reject_rate = #{rejectRate,jdbcType=VARCHAR},
+      </if>
+      <if test="isRegular != null" >
+        is_regular = #{isRegular,jdbcType=VARCHAR},
+      </if>
+    </set>
+      where 1=1
+     <if test="startDate != null" >
+        AND start_date = #{startDate,jdbcType=TIMESTAMP}
+      </if>
+      <if test="endDate != null" >
+        AND end_date = #{endDate,jdbcType=TIMESTAMP}
+      </if>
+  </update>
+
+    <!-- 设置抽检率无效-->
+    <update id="updateSetInfoNotUse" parameterType="java.lang.Long" >
+        update ams_quality_set_info set is_regular='1'
+          where id = #{id,jdbcType=DECIMAL}
+    </update>
+
+    <!-- 根据开始日期或者结束日期查找对应的周期-->
+    <select id="findPeriodByStartOrEndDate" parameterType="java.util.Map" resultMap="BaseResultMap">
+        select <include refid="Base_Column_List" /> FROM ams_quality_set_info
+          where 1=1
+        <if test="startDate != null" >
+            AND start_date = #{startDate}
+        </if>
+        <if test="endDate != null" >
+            AND end_date = #{endDate}
+        </if>
+        ORDER BY created_date DESC
+    </select>
+</mapper>

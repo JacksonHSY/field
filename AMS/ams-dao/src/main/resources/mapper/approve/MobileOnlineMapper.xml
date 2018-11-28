@@ -1,0 +1,142 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.yuminsoft.ams.system.dao.approve.MobileOnlineMapper" >
+
+    <resultMap id="BaseResultMap" type="com.yuminsoft.ams.system.domain.approve.MobileOnline" >
+        <id column="id" property="id" jdbcType="BIGINT" />
+        <result column="loan_no" property="loanNo" jdbcType="VARCHAR" />
+        <result column="name" property="name" jdbcType="VARCHAR" />
+        <result column="id_no" property="idNo" jdbcType="VARCHAR" />
+        <result column="mobile" property="mobile" jdbcType="VARCHAR" />
+        <result column="search_times" property="searchTimes" jdbcType="INTEGER" />
+        <result column="mobile_online_id" property="mobileOnlineId" jdbcType="BIGINT" />
+        <result column="real_certi_id" property="realCertiId" jdbcType="BIGINT" />
+        <result column="created_by" property="createdBy" jdbcType="VARCHAR" />
+        <result column="created_date" property="createdDate" jdbcType="TIMESTAMP" />
+        <result column="last_modified_by" property="lastModifiedBy" jdbcType="VARCHAR" />
+        <result column="last_modified_date" property="lastModifiedDate" jdbcType="TIMESTAMP" />
+    </resultMap>
+
+    <sql id="Base_Column_List" >
+        id,
+        loan_no,
+        name,
+        id_no,
+        mobile,
+        search_times,
+        mobile_online_id,
+        real_certi_id,
+        created_by,
+        created_date,
+        last_modified_by,
+        last_modified_date
+    </sql>
+
+    <select id="findByLoanNoAndNameAndIdNoAndMobile" resultMap="BaseResultMap" parameterType="HashMap" >
+        select
+         <include refid="Base_Column_List" />
+        from ams_approval_mobile_online
+        where 1=1
+        <if test="loanNo != null" >
+            AND loan_no = #{loanNo,jdbcType=VARCHAR}
+        </if>
+        <if test="name != null" >
+            AND name = #{name,jdbcType=VARCHAR}
+        </if>
+        <if test="idNo != null" >
+            AND id_no = #{idNo,jdbcType=VARCHAR}
+        </if>
+        <if test="mobile != null" >
+            AND mobile = #{mobile,jdbcType=VARCHAR}
+        </if>
+    </select>
+
+    <!-- 查询条件 -->
+    <sql id="amsConditions">
+        <if test="id != null" >
+            AND id = #{id,jdbcType=BIGINT}
+        </if>
+        <if test="loanNo != null" >
+            AND loan_no = #{loanNo,jdbcType=VARCHAR}
+        </if>
+        <if test="name != null" >
+            AND name = #{name,jdbcType=VARCHAR}
+        </if>
+        <if test="idNo != null" >
+            AND id_no = #{idNo,jdbcType=VARCHAR}
+        </if>
+        <if test="mobile != null" >
+            AND mobile = #{mobile,jdbcType=VARCHAR}
+        </if>
+        <if test="searchTimes != null" >
+            AND search_times = #{searchTimes,jdbcType=INTEGER}
+        </if>
+        <if test="mobileOnlineId != null" >
+            AND mobile_online_id = #{mobileOnlineId,jdbcType=BIGINT}
+        </if>
+        <if test="realCertiId != null" >
+            AND real_certi_id = #{realCertiId,jdbcType=BIGINT}
+        </if>
+        <if test="createdBy != null" >
+            AND created_by = #{createdBy,jdbcType=VARCHAR}
+        </if>
+        <if test="createdDate != null" >
+            AND created_date = #{createdDate,jdbcType=TIMESTAMP}
+        </if>
+        <if test="lastModifiedBy != null" >
+            AND last_modified_by = #{lastModifiedBy,jdbcType=VARCHAR}
+        </if>
+        <if test="lastModifiedDate != null" >
+            AND last_modified_date = #{lastModifiedDate,jdbcType=TIMESTAMP}
+        </if>
+    </sql>
+
+    <insert id="insert" parameterType="com.yuminsoft.ams.system.domain.approve.MobileOnline" useGeneratedKeys="true" keyProperty="id">
+        insert into ams_approval_mobile_online (
+            loan_no,
+            name,
+            id_no,
+            mobile,
+            search_times,
+            mobile_online_id,
+            real_certi_id,
+            mobile_online,
+            real_certi,
+            created_by,
+            created_date,
+            last_modified_by,
+            last_modified_date
+        ) values (
+            #{loanNo,jdbcType=VARCHAR},
+            #{name,jdbcType=VARCHAR},
+            #{idNo,jdbcType=VARCHAR},
+            #{mobile,jdbcType=VARCHAR},
+            #{searchTimes,jdbcType=INTEGER},
+            #{mobileOnlineId,jdbcType=BIGINT},
+            #{realCertiId,jdbcType=BIGINT},
+            #{mobileOnline,jdbcType=VARCHAR},
+            #{realCerti,jdbcType=VARCHAR},
+            #{createdBy,jdbcType=VARCHAR},
+            #{createdDate,jdbcType=TIMESTAMP},
+            #{lastModifiedBy,jdbcType=VARCHAR},
+            #{lastModifiedDate,jdbcType=TIMESTAMP}
+        )
+    </insert>
+
+    <update id="update" parameterType="com.yuminsoft.ams.system.domain.approve.MobileOnline" >
+        update ams_approval_mobile_online set
+            loan_no=#{loanNo,jdbcType=VARCHAR},
+            name=#{name,jdbcType=VARCHAR},
+            id_no=#{idNo,jdbcType=VARCHAR},
+            mobile=#{mobile,jdbcType=VARCHAR},
+            search_times=#{searchTimes,jdbcType=INTEGER},
+            mobile_online_id=#{mobileOnlineId,jdbcType=BIGINT},
+            real_certi_id=#{realCertiId,jdbcType=BIGINT},
+            mobile_online=#{mobileOnline,jdbcType=VARCHAR},
+            real_certi=#{realCerti,jdbcType=VARCHAR},
+            last_modified_by=#{lastModifiedBy,jdbcType=VARCHAR},
+            last_modified_date=#{lastModifiedDate,jdbcType=TIMESTAMP}
+        where id = #{id,jdbcType=DECIMAL}
+    </update>
+
+</mapper>

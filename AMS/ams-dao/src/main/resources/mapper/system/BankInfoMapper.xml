@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.yuminsoft.ams.system.dao.system.BankInfoMapper" >
+  <resultMap id="BaseResultMap" type="com.yuminsoft.ams.system.domain.system.Banks" >
+    <id column="id" property="id" jdbcType="DECIMAL" />
+    <result column="created_by" property="createdBy" jdbcType="VARCHAR" />
+    <result column="created_date" property="createdDate" jdbcType="TIMESTAMP" />
+    <result column="last_modified_by" property="lastModifiedBy" jdbcType="VARCHAR" />
+    <result column="last_modified_date" property="lastModifiedDate" jdbcType="TIMESTAMP" />
+    <result column="bank_name" property="bankName" jdbcType="VARCHAR" />
+    <result column="bank_type" property="bankType" jdbcType="VARCHAR" />
+    <result column="code" property="code" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, created_by, created_date, last_modified_by, last_modified_date, bank_name, 
+    bank_type, code
+  </sql>
+  
+  <select id="findOne" resultMap="BaseResultMap" parameterType="java.util.Map" >
+    select
+    <include refid="Base_Column_List" />
+    from ams_banks
+    where 1=1
+    <include refid="amsConditions" />
+  </select>
+  
+  <select id="findById" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select
+    <include refid="Base_Column_List" />
+    from ams_banks
+    where id = #{id,jdbcType=DECIMAL}
+  </select>
+  
+  <select id="findAll" resultMap="BaseResultMap" parameterType="java.util.Map" >
+    select
+    <include refid="Base_Column_List" />
+    from ams_banks
+    where 1=1
+    <include refid="amsConditions" />
+  </select>
+  
+  <select id="findAllConditions" resultMap="BaseResultMap" parameterType="com.yuminsoft.ams.system.domain.system.Banks" >
+    select
+    <include refid="Base_Column_List" />
+    from ams_banks
+    where 1=1
+   	  <if test="code != null" >
+        AND code = #{code,jdbcType=VARCHAR}
+      </if>
+      <if test="bankName != null" >
+        AND bank_name like '%${bankName}%'
+      </if>
+      <if test="bankType != null" >
+        AND bank_type = #{bankType,jdbcType=VARCHAR}
+      </if>
+  </select>
+  
+  <!-- 查询条件 -->
+  <sql id="amsConditions">
+      <if test="id != null" >
+        AND id = #{id,jdbcType=BIGINT}
+      </if>
+      <if test="createdBy != null" >
+        AND created_by = #{createdBy,jdbcType=VARCHAR}
+      </if>
+      <if test="createdDate != null" >
+        AND created_date = #{createdDate,jdbcType=TIMESTAMP}
+      </if>
+      <if test="lastModifiedBy != null" >
+        AND last_modified_by = #{lastModifiedBy,jdbcType=VARCHAR}
+      </if>
+      <if test="lastModifiedDate != null" >
+        AND last_modified_date = #{lastModifiedDate,jdbcType=TIMESTAMP}
+      </if>
+      <if test="code != null" >
+        AND code = #{code,jdbcType=VARCHAR}
+      </if>
+      <if test="bankName != null" >
+        AND bank_name = #{bankName,jdbcType=VARCHAR}
+      </if>
+      <if test="bankType != null" >
+        AND bank_type = #{bankType,jdbcType=VARCHAR}
+      </if>
+  </sql>
+  
+  <delete id="delete" parameterType="java.lang.Long" >
+    delete from ams_banks
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+  
+  <delete id="deletes" parameterType="java.lang.String" >
+    delete from ams_banks
+    where id in
+    <foreach item="item" index="index" collection="array" open="(" separator="," close=")">  
+   	 	#{item}  
+  	</foreach> 
+  </delete>
+  
+  <insert id="save" parameterType="com.yuminsoft.ams.system.domain.system.Banks" useGeneratedKeys="true" keyProperty="id" >
+    insert into ams_banks (created_by, created_date, last_modified_by, 
+      last_modified_date, code, bank_name, bank_type
+    )
+    values (#{createdBy,jdbcType=VARCHAR}, #{createdDate,jdbcType=TIMESTAMP}, #{lastModifiedBy,jdbcType=VARCHAR}, 
+      #{lastModifiedDate,jdbcType=TIMESTAMP}, #{code,jdbcType=VARCHAR}, #{bankName,jdbcType=VARCHAR}, #{bankType,jdbcType=VARCHAR}
+    )
+  </insert>
+  
+  <update id="update" parameterType="com.yuminsoft.ams.system.domain.system.Banks" >
+    update ams_banks
+    <set >
+      <if test="createdBy != null" >
+        created_by = #{createdBy,jdbcType=VARCHAR},
+      </if>
+      <if test="createdDate != null" >
+        created_date = #{createdDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="lastModifiedBy != null" >
+        last_modified_by = #{lastModifiedBy,jdbcType=VARCHAR},
+      </if>
+      <if test="lastModifiedDate != null" >
+        last_modified_date = #{lastModifiedDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="code != null" >
+        code = #{code,jdbcType=VARCHAR},
+      </if>
+      <if test="bankName != null" >
+        bank_name = #{bankName,jdbcType=VARCHAR},
+      </if>
+      <if test="bankType != null" >
+        bank_type = #{bankType,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+</mapper>

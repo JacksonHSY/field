@@ -1,0 +1,387 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.yuminsoft.ams.system.dao.quality.QualityCheckInfoMapper" >
+  <resultMap id="BaseResultMap" type="com.yuminsoft.ams.system.domain.quality.QualityCheckInfo" >
+    <id column="id" property="id" jdbcType="DECIMAL" />
+    <result column="created_by" property="createdBy" jdbcType="VARCHAR" />
+    <result column="created_date" property="createdDate" jdbcType="TIMESTAMP" />
+    <result column="last_modified_by" property="lastModifiedBy" jdbcType="VARCHAR" />
+    <result column="last_modified_date" property="lastModifiedDate" jdbcType="TIMESTAMP" />
+    <result column="loan_no" property="loanNo" jdbcType="VARCHAR" />
+    <result column="approval_status" property="approvalStatus" jdbcType="INTEGER" />
+    <result column="assign_date" property="assignDate" jdbcType="TIMESTAMP" />
+    <result column="check_status" property="checkStatus" jdbcType="VARCHAR" />
+    <result column="check_user" property="checkUser" jdbcType="VARCHAR" />
+    <result column="end_date" property="endDate" jdbcType="TIMESTAMP" />
+    <result column="source" property="source" jdbcType="VARCHAR" />
+    <result column="is_closed" property="isClosed" jdbcType="VARCHAR" />
+    <result column="is_regular" property="isRegular" jdbcType="VARCHAR" />
+    <result column="customer_name" property="customerName" jdbcType="VARCHAR" javaType="encrypt"/>
+    <result column="id_no" property="idNo" jdbcType="VARCHAR" javaType="encrypt"/>
+    <result column="owning_brance_id" property="owningBranceId" jdbcType="VARCHAR" />
+    <result column="owning_brance" property="owningBrance" jdbcType="VARCHAR" />
+    <result column="apply_date" property="applyDate" jdbcType="TIMESTAMP" />
+    <result column="product_type_name" property="productTypeName" jdbcType="VARCHAR" />
+    <result column="approve_state" property="approveState" jdbcType="VARCHAR" />
+    <result column="check_person" property="checkPerson" jdbcType="VARCHAR" />
+    <result column="final_person" property="finalPerson" jdbcType="VARCHAR" />
+    <result column="approve_date" property="approveDate" jdbcType="VARCHAR" />
+    <result column="assign_type" property="assignType" jdbcType="VARCHAR" />
+    <result column="customer_type" property="customerType" jdbcType="VARCHAR" />
+    <result column="version" property="version" jdbcType="INTEGER" />
+    <result column="refuse_level_two" property="refuseCodeLevelTwo" jdbcType="VARCHAR" />
+    <result column="refuse_level_one" property="refuseCodeLevelOne" jdbcType="VARCHAR" />
+    <result column="refuse_level_two_name" property="refuseLevelTwoName" jdbcType="VARCHAR" />
+    <result column="refuse_level_one_name" property="refuseLevelOneName" jdbcType="VARCHAR" />
+  </resultMap>
+
+  <sql id="Base_Column_List" >
+    id , created_by, created_date, last_modified_by, last_modified_date, loan_no, approval_status, 
+    assign_date, check_status, check_user, end_date, source,is_closed,is_regular,
+    customer_name,id_no,owning_brance_id,owning_brance,apply_date,product_type_name,approve_state,check_person,final_person,
+    approve_date,assign_type,customer_type,version,refuse_level_two,refuse_level_one,refuse_level_two_name,refuse_level_one_name
+  </sql>
+  
+  <select id ="getUserCode" resultType="java.lang.String" parameterType="java.util.Map">
+  	select distinct(check_user) from ams_quality_check_info where 1=1
+  		<if test="startDate !=null and startDate !=''">
+  			AND date_format(assign_date,'%Y-%m-%d')<![CDATA[>=]]> #{startDate,jdbcType=VARCHAR}
+  		</if>
+  		<if test="endDate !=null and endDate !=''">
+  			AND date_format(assign_date,'%Y-%m-%d')<![CDATA[<=]]> #{endDate,jdbcType=VARCHAR}
+  		</if>
+  		<if test ="codeList !=null and codeList.size>0">
+  			AND check_user in	
+  			<foreach collection="codeList" item="item" index="index" open="(" close=")" separator=",">
+              	#{item}
+    		</foreach>
+  		</if>
+  
+  </select>
+  <select id="findOne" resultMap="BaseResultMap" parameterType="java.util.Map" >
+    select
+    <include refid="Base_Column_List" />
+    from ams_quality_check_info
+    where 1=1
+    <if test="id != null" >
+        AND id = #{id,jdbcType=DECIMAL}
+      </if>
+    <if test="loanNo != null" >
+        AND loan_no = #{loanNo,jdbcType=VARCHAR}
+     </if>
+  </select>
+  
+  <select id="findById" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select
+    <include refid="Base_Column_List" />
+    from ams_quality_check_info
+    where id = #{id,jdbcType=DECIMAL}
+  </select>
+  
+  <select id="findByLoanId" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select
+    <include refid="Base_Column_List" />
+    from ams_quality_check_info
+    where loan_no = #{loanNo}
+ </select>
+  
+  <select id="findAll" resultMap="BaseResultMap" parameterType="java.util.Map" >
+    select
+    <include refid="Base_Column_List" />
+    from ams_quality_check_info
+    where 1=1
+    <include refid="amsConditions" />
+  </select>
+  
+   <select id="findApps" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from ams_quality_check_info
+    where check_user is null
+  </select>
+  
+  <select id="findByUser" resultMap="BaseResultMap" parameterType="java.util.Map">
+  	select 
+  	<include refid="Base_Column_List"/>
+  	from ams_quality_check_info
+  	where (check_user in
+  	<foreach collection="checkUser" item="item" index="index" open="(" close=")" separator=",">
+              #{item}
+    </foreach> or check_user is null)
+  		<if test="loanNo != null" >
+        	AND loan_no = #{loanNo,jdbcType=VARCHAR}
+    	</if>
+    	<if test="customerName != null" >
+        	AND customer_name = #{customerName,jdbcType=VARCHAR,javaType=encrypt}
+   		</if>
+    	<if test="idNo != null" >
+        	AND id_no = #{idNo,jdbcType=VARCHAR,javaType=encrypt}
+    	</if>
+    	<if test="checkStatus != null" >
+        	AND check_status != #{checkStatus,jdbcType=VARCHAR}
+      	</if>
+      	<if test="isClosed != null" >
+        AND is_closed = #{isClosed,jdbcType=VARCHAR}
+      </if>
+  </select>
+  
+  <!-- 查询条件 -->
+  <sql id="amsConditions">
+      <if test="id != null" >
+        AND id = #{id,jdbcType=DECIMAL}
+      </if>
+      <if test="createdBy != null" >
+        AND created_by = #{createdBy,jdbcType=VARCHAR}
+      </if>
+      <if test="createdDate != null" >
+        AND created_date = #{createdDate,jdbcType=TIMESTAMP}
+      </if>
+      <if test="lastModifiedBy != null" >
+        AND last_modified_by = #{lastModifiedBy,jdbcType=VARCHAR}
+      </if>
+      <if test="lastModifiedDate != null" >
+        AND last_modified_date = #{lastModifiedDate,jdbcType=TIMESTAMP}
+      </if>
+      <if test="loanNo != null" >
+        AND loan_no = #{loanNo,jdbcType=VARCHAR}
+      </if>
+      <if test="approvalStatus != null" >
+        AND approval_status = #{approvalStatus,jdbcType=INTEGER}
+      </if>
+      <if test="assignDate != null" >
+        AND assign_date = #{assignDate,jdbcType=TIMESTAMP}
+      </if>
+      <if test="checkStatus != null" >
+        AND check_status = #{checkStatus,jdbcType=VARCHAR}
+      </if>
+      <if test="checkUser != null" >
+        AND check_user = #{checkUser,jdbcType=VARCHAR}
+      </if>
+      <if test="endDate != null" >
+        AND end_date = #{endDate,jdbcType=TIMESTAMP}
+      </if>
+      <if test="source != null" >
+        AND `source` = #{source,jdbcType=VARCHAR}
+      </if>
+      <if test="isClosed != null" >
+        AND is_closed = #{isClosed,jdbcType=VARCHAR}
+      </if>
+      <if test="isRegular != null" >
+        AND is_regular = #{isRegular,jdbcType=VARCHAR}
+      </if>
+      <if test="customerName != null" >
+        AND customer_name = #{customerName,jdbcType=VARCHAR,javaType=encrypt}
+      </if>
+      <if test="idNo != null" >
+        AND id_no = #{idNo,jdbcType=VARCHAR,javaType=encrypt}
+      </if>
+      <if test="owningBranceId != null" >
+        AND owning_brance_id = #{owningBranceId,jdbcType=VARCHAR}
+      </if>
+      <if test="owningBrance != null" >
+        AND owning_brance = #{owningBrance,jdbcType=VARCHAR}
+      </if>
+      <if test="applyDate != null" >
+        AND apply_date = #{applyDate,jdbcType=TIMESTAMP}
+      </if>
+      <if test="productTypeName != null" >
+        AND product_type_name = #{productTypeName,jdbcType=VARCHAR}
+      </if>
+      <if test="approveState != null" >
+        AND approve_state = #{approveState,jdbcType=VARCHAR}
+      </if>
+      <if test="checkPerson != null" >
+        AND check_person = #{checkPerson,jdbcType=VARCHAR}
+      </if>
+      <if test="finalPerson != null" >
+        AND final_person = #{finalPerson,jdbcType=VARCHAR}
+      </if>
+      <if test="approveDate != null" >
+        AND approve_date = #{approveDate,jdbcType=VARCHAR}
+      </if>
+      <if test="assignType != null" >
+        AND assign_type = #{assignType,jdbcType=VARCHAR}
+      </if>
+      <if test="version != null" >
+        AND version = #{version,jdbcType=INTEGER}
+      </if>
+    </sql>
+  
+  <delete id="delete" parameterType="java.lang.Long" >
+    update  ams_quality_check_info set is_closed='0'
+    where id = #{id,jdbcType=DECIMAL}
+  </delete>
+  
+  <insert id="save" parameterType="com.yuminsoft.ams.system.domain.quality.QualityCheckInfo" useGeneratedKeys="true" keyProperty="id" >
+    insert into ams_quality_check_info (created_by, created_date, last_modified_by, 
+      last_modified_date, loan_no, approval_status, 
+      assign_date, check_status, check_user, 
+      end_date,
+      `source`,is_closed,is_regular,customer_name,customer_name_bak,id_no,id_no_bak,
+      owning_brance_id,owning_brance,apply_date,product_type_name,
+      approve_state,check_person,final_person,
+    approve_date,assign_type,customer_type,refuse_level_one,refuse_level_two,refuse_level_one_name,refuse_level_two_name)
+    values (#{createdBy,jdbcType=VARCHAR}, #{createdDate,jdbcType=TIMESTAMP}, #{lastModifiedBy,jdbcType=VARCHAR}, 
+      #{lastModifiedDate,jdbcType=TIMESTAMP}, #{loanNo,jdbcType=VARCHAR}, #{approvalStatus,jdbcType=INTEGER}, 
+      #{assignDate,jdbcType=TIMESTAMP}, #{checkStatus,jdbcType=VARCHAR}, #{checkUser,jdbcType=VARCHAR}, 
+      #{endDate,jdbcType=TIMESTAMP}, 
+      #{source,jdbcType=VARCHAR}, #{isClosed,jdbcType=VARCHAR}, #{isRegular,jdbcType=VARCHAR},
+      #{customerName,jdbcType=VARCHAR,javaType=encrypt}, #{customerNameBak,jdbcType=VARCHAR},#{idNo,jdbcType=VARCHAR,javaType=encrypt},#{idNoBak,jdbcType=VARCHAR},#{owningBranceId,jdbcType=VARCHAR},#{owningBrance,jdbcType=VARCHAR},
+      #{applyDate,jdbcType=TIMESTAMP},#{productTypeName,jdbcType=VARCHAR},#{approveState,jdbcType=VARCHAR},#{checkPerson,jdbcType=VARCHAR},#{finalPerson,jdbcType=VARCHAR},
+      #{approveDate,jdbcType=TIMESTAMP},#{assignType,jdbcType=VARCHAR},#{customerType,jdbcType=VARCHAR},#{refuseCodeLevelOne,jdbcType=VARCHAR},#{refuseCodeLevelTwo,jdbcType=VARCHAR},
+      #{refuseLevelOneName,jdbcType=VARCHAR},#{refuseLevelTwoName,jdbcType=VARCHAR}
+      )
+  </insert>
+    <!--派单专用 -->
+    <update id="updateStatus" parameterType="com.yuminsoft.ams.system.domain.quality.QualityCheckInfo" >
+        update ams_quality_check_info
+        <set>
+            <if test="lastModifiedBy != null" >
+                last_modified_by = #{lastModifiedBy,jdbcType=VARCHAR},
+            </if>
+            <if test="lastModifiedDate != null" >
+                last_modified_date = #{lastModifiedDate,jdbcType=TIMESTAMP},
+            </if>
+            <if test="assignDate != null" >
+                assign_date = #{assignDate,jdbcType=TIMESTAMP},
+            </if>
+            <if test="checkUser != null" >
+                check_user = #{checkUser,jdbcType=VARCHAR},
+            </if>
+            <if test="assignType != null" >
+                assign_type = #{assignType,jdbcType=VARCHAR}
+            </if>
+        </set>
+        <where>
+            <if test="version != null" >
+                AND version = #{version,jdbcType=INTEGER}
+            </if>
+            <if test="id != null ">
+                AND id = #{id,jdbcType=DECIMAL}
+            </if>
+        </where>
+    </update>
+  
+  <update id="update" parameterType="com.yuminsoft.ams.system.domain.quality.QualityCheckInfo" >
+    update ams_quality_check_info
+    <set>
+      <if test="lastModifiedBy != null" >
+        last_modified_by = #{lastModifiedBy,jdbcType=VARCHAR},
+      </if>
+      <if test="lastModifiedDate != null" >
+        last_modified_date = #{lastModifiedDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="loanNo != null" >
+        loan_no = #{loanNo,jdbcType=VARCHAR},
+      </if>
+      <if test="approvalStatus != null" >
+        approval_status = #{approvalStatus,jdbcType=INTEGER},
+      </if>
+      <if test="assignDate != null" >
+        assign_date = #{assignDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="checkStatus != null" >
+        check_status = #{checkStatus,jdbcType=VARCHAR},
+      </if>
+      <if test="checkUser != null" >
+        check_user = #{checkUser,jdbcType=VARCHAR},
+      </if>
+      <if test="endDate != null" >
+        end_date = #{endDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="source != null" >
+        `source` = #{source,jdbcType=VARCHAR},
+      </if>
+      <if test="isClosed != null" >
+        is_closed = #{isClosed,jdbcType=VARCHAR},
+      </if>
+      <if test="isRegular != null" >
+        is_regular = #{isRegular,jdbcType=VARCHAR},
+      </if>
+      <if test="customerName != null" >
+       	customer_name = #{customerName,jdbcType=VARCHAR,javaType=encrypt},
+      </if>
+      <if test="owningBranceId != null" >
+       	owning_brance_id = #{owningBranceId,jdbcType=VARCHAR},
+      </if>
+      <if test="owningBrance != null" >
+       	owning_brance = #{owningBrance,jdbcType=VARCHAR},
+      </if>
+      <if test="applyDate != null" >
+       	apply_date = #{applyDate,jdbcType=VARCHAR},
+      </if>
+      <if test="productTypeName != null" >
+       	product_type_name = #{productTypeName,jdbcType=VARCHAR},
+      </if>
+      <if test="approveState != null" >
+       	approve_state = #{approveState,jdbcType=VARCHAR},
+      </if>
+      <if test="checkPerson != null" >
+       	check_person = #{checkPerson,jdbcType=VARCHAR},
+      </if>
+      <if test="finalPerson != null" >
+       	final_person = #{finalPerson,jdbcType=VARCHAR},
+      </if>
+      <if test="approveDate != null" >
+       	approve_date = #{approveDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="assignType != null" >
+        assign_type = #{assignType,jdbcType=VARCHAR}
+      </if>
+    </set>
+      <where>
+          <if test="version != null" >
+              AND version = #{version,jdbcType=INTEGER}
+          </if>
+          <if test="loanNo != null">
+              AND  loan_no = #{loanNo,jdbcType=VARCHAR}
+          </if>
+          <if test="id != null ">
+              AND id = #{id,jdbcType=DECIMAL}
+          </if>
+      </where>
+  </update>
+  
+  <!-- 手工质检申请派单_关闭 -->
+  <update id="closes" parameterType="java.lang.String" >
+    update  ams_quality_check_info set is_closed='0'
+    where id in
+    <foreach item="item" index="index" collection="array" open="(" separator="," close=")">  
+   	 	#{item}  
+  	</foreach> 
+  </update>
+  
+  <!-- 手工质检申请派单_手工分派_手工改派 -->
+  <update id="updateCheckUser" parameterType="java.util.HashMap" >
+    update  ams_quality_check_info  
+    <trim prefix="SET" suffixOverrides=",">
+	    <if test="checkUser != null">
+	    	check_user = #{checkUser,jdbcType=VARCHAR}, 
+	    </if>
+	    <if test="assignDate != null">
+	    	assign_date = #{assignDate,jdbcType=TIMESTAMP}, 
+	    </if>
+	    <if test="assignType != null">
+	    	assign_type = #{assignType,jdbcType=VARCHAR}
+	    </if>
+    </trim>
+    where id in
+    <foreach item="item" index="index" collection="ids" open="(" separator="," close=")">  
+   	 	#{item}  
+  	</foreach> 
+  </update>
+  
+  <!-- 系统分派查询未分派待质检单 -->
+   <select id="findForAssign" resultMap="BaseResultMap" parameterType="java.util.Map">
+  	 select 
+  	 <include refid="Base_Column_List" />
+    from ams_quality_check_info
+    where 1=1 
+   	AND (approval_status = '1' OR approval_status = '0')
+    AND (check_user is null or check_user ='')
+    <if test="isClosed != null">
+    	AND is_closed = #{isClosed,jdbcType=VARCHAR}
+    </if>
+    ORDER BY TO_DAYS(created_date),is_regular DESC,approval_status,approve_date;
+  </select>
+</mapper>

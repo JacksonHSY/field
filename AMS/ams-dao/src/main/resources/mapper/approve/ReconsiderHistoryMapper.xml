@@ -1,0 +1,243 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.yuminsoft.ams.system.dao.approve.ReconsiderHistoryMapper">
+
+    <resultMap id="BaseResultMap" type="com.yuminsoft.ams.system.domain.approve.ReconsiderHistory">
+        <id column="id" property="id" jdbcType="DECIMAL"/>
+        <result column="created_by" property="createdBy" jdbcType="VARCHAR"/>
+        <result column="created_date" property="createdDate" jdbcType="TIMESTAMP"/>
+        <result column="last_modified_by" property="lastModifiedBy" jdbcType="VARCHAR"/>
+        <result column="last_modified_date" property="lastModifiedDate" jdbcType="TIMESTAMP"/>
+        <result column="loan_no" property="loanNo" jdbcType="VARCHAR"/>
+        <result column="reconsider_node" property="reconsiderNode" jdbcType="VARCHAR"/>
+        <result column="reconsider_state" property="reconsiderState" jdbcType="VARCHAR"/>
+        <result column="reconsider_node_state" property="reconsiderNodeState" jdbcType="VARCHAR"/>
+        <result column="error_level" property="errorLevel" jdbcType="VARCHAR"/>
+        <result column="error_person" property="errorPerson" jdbcType="VARCHAR"/>
+        <result column="error_code" property="errorCode" jdbcType="VARCHAR"/>
+        <result column="reconsider_reject_code" property="reconsiderRejectCode" jdbcType="VARCHAR"/>
+        <result column="reconsider_operator" property="reconsiderOperator" jdbcType="VARCHAR"/>
+        <result column="operator" property="operator" jdbcType="VARCHAR"/>
+        <result column="remark" property="remark" jdbcType="VARCHAR"/>
+        <result column="reconsider_level" property="reconsiderLevel" jdbcType="VARCHAR"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+		id,
+		created_by,
+		created_date,
+		last_modified_by,
+		last_modified_date,
+		loan_no,
+		reconsider_node,
+		reconsider_state,
+		reconsider_node_state,
+		error_level,
+		error_person,
+		error_code,
+		reconsider_reject_code,
+		reconsider_operator,
+		operator,
+		remark,
+		reconsider_level
+	</sql>
+
+    <!-- 查询条件 -->
+    <sql id="amsConditions">
+        <if test="createdBy != null">
+            AND created_by = #{createdBy,jdbcType=VARCHAR}
+        </if>
+        <if test="createdDate != null">
+            AND created_date = #{createdDate,jdbcType=TIMESTAMP}
+        </if>
+        <if test="lastModifiedBy != null">
+            AND last_modified_by = #{lastModifiedBy,jdbcType=VARCHAR}
+        </if>
+        <if test="lastModifiedDate != null">
+            AND last_modified_date = #{lastModifiedDate,jdbcType=TIMESTAMP}
+        </if>
+        <if test="reconsiderNode != null">
+            AND reconsider_node = #{reconsiderNode, jdbcType = VARCHAR}
+        </if>
+        <if test="reconsiderState != null">
+            AND reconsider_state = #{reconsiderState, jdbcType = VARCHAR}
+        </if>
+        <if test="reconsiderNodeState != null">
+            AND reconsider_node_state = #{reconsiderNodeState, jdbcType = VARCHAR}
+        </if>
+        <if test="errorLevel != null">
+            AND error_level = #{errorLevel, jdbcType = VARCHAR}
+        </if>
+        <if test="errorPerson != null">
+            AND error_person = #{errorPerson, jdbcType = VARCHAR}
+        </if>
+        <if test="errorCode != null">
+            AND error_code = #{errorCode, jdbcType = VARCHAR}
+        </if>
+        <if test="reconsiderRejectCode != null">
+            AND reconsider_reject_code = #{reconsiderRejectCode, jdbcType = VARCHAR}
+        </if>
+        <if test="reconsiderOperator != null">
+            AND reconsider_operator = #{reconsiderOperator, jdbcType = VARCHAR}
+        </if>
+        <if test="operator != null">
+            AND operator = #{operator, jdbcType = VARCHAR}
+        </if>
+        <if test="remark != null">
+            AND remark = #{remark, jdbcType = VARCHAR}
+        </if>
+        <if test="loanNo != null">
+            AND loan_no = #{loanNo,jdbcType=VARCHAR}
+        </if>
+        <if test="id != null">
+            AND id = #{id,jdbcType=DECIMAL}
+        </if>
+        <if test="reconsiderLevel != null">
+            AND reconsider_level = #{reconsiderLevel, jdbcType = VARCHAR}
+        </if>
+    </sql>
+
+    <select id="findOne" resultMap="BaseResultMap" parameterType="java.util.Map">
+        select
+        <include refid="Base_Column_List"/>
+        from ams_reconsider_history
+        where 1=1
+        <include refid="amsConditions"/>
+    </select>
+
+    <select id="findById" resultMap="BaseResultMap" parameterType="java.lang.Long">
+        select
+        <include refid="Base_Column_List"/>
+        from ams_reconsider_history
+        where id = #{id,jdbcType=DECIMAL}
+    </select>
+
+    <select id="findAll" resultMap="BaseResultMap" parameterType="java.util.Map">
+        select
+        <include refid="Base_Column_List"/>
+        from ams_reconsider_history
+        where 1=1
+        <include refid="amsConditions"/>
+    </select>
+
+
+    <delete id="delete" parameterType="java.lang.Long">
+		delete from ams_reconsider_history
+		where id = #{id,jdbcType=DECIMAL}
+	</delete>
+
+    <insert id="insert" parameterType="com.yuminsoft.ams.system.domain.approve.ReconsiderHistory"
+            useGeneratedKeys="true"
+            keyProperty="id">
+        insert into ams_reconsider_history (
+			created_by,	created_date,last_modified_by,	last_modified_date,
+			loan_no,reconsider_node,reconsider_state,reconsider_node_state,
+			error_level,error_person,error_code,reconsider_reject_code,
+			reconsider_operator,operator,remark,reconsider_level )
+        values (
+	        #{createdBy,jdbcType=VARCHAR},
+	        #{createdDate,jdbcType=TIMESTAMP},
+	        #{lastModifiedBy,jdbcType=VARCHAR},
+	        #{lastModifiedDate,jdbcType=TIMESTAMP},
+	        #{loanNo,jdbcType=VARCHAR},
+	        #{reconsiderNode,jdbcType=VARCHAR},
+	        #{reconsiderState,jdbcType=VARCHAR},
+	        #{reconsiderNodeState,jdbcType=VARCHAR},
+	        #{errorLevel,jdbcType=VARCHAR},
+	        #{errorPerson,jdbcType=VARCHAR},
+	        #{errorCode,jdbcType=VARCHAR},
+	        #{reconsiderRejectCode,jdbcType=VARCHAR},
+	        #{reconsiderOperator,jdbcType=VARCHAR},
+	        #{operator,jdbcType=VARCHAR},
+	        #{remark,jdbcType=VARCHAR},
+	        #{reconsiderLevel,jdbcType=VARCHAR}
+        )
+    </insert>
+
+    <update id="update" parameterType="com.yuminsoft.ams.system.domain.approve.ApplyHistory">
+        update ams_reconsider_history
+        <set>
+            <if test="lastModifiedBy != null">
+                last_modified_by = #{lastModifiedBy,jdbcType=VARCHAR},
+            </if>
+            <if test="lastModifiedDate != null">
+                last_modified_date = #{lastModifiedDate,jdbcType=TIMESTAMP},
+            </if>
+            <if test="loanNo != null">
+                loan_no = #{loanNo,jdbcType=VARCHAR},
+            </if>
+            <if test="approvalPerson != null">
+                approval_person = #{approvalPerson,jdbcType=VARCHAR},
+            </if>
+            <if test="reconsiderNode != null">
+                reconsider_node = #{reconsiderNode, jdbcType = VARCHAR},
+            </if>
+            <if test="reconsiderState != null">
+                reconsider_state = #{reconsiderState, jdbcType = VARCHAR},
+            </if>
+            <if test="reconsiderNodeState != null">
+                reconsider_node_state = #{reconsiderNodeState, jdbcType = VARCHAR},
+            </if>
+            <if test="errorLevel != null">
+                error_level = #{errorLevel, jdbcType = VARCHAR},
+            </if>
+            <if test="errorPerson != null">
+                error_person = #{errorPerson, jdbcType = VARCHAR},
+            </if>
+            <if test="errorCode != null">
+                error_code = #{errorCode, jdbcType = VARCHAR},
+            </if>
+            <if test="reconsiderRejectCode != null">
+                reconsider_reject_code = #{reconsiderRejectCode, jdbcType = VARCHAR},
+            </if>
+            <if test="reconsiderOperator != null">
+                reconsider_operator = #{reconsiderOperator, jdbcType = VARCHAR},
+            </if>
+            <if test="operator != null">
+                operator = #{operator, jdbcType = VARCHAR},
+            </if>
+            <if test="remark != null">
+                remark = #{remark, jdbcType = VARCHAR},
+            </if>
+            <if test="reconsiderLevel != null">
+	            reconsider_level = #{reconsiderLevel, jdbcType = VARCHAR}
+	        </if>
+        </set>
+        where id = #{id,jdbcType=DECIMAL}
+    </update>
+
+    <!-- F2 办理根据借款编号查询是否有F3办理 -->
+    <select id="findReconsiderHistoryByLevelThreeHandle" resultMap="BaseResultMap" parameterType="java.lang.String">
+        select
+        <include refid="Base_Column_List"/>
+        from ams_reconsider_history
+        WHERE
+        (reconsider_node_state='PASS' or reconsider_node_state='REJECT') and
+        reconsider_node ='F3' and loan_no=#{loanNo,jdbcType=VARCHAR}
+    </select>
+
+    <!-- 根据级别查询派单上一次分派 -->
+    <select id="findLastDispathByLevel" resultMap="BaseResultMap" parameterType="java.lang.String">
+        SELECT
+        <include refid="Base_Column_List"/>
+        from ams_reconsider_history
+         WHERE reconsider_node='FP' and reconsider_level =#{reconsiderLeve,jdbcType=VARCHAR} order by id DESC  limit 1
+    </select>
+
+    <!-- 复议派单F3提交查找原F2 -->
+    <select id="findReconsiderHistoryByLevelTwoHandle" resultMap="BaseResultMap" parameterType="java.lang.String">
+        select
+        <include refid="Base_Column_List"/>
+        from ams_reconsider_history
+        WHERE
+        reconsider_state='SENDAPPROVE' and reconsider_node ='F2' and loan_no=#{loanNo,jdbcType=VARCHAR}
+    </select>
+
+   <!-- 根据借款编号查询最后一次办理节点用于pic操作  -->
+   <select id="findLastNodeHistoryByLoanNo"  resultMap="BaseResultMap" parameterType="java.lang.String">
+       SELECT
+       <include refid="Base_Column_List"/>
+       from ams_reconsider_history
+       WHERE loan_no =#{loanNo,jdbcType=VARCHAR} order by id DESC  limit 1
+   </select>
+</mapper>
